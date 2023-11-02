@@ -3,17 +3,12 @@ package edu.ntnu.stud;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalTime;
-import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class TrainInterface {
-    static int LINES = 5;
     private final TrainGroup departures = new TrainGroup();
 
     TrainInterface() {}
-
-    public TrainDeparture[] getDepartures() {
-        return departures.getDepartures();
-    }
 
     public void init() {
         departures.addDeparture(TrainDeparture.createRandomDeparture(30, "Trondheim"));
@@ -23,6 +18,7 @@ public class TrainInterface {
         departures.addDeparture(TrainDeparture.createRandomDeparture(19, "Bodø"));
         departures.addDeparture(TrainDeparture.createRandomDeparture(67, "Stavanger"));
         departures.addDeparture(TrainDeparture.createRandomDeparture(74, "Alta"));
+        departures.addDeparture(TrainDeparture.createRandomDeparture(78, "Alta"));
     }
 
     public void start() {
@@ -57,19 +53,47 @@ public class TrainInterface {
     }
 
     private void addDeparture() {
-        // TODO
+        System.out.println("Når skal toget gå?");
+        final LocalTime plannedDeparture = InputParser.getTime("Avgang: ");
+        System.out.println("Hvilken toglinje er det?");
+        // TODO add regex from class
+        final String line = InputParser.getString("Linje: ","^[A-Z][0-9]{1,2}$");
+
+        System.out.println("Hva er endestoppet?");
+        final String destination = InputParser.getString("Endestopp: ");
+
+        int trainNumber = -1;
+        System.out.println("Hva er tognummeret? Skriv -1 hvis den ikke skal bli satt enda.");
+        do {
+            trainNumber = InputParser.getInt("Tognummer: ", (int n) -> n >= -1);
+
+        } while (departures.getDepartureFromNumber(trainNumber) != null);
+
+
+        System.out.println("Hvilket spor skal den gå fra? Skriv -1 hvis den ikke skal bli satt enda.");
+        final int track = InputParser.getInt("Spor: ", (int n) -> n >= -1);
+
+        LocalTime delay = LocalTime.MIN;
+        System.out.println("Er toget allerede forsinka? (y/N)");
+        final String result = InputParser.getString("Forsinka: ", "^[ynYN]?$").toLowerCase();
+        if (result.equals("y")) {
+            System.out.println("Hvor lenge er den forsinka?");
+            delay = InputParser.getTime("Forsinkelse: ");
+        }
+
+
+        final TrainDeparture departure = new TrainDeparture(
+                plannedDeparture,
+                line,
+                trainNumber,
+                destination,
+                track,
+                delay
+        );
+
+        departures.addDeparture(departure);
     }
 
-
-
-
-    private void showDeparturesFrom() {
-        showDeparturesFrom(LocalTime.MIN);
-    }
-
-    private void giveDepartureTrack() {
-        // TODO
-    }
     private void giveDepartureTrack() {
         TrainDeparture departure = findDepartureFromNumber();
         System.out.println("Hvilket spor skal den gå fra?");
@@ -86,10 +110,6 @@ public class TrainInterface {
     }
 
     private void giveDepartureDelay() {
-        // TODO
-    }
-
-    private void giveDepartureDelay() {
         TrainDeparture departure = findDepartureFromNumber();
         final LocalTime previousDelay = departure.getDelay();
         if (departure.isDelayed()) System.out.printf("Toget er allerede forsinka med %s.\n", previousDelay);
@@ -99,10 +119,6 @@ public class TrainInterface {
         System.out.println();
         if (previousDelay != delay) System.out.printf("Forsinkelse endret fra %s til %s.\n", previousDelay, delay);
         else System.out.printf("Forsinkelsen var allerede satt til %s, ingen endring gjort.\n", delay);
-    }
-
-    private void findDepartureFromNumber() {
-        // TODO
     }
 
     private TrainDeparture findDepartureFromNumber() {
@@ -115,10 +131,6 @@ public class TrainInterface {
         }
         System.out.printf("Fant toget %s.\n", departure);
         return departure;
-    }
-
-    private void findDepartureFromDestination() {
-        // TODO
     }
 
     private void findDepartureFromDestination() {
@@ -164,18 +176,6 @@ public class TrainInterface {
             System.out.println("║         │         │      │                  │       ║");
         }
         System.out.println("╚═════════╧═════════╧══════╧══════════════════╧═══════╝");
-    }
-    public TrainDeparture[] getDeparturesFrom(LocalTime time) {
-        return Arrays.stream(getDepartures())
-                .sorted((a, b) -> {
-                    final LocalTime aDeparture = a.getPlannedDeparture();
-                    final LocalTime bDeparture = b.getPlannedDeparture();
-                    return aDeparture.compareTo(bDeparture);
-                })
-                .filter(departure -> departure.getDelayedDeparture().isAfter(time))
-                .limit(LINES)
-                .toArray(TrainDeparture[]::new);
-
     }
 
     static private String parseDeparture(@NotNull TrainDeparture departure) {
