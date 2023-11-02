@@ -1,11 +1,18 @@
 package edu.ntnu.stud;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 
-interface FloatInputValidator { boolean test(float input); }
-interface IntegerInputValidator { boolean test(int input); }
+import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class InputParser {
+  public interface FloatInputValidator { boolean test(float input); }
+  public interface IntegerInputValidator { boolean test(int input); }
+  public interface CharInputValidator { boolean test(char input); }
   static Scanner scanner;
   static void initialize() {
     if (scanner != null) return;
@@ -25,15 +32,12 @@ public class InputParser {
   }
   public static int getInt(String prompt) {
     initialize();
-    int result = 0;
-    String input;
+
     while (true) {
       System.out.print(prompt);
-      input = scanner.nextLine();
       try {
-        result = Integer.parseInt(input);
-        return result;
-      } catch (Exception e) {};
+        return Integer.parseInt(scanner.nextLine());
+      } catch (Exception ignored) {};
     }
   }
   public static float getFloat(String prompt, FloatInputValidator validator) {
@@ -57,6 +61,23 @@ public class InputParser {
     System.out.print(prompt);
     return scanner.nextLine();
   }
+  public static String getString(String prompt, @NonNls @NotNull String regex) {
+    initialize();
+    final Pattern pattern = Pattern.compile(regex);
+    while (true) {
+      System.out.print(prompt);
+      final Matcher t = pattern.matcher(scanner.nextLine());
+      if (t.matches()) return t.group();
+    }
+  }
+  public static String getString(String prompt, Pattern pattern) {
+    initialize();
+    while (true) {
+      System.out.print(prompt);
+      final Matcher t = pattern.matcher(scanner.nextLine());
+      if (t.matches()) return t.group();
+    }
+  }
   public static char getChar(String prompt) {
     initialize();
     String input;
@@ -64,6 +85,26 @@ public class InputParser {
       System.out.print(prompt);
       input = scanner.nextLine();
       if (input.length() == 1) return input.charAt(0);
+    }
+  }
+  public static char getChar(String prompt, CharInputValidator validator) {
+    initialize();
+    String input;
+    while (true) {
+      System.out.print(prompt);
+      input = scanner.nextLine();
+      if (input.length() == 1 && validator.test(input.charAt(0))) return input.charAt(0);
+    }
+  }
+  public static LocalTime getTime(String prompt) {
+    initialize();
+    LocalTime output;
+    final Pattern pattern = Pattern.compile("^[0-2]?[0-9]:[0-5][0-9]$");
+    while (true) {
+      final String result = getString(prompt, pattern);
+      try {
+        return LocalTime.parse(result);
+      } catch (Exception ignored) {};
     }
   }
 }
