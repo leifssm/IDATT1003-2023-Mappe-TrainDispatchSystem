@@ -87,4 +87,15 @@ public class TrainDeparture {
         if (delay == null) throw new InvalidParameterException("Delay cannot be null");
         this.delay = delay;
     }
+
+    public String toString() {
+        return String.format("%s til %s%s: Planlagt avgang %s, %s fra spor %s",
+                line,
+                destination,
+                trainNumber > -1 ? " (Tog #" + trainNumber + ")" : "",
+                plannedDeparture,
+                isDelayed() ? "forsinket til " + getDelayedDeparture() : "med ingen forsinkelse",
+                track
+        );
+    }
 }
