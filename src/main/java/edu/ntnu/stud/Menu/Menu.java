@@ -21,7 +21,7 @@ public class Menu {
     return this;
   }
 
-  public Menu runBefore(Runnable beforeAction) {
+  public Menu setRunBefore(Runnable beforeAction) {
     this.beforeAction = beforeAction;
     return this;
   }
