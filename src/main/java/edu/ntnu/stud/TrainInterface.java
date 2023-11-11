@@ -35,7 +35,7 @@ public class TrainInterface {
                     "6. Sett klokken\n" + // kan ikke være mindre
                     "7. Avslutt"
             );
-            final int option = InputParser.getInt("Valg: ", (int n) -> n >= 1 && n <= 7);
+            final int option = InputParser.getInt("Valg: ", n -> n >= 1 && n <= 7);
             System.out.println();
             switch (option) {
                 case 1 -> addDeparture();
@@ -65,13 +65,13 @@ public class TrainInterface {
         int trainNumber = -1;
         System.out.println("Hva er tognummeret? Skriv -1 hvis den ikke skal bli satt enda.");
         do {
-            trainNumber = InputParser.getInt("Tognummer: ", (int n) -> n >= -1);
+            trainNumber = InputParser.getInt("Tognummer: ", n -> n >= -1);
 
         } while (departures.getDepartureFromNumber(trainNumber) != null);
 
 
         System.out.println("Hvilket spor skal den gå fra? Skriv -1 hvis den ikke skal bli satt enda.");
-        final int track = InputParser.getInt("Spor: ", (int n) -> n >= -1);
+        final int track = InputParser.getInt("Spor: ", n -> n >= -1);
 
         LocalTime delay = LocalTime.MIN;
         System.out.println("Er toget allerede forsinka? (y/N)");
@@ -98,7 +98,7 @@ public class TrainInterface {
         TrainDeparture departure = findDepartureFromNumber();
         System.out.println("Hvilket spor skal den gå fra?");
         final int previousTrack = departure.getTrack();
-        final int track = InputParser.getInt("Spor: ", (int n) -> n >= 0);
+        final int track = InputParser.getInt("Spor: ", n -> n >= 0);
         departure.setTrack(track);
         System.out.println();
         if (previousTrack != track) System.out.printf("Spor endret fra %s til %s.\n", previousTrack, track);
@@ -125,7 +125,7 @@ public class TrainInterface {
         TrainDeparture departure = null;
         while (departure == null) {
             System.out.println("Velg en togavgang å gi spor til. Skriv inn tognummeret.");
-            final int trainNumber = InputParser.getInt("Tognummer: ", (int n) -> n >= 0);
+            final int trainNumber = InputParser.getInt("Tognummer: ", n -> n >= 0);
             departure = departures.getDepartureFromNumber(trainNumber);
             if (departure == null) System.out.printf("Fant ikke toget med nummer %s. Prøv igjen.", trainNumber);
         }

@@ -10,10 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class InputParser {
-  public interface FloatInputValidator { boolean test(float input); }
-  public interface IntegerInputValidator { boolean test(int input); }
-  public interface CharInputValidator { boolean test(char input); }
-  public interface LocalTimeInputValidator { boolean test(LocalTime input); }
+  public interface InputValidator<T> { boolean test(T input); }
   static Scanner scanner;
   static void initialize() {
     if (scanner != null) return;
@@ -24,7 +21,7 @@ public class InputParser {
     scanner.close();
     scanner = null;
   }
-  public static int getInt(String prompt, IntegerInputValidator validator) {
+  public static int getInt(String prompt, InputValidator<Integer> validator) {
     int result;
     while (true) {
       result = getInt(prompt);
@@ -41,7 +38,7 @@ public class InputParser {
       } catch (Exception ignored) {};
     }
   }
-  public static float getFloat(String prompt, FloatInputValidator validator) {
+  public static float getFloat(String prompt, InputValidator<Float> validator) {
     float result;
     while (true) {
       result = getFloat(prompt);
@@ -88,7 +85,7 @@ public class InputParser {
       if (input.length() == 1) return input.charAt(0);
     }
   }
-  public static char getChar(String prompt, CharInputValidator validator) {
+  public static char getChar(String prompt, InputValidator<Character> validator) {
     initialize();
     String input;
     while (true) {
@@ -97,7 +94,7 @@ public class InputParser {
       if (input.length() == 1 && validator.test(input.charAt(0))) return input.charAt(0);
     }
   }
-  public static LocalTime getTime(String prompt, LocalTimeInputValidator validator) {
+  public static LocalTime getTime(String prompt, InputValidator<LocalTime> validator) {
     while (true) {
       final LocalTime result = getTime(prompt);
       if (validator.test(result)) return result;
