@@ -128,8 +128,9 @@ public class InputParser {
     final Pattern pattern = Pattern.compile("^[0-2]?[0-9]:[0-5][0-9]$");
     while (true) {
       final String result = getString(prompt, pattern);
+      final String paddedResult = result.length() == 4 ? "0" + result : result;
       try {
-        return LocalTime.parse(result);
+        return LocalTime.parse(paddedResult);
       } catch (DateTimeParseException ignored) {
         // Do nothing
       }
