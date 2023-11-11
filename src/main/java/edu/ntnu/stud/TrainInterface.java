@@ -35,7 +35,7 @@ public class TrainInterface {
                     "6. Sett klokken\n" + // kan ikke være mindre
                     "7. Avslutt"
             );
-            final int option = InputParser.getInt("Valg: ", n -> n >= 1 && n <= 7);
+            final int option = InputParser.getInt("Valg", n -> n >= 1 && n <= 7);
             System.out.println();
             switch (option) {
                 case 1 -> addDeparture();
@@ -54,31 +54,31 @@ public class TrainInterface {
 
     private void addDeparture() {
         System.out.println("Når skal toget gå?");
-        final LocalTime plannedDeparture = InputParser.getTime("Avgang: ");
+        final LocalTime plannedDeparture = InputParser.getTime("Avgang");
         System.out.println("Hvilken toglinje er det?");
         // TODO add regex from class
-        final String line = InputParser.getString("Linje: ","^[A-Z][0-9]{1,2}$");
+        final String line = InputParser.getString("Linje","^[A-Z][0-9]{1,2}$");
 
         System.out.println("Hva er endestoppet?");
-        final String destination = InputParser.getString("Endestopp: ");
+        final String destination = InputParser.getString("Endestopp");
 
         int trainNumber = -1;
         System.out.println("Hva er tognummeret? Skriv -1 hvis den ikke skal bli satt enda.");
         do {
-            trainNumber = InputParser.getInt("Tognummer: ", n -> n >= -1);
+            trainNumber = InputParser.getInt("Tognummer", n -> n >= -1);
 
         } while (departures.getDepartureFromNumber(trainNumber) != null);
 
 
         System.out.println("Hvilket spor skal den gå fra? Skriv -1 hvis den ikke skal bli satt enda.");
-        final int track = InputParser.getInt("Spor: ", n -> n >= -1);
+        final int track = InputParser.getInt("Spor", n -> n >= -1);
 
         LocalTime delay = LocalTime.MIN;
-        System.out.println("Er toget allerede forsinka? (y/N)");
-        final String result = InputParser.getString("Forsinka: ", "^[ynYN]?$").toLowerCase();
-        if (result.equals("y")) {
+        System.out.println("Er toget allerede forsinka?");
+        final boolean isDelayed = InputParser.getBoolean("Forsinka?", false);
+        if (isDelayed) {
             System.out.println("Hvor lenge er den forsinka?");
-            delay = InputParser.getTime("Forsinkelse: ");
+            delay = InputParser.getTime("Forsinkelse");
         }
 
 
@@ -98,7 +98,7 @@ public class TrainInterface {
         TrainDeparture departure = findDepartureFromNumber();
         System.out.println("Hvilket spor skal den gå fra?");
         final int previousTrack = departure.getTrack();
-        final int track = InputParser.getInt("Spor: ", n -> n >= 0);
+        final int track = InputParser.getInt("Spor", n -> n >= 0);
         departure.setTrack(track);
         System.out.println();
         if (previousTrack != track) System.out.printf("Spor endret fra %s til %s.\n", previousTrack, track);
@@ -114,7 +114,7 @@ public class TrainInterface {
         final LocalTime previousDelay = departure.getDelay();
         if (departure.isDelayed()) System.out.printf("Toget er allerede forsinka med %s.\n", previousDelay);
         System.out.println("Hvor mye vil du endre togets forsinkelse til?");
-        final LocalTime delay = InputParser.getTime("Forsinkelse: ");
+        final LocalTime delay = InputParser.getTime("Forsinkelse");
         departure.setDelay(delay);
         System.out.println();
         if (previousDelay != delay) System.out.printf("Forsinkelse endret fra %s til %s.\n", previousDelay, delay);
@@ -125,7 +125,7 @@ public class TrainInterface {
         TrainDeparture departure = null;
         while (departure == null) {
             System.out.println("Velg en togavgang å gi spor til. Skriv inn tognummeret.");
-            final int trainNumber = InputParser.getInt("Tognummer: ", n -> n >= 0);
+            final int trainNumber = InputParser.getInt("Tognummer", n -> n >= 0);
             departure = departures.getDepartureFromNumber(trainNumber);
             if (departure == null) System.out.printf("Fant ikke toget med nummer %s. Prøv igjen.", trainNumber);
         }
@@ -137,7 +137,7 @@ public class TrainInterface {
         TrainDeparture[] departures = null;
         while (departures == null || departures.length == 0) {
             System.out.println("Velg en togavgang å gi spor til. Skriv inn tognummeret.");
-            final String destination = InputParser.getString("Destinasjon: ");
+            final String destination = InputParser.getString("Destinasjon");
             departures = this.departures.getDepartureFromDestination(destination);
             if (departures.length == 0) System.out.printf("Fant ingen tog med destinasjonen %s. Prøv igjen.", destination);
         }
@@ -150,7 +150,7 @@ public class TrainInterface {
 
     private LocalTime setClock(LocalTime currentTime) {
         System.out.printf("Skriv inn nytt klokkeslett, klokkeslettet må være større enn det forrige (%s)\n", currentTime);
-        LocalTime newTime = InputParser.getTime("Klokkeslett: ");
+        LocalTime newTime = InputParser.getTime("Klokkeslett");
         return newTime;
     }
 

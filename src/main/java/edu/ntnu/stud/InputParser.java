@@ -21,6 +21,16 @@ public class InputParser {
     scanner.close();
     scanner = null;
   }
+  public static int getInt(String prompt) {
+    initialize();
+
+    while (true) {
+      System.out.print(prompt + ": ");
+      try {
+        return Integer.parseInt(scanner.nextLine());
+      } catch (Exception ignored) {};
+    }
+  }
   public static int getInt(String prompt, InputValidator<Integer> validator) {
     int result;
     while (true) {
@@ -28,13 +38,12 @@ public class InputParser {
       if (validator.test(result)) return result;
     }
   }
-  public static int getInt(String prompt) {
+  public static float getFloat(String prompt) {
     initialize();
-
     while (true) {
-      System.out.print(prompt);
+      System.out.print(prompt + ": ");
       try {
-        return Integer.parseInt(scanner.nextLine());
+        return Float.parseFloat(scanner.nextLine());
       } catch (Exception ignored) {};
     }
   }
@@ -42,37 +51,26 @@ public class InputParser {
     float result;
     while (true) {
       result = getFloat(prompt);
-      if (validator.test(result)) return result; 
-    }
-  }
-  public static float getFloat(String prompt) {
-    initialize();
-    while (true) {
-      System.out.print(prompt);
-      try {
-        return Float.parseFloat(scanner.nextLine());
-      } catch (Exception ignored) {};
+      if (validator.test(result)) return result;
     }
   }
   public static String getString(String prompt) {
     initialize();
-    System.out.print(prompt);
+    System.out.print(prompt + ": ");
     return scanner.nextLine();
   }
   public static String getString(String prompt, @NonNls @NotNull String regex) {
     initialize();
     final Pattern pattern = Pattern.compile(regex);
     while (true) {
-      System.out.print(prompt);
-      final Matcher t = pattern.matcher(scanner.nextLine());
+      final Matcher t = pattern.matcher(getString(prompt));
       if (t.matches()) return t.group();
     }
   }
   public static String getString(String prompt, Pattern pattern) {
     initialize();
     while (true) {
-      System.out.print(prompt);
-      final Matcher t = pattern.matcher(scanner.nextLine());
+      final Matcher t = pattern.matcher(getString(prompt));
       if (t.matches()) return t.group();
     }
   }
@@ -80,8 +78,7 @@ public class InputParser {
     initialize();
     String input;
     while (true) {
-      System.out.print(prompt);
-      input = scanner.nextLine();
+      input = getString(prompt);
       if (input.length() == 1) return input.charAt(0);
     }
   }
@@ -89,15 +86,8 @@ public class InputParser {
     initialize();
     String input;
     while (true) {
-      System.out.print(prompt);
-      input = scanner.nextLine();
+      input = getString(prompt);
       if (input.length() == 1 && validator.test(input.charAt(0))) return input.charAt(0);
-    }
-  }
-  public static LocalTime getTime(String prompt, InputValidator<LocalTime> validator) {
-    while (true) {
-      final LocalTime result = getTime(prompt);
-      if (validator.test(result)) return result;
     }
   }
   public static LocalTime getTime(String prompt) {
@@ -109,5 +99,21 @@ public class InputParser {
         return LocalTime.parse(result);
       } catch (Exception ignored) {};
     }
+  }
+  public static LocalTime getTime(String prompt, InputValidator<LocalTime> validator) {
+    while (true) {
+      final LocalTime result = getTime(prompt);
+      if (validator.test(result)) return result;
+    }
+  }
+  public static boolean getBoolean(String prompt) {
+    initialize();
+    return getString(prompt + " [y/n]", "^[ynYN]$").equalsIgnoreCase("y");
+  }
+  public static boolean getBoolean(String prompt, boolean defaultValue) {
+    initialize();
+    final String result = getString(prompt + (defaultValue ? " [Y/n]": " [y/N]"), "^[ynYN]?$");
+    if (result.isEmpty()) return defaultValue;
+    return result.equalsIgnoreCase("y");
   }
 }
