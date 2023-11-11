@@ -148,18 +148,11 @@ public class TrainInterface {
         System.out.println();
     }
 
-    private void setClock() {
-        // TODO
-    }
-
     private LocalTime setClock(LocalTime currentTime) {
-        LocalTime newTime = LocalTime.MIN;
-        do {
-            newTime = InputParser.getTime("Skriv inn nytt klokkeslett, klokkeslettet må være større enn det forrige: ");
-        } while (!newTime.isAfter(currentTime));
+        System.out.printf("Skriv inn nytt klokkeslett, klokkeslettet må være større enn det forrige (%s)\n", currentTime);
+        LocalTime newTime = InputParser.getTime("Klokkeslett: ");
         return newTime;
     }
-
 
     private void showDepartures(LocalTime time) {
         if (time == null) throw new IllegalArgumentException("Time cannot be null");

@@ -13,6 +13,7 @@ public class InputParser {
   public interface FloatInputValidator { boolean test(float input); }
   public interface IntegerInputValidator { boolean test(int input); }
   public interface CharInputValidator { boolean test(char input); }
+  public interface LocalTimeInputValidator { boolean test(LocalTime input); }
   static Scanner scanner;
   static void initialize() {
     if (scanner != null) return;
@@ -96,9 +97,14 @@ public class InputParser {
       if (input.length() == 1 && validator.test(input.charAt(0))) return input.charAt(0);
     }
   }
+  public static LocalTime getTime(String prompt, LocalTimeInputValidator validator) {
+    while (true) {
+      final LocalTime result = getTime(prompt);
+      if (validator.test(result)) return result;
+    }
+  }
   public static LocalTime getTime(String prompt) {
     initialize();
-    LocalTime output;
     final Pattern pattern = Pattern.compile("^[0-2]?[0-9]:[0-5][0-9]$");
     while (true) {
       final String result = getString(prompt, pattern);
