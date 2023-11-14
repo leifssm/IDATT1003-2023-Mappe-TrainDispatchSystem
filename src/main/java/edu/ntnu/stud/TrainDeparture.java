@@ -1,8 +1,11 @@
 package edu.ntnu.stud;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.security.InvalidParameterException;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class TrainDeparture {
@@ -13,9 +16,24 @@ public class TrainDeparture {
   private int track;
   private LocalTime delay;
 
-  public static Pattern trainLinePattern = Pattern.compile("^[A-Z0-9]{2,}$");
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    TrainDeparture departure = (TrainDeparture) o;
+    return trainNumber == departure.trainNumber;
+  }
 
-  static TrainDeparture createRandomDeparture(int trainNumber, String destination) {
+  @Override
+  public int hashCode() {
+    return Objects.hash(trainNumber);
+  }
+
+  static @NotNull TrainDeparture createRandomDeparture(int trainNumber, String destination) {
     final LocalTime plannedDeparture = LocalTime.of(
         (int) (Math.random() * 24),
         (int) (Math.random() * 60)
@@ -63,7 +81,7 @@ public class TrainDeparture {
     if (line == null) {
       throw new InvalidParameterException("Line cannot be null");
     }
-    if (!trainLinePattern.matcher(line).matches()) {
+    if (!Utils.trainLinePattern.matcher(line).matches()) {
       throw new InvalidParameterException("Line can only contain capital letters and numbers");
     }
     this.line = line;
@@ -71,6 +89,9 @@ public class TrainDeparture {
 
     if (destination == null) {
       throw new InvalidParameterException("Destination cannot be null");
+    }
+    if (destination.isEmpty()) {
+      throw new InvalidParameterException("Destination cannot be a string of length 0");
     }
     this.destination = destination;
 

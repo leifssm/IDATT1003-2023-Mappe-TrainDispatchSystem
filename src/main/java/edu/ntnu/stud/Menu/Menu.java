@@ -26,7 +26,7 @@ public class Menu {
     return this;
   }
 
-  public void start() {
+  public void run() {
     while (true) {
       if (beforeAction != null) {
         beforeAction.run();

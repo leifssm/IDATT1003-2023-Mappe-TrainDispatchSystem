@@ -24,6 +24,8 @@ public class TrainInterface {
   }
 
   public void start() {
+    // TODO add method for all setters
+    // TODO change to english
     new Menu("══ Hovedmeny ══")
         .addOption("Legg til ny togavgang", this::addDeparture)
         .addOption("Gi togspor til togavgang", this::giveTrackToDeparture)
@@ -33,14 +35,14 @@ public class TrainInterface {
         .addOption("Sett klokken", this::setClock)
         .addOption("Avslutt", () -> System.exit(0))
         .setRunBefore(this::showDepartures)
-        .start();
+        .run();
   }
 
   private void addDeparture() {
     System.out.println("Når skal toget gå?");
     final LocalTime plannedDeparture = InputParser.getTime("Avgang");
     System.out.println("Hvilken toglinje er det?");
-    final String line = InputParser.getString("Linje", TrainDeparture.trainLinePattern);
+    final String line = InputParser.getString("Linje", Utils.trainLinePattern);
 
     System.out.println("Hva er endestoppet?");
     final String destination = InputParser.getString("Endestopp");
@@ -63,7 +65,7 @@ public class TrainInterface {
       delay = InputParser.getTime("Forsinkelse");
     }
 
-
+    // TODO add try catch
     final TrainDeparture departure = new TrainDeparture(
         plannedDeparture,
         line,
