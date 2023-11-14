@@ -1,5 +1,6 @@
 package edu.ntnu.stud;
 
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -12,13 +13,20 @@ import org.jetbrains.annotations.NotNull;
 public class InputParser {
   public interface InputValidator<T> { boolean test(T input); }
 
-  static Scanner scanner;
+  private static Scanner scanner;
 
-  static void initialize() {
+  static void initialize(@NotNull InputStream stream) {
     if (scanner != null) {
       return;
     }
-    scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+    scanner = new Scanner(stream, StandardCharsets.UTF_8);
+  }
+  static void initialize() {
+    initialize(System.in);
+  }
+
+  static boolean isInitialized() {
+    return scanner != null;
   }
 
   public static void close() {
