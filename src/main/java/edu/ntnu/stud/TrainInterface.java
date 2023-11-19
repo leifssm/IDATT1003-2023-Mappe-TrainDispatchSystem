@@ -140,12 +140,12 @@ public class TrainInterface {
     }
     System.out.println("Hvor mye vil du endre togets forsinkelse til?");
     final LocalTime delay = InputParser.getTime("Forsinkelse");
-    departure.setDelay(delay);
-    System.out.println();
-    if (previousDelay != delay) {
-      System.out.printf("Forsinkelse endret fra %s til %s.\n", previousDelay, delay);
-    } else {
+    System.out.println(previousDelay.compareTo(delay));
+    if (previousDelay.compareTo(delay) == 0) {
       System.out.printf("Forsinkelsen var allerede satt til %s, ingen endring gjort.\n", delay);
+    } else {
+      departure.setDelay(delay);
+      System.out.printf("Forsinkelse endret fra %s til %s.\n", previousDelay, delay);
     }
   }
 
