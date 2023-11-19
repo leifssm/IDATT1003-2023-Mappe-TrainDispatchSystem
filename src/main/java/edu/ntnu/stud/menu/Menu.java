@@ -1,14 +1,14 @@
-package edu.ntnu.stud.Menu;
+package edu.ntnu.stud.menu;
 
 import edu.ntnu.stud.InputParser;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
+import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class Menu {
   private final @NotNull String name;
 
-  private final @NotNull ArrayList<MenuItem> entries = new ArrayList();
+  private final @NotNull List<MenuItem> entries = new ArrayList();
 
   private Runnable beforeAction;
   private Runnable afterAction;
@@ -20,7 +20,10 @@ public class Menu {
     this.name = name;
   }
 
-  public Menu addOption(@NotNull String name, @NotNull Runnable action) throws IllegalArgumentException {
+  public Menu addOption(
+      @NotNull String name,
+      @NotNull Runnable action
+  ) throws IllegalArgumentException {
     if (name == null) {
       throw new IllegalArgumentException("Name cannot be null");
     }
@@ -56,6 +59,7 @@ public class Menu {
     }
     System.out.println();
   }
+
   public void run() {
     while (true) {
       if (beforeAction != null) {

@@ -1,8 +1,7 @@
 package edu.ntnu.stud;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.NotNull;
 
 public class Utils {
   public static final Pattern trainLinePattern = Pattern.compile("^[A-Z0-9]{2,7}$");

@@ -52,13 +52,13 @@ I første del av mappen skal du fokusere på å:
         disse), og hvilke informasjon må kunne endres etter at instansen er opprettet
   - [ ] Hvordan klassen responderer på ugyldige data - hvilken strategi følger klassen (kaster
         unntak? setter dummy-verdi?)
-  - [ ] Implementer nødvendige felt i klassen, med egnede datatyper. Tips: for tid kan det være lurt å bruke klassen LocalTime
+  - [X] Implementer nødvendige felt i klassen, med egnede datatyper. Tips: for tid kan det være lurt å bruke klassen LocalTime
   - [ ] Lag enhetstester for å teste at klassen for togavgang fungerer som den skal og er robust. Husk både positive- og negative tester.
-- [x] Kjør CheckStyle på koden din med Google-reglene.
-- [x] Opprett en klasse som på sikt skal bli brukergrensesnittet og dermed ta seg av all brukerinteraksjon. Opprett to metoder; start() og init().
-- [ ] Bruk start-metoden til å skrive enkel testkode for å teste at Train-Departure-klassen fungerer iht spek ved f.eks. å opprette 3-4 instanser av klassen, og skrive ut objektene(hint: Kan lønne seg å lage en egen metode for å skrive ut detaljene til en togavgang...).
-- [ ] Opprett til slutt en klasse som skal være selve applikasjonen og som inneholder main-metoden.
-  - [ ] Opprett main()-metoden. La denne metoden lage en instans av UI-klassen og kall deretter metodene init() og start() til UI-objektet.
+- [X] Kjør CheckStyle på koden din med Google-reglene.
+- [X] Opprett en klasse som på sikt skal bli brukergrensesnittet og dermed ta seg av all brukerinteraksjon. Opprett to metoder; start() og init().
+- [X] Bruk start-metoden til å skrive enkel testkode for å teste at Train-Departure-klassen fungerer iht spek ved f.eks. å opprette 3-4 instanser av klassen, og skrive ut objektene(hint: Kan lønne seg å lage en egen metode for å skrive ut detaljene til en togavgang...).
+- [X] Opprett til slutt en klasse som skal være selve applikasjonen og som inneholder main-metoden.
+  - [X] Opprett main()-metoden. La denne metoden lage en instans av UI-klassen og kall deretter metodene init() og start() til UI-objektet.
 
 ## Rapport
 - [ ] Sett deg inn i rapportmalen

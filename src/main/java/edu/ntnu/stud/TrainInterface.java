@@ -1,8 +1,7 @@
 package edu.ntnu.stud;
 
+import edu.ntnu.stud.menu.Menu;
 import java.time.LocalTime;
-
-import edu.ntnu.stud.Menu.Menu;
 import org.jetbrains.annotations.NotNull;
 
 public class TrainInterface {
@@ -45,23 +44,23 @@ public class TrainInterface {
   private void addDeparture() {
 
     System.out.println("Når skal toget gå?");
-    LocalTime plannedDeparture = InputParser.getTime("Avgang");
+    final LocalTime plannedDeparture = InputParser.getTime("Avgang");
 
     // Henter toglinje fra bruker
     System.out.println(
-        "Hvilken toglinje er det? Linjenavnet kan bare inneholde store bokstaver og tall," +
-            " og kan bare inneholdet 2-7 tegn."
+        "Hvilken toglinje er det? Linjenavnet kan bare inneholde store bokstaver og tall,"
+            + " og kan bare inneholdet 2-7 tegn."
     );
-    String line = InputParser.getString(
+    final String line = InputParser.getString(
         "Linje",
         Utils.trainLinePattern,
-        "Linjenavnet kan bare inneholde store bokstaver og tall," +
-            " og kan bare inneholdet 2-7 tegn."
+        "Linjenavnet kan bare inneholde store bokstaver og tall,"
+            + " og kan bare inneholdet 2-7 tegn."
     );
 
     // Henter toglinje fra bruker
     System.out.println("Hva er endestoppet?");
-    String destination = InputParser.getString(
+    final String destination = InputParser.getString(
         "Endestopp",
         ".+",
         "Endestoppet kan ikke være tomt"
@@ -69,7 +68,7 @@ public class TrainInterface {
 
     // Henter toglinje fra bruker
     System.out.println("Hva er tognummeret? Tallet må være større eller lik 1.");
-    int trainNumber = InputParser.getInt("Tognummer", n -> {
+    final int trainNumber = InputParser.getInt("Tognummer", n -> {
       if (n < 1) {
         System.out.println("Tognummeret kan ikke være mindre enn 1.");
         return false;

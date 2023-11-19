@@ -1,12 +1,11 @@
 package edu.ntnu.stud;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.security.InvalidParameterException;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.NotNull;
 
 public class TrainDeparture {
   private final @NotNull LocalTime plannedDeparture;

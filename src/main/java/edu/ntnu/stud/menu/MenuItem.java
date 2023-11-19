@@ -1,4 +1,4 @@
-package edu.ntnu.stud.Menu;
+package edu.ntnu.stud.menu;
 
 import org.jetbrains.annotations.NotNull;
 
