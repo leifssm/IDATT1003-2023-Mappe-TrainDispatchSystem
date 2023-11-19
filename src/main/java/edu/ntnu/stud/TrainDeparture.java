@@ -95,8 +95,8 @@ public class TrainDeparture {
     }
     this.destination = destination;
 
-    if (trainNumber < -1) {
-      throw new InvalidParameterException("Train number cannot be less than -1");
+    if (trainNumber < 1) {
+      throw new InvalidParameterException("Train number cannot be less than 1");
     }
     this.trainNumber = trainNumber;
     setTrack(track);
@@ -131,8 +131,8 @@ public class TrainDeparture {
   }
 
   public void setTrack(int track) {
-    if (track < 0) {
-      throw new InvalidParameterException("Track id cannot be less than 0");
+    if (track < -1 || track == 0) {
+      throw new InvalidParameterException("Track id must be greater than 0, or -1 if undefined");
     }
     this.track = track;
   }
