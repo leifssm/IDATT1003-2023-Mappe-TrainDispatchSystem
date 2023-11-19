@@ -28,13 +28,17 @@ public class TrainInterface {
     // TODO change to english
     new Menu("══ Hovedmeny ══")
         .addOption("Legg til ny togavgang", this::addDeparture)
-        .addOption("Gi togspor til togavgang", this::giveTrackToDeparture)
+        .addOption("Gi togspor til togavgang", this::changeDepartureTrack)
         .addOption("Sett forsinkelse", this::giveDepartureDelay)
         .addOption("Finn avgang med nummer", this::findDepartureFromNumber)
         .addOption("Finn avganger med destinasjon", this::findDepartureFromDestination)
         .addOption("Sett klokken", this::setClock)
-        .addOption("Avslutt", () -> System.exit(0))
+        .addOption("Avslutt", () -> {
+          InputParser.close();
+          System.exit(0);
+        })
         .setRunBefore(this::showDepartures)
+        .setRunAfter(() -> stall())
         .run();
   }
 
@@ -175,12 +179,19 @@ public class TrainInterface {
   }
 
   private static String parseDeparture(@NotNull TrainDeparture departure) {
-    final String track = departure.getTrack() != -1 ? pc(departure.getTrack(), 6) : "";
-    final String line = pc(departure.getLine(), 7);
-    final String destination = String.format("%-15s", departure.getDestination());
-    final String trainNumber = departure.getTrainNumber() != -1
-        ? pc(departure.getTrainNumber(), 8)
+    final String track = departure.getTrack() != -1
+        ? Utils.pc(departure.getTrack(), 6)
         : "      ";
+    final String line = Utils.pc(departure.getLine(), 7);
+
+
+    final String destination = String.format("%-15s", departure.getDestination());
+
+
+
+    final String trainNumber = departure.getTrainNumber() != -1
+        ? Utils.pc(departure.getTrainNumber(), 8)
+        : "        ";
     final String format = "║   %s   │   %s   │%s│%s│ %s │%s║";
     return format.formatted(
         departure.getPlannedDeparture(),
@@ -192,22 +203,11 @@ public class TrainInterface {
     );
   }
 
-  /* chat */
-  private static @NotNull String padCenter(@NotNull String string, int padding) {
-    if (string.length() > padding) {
-      return string;
+  private static void stall() {
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException ignored) {
+      // Do nothing
     }
-    final int totalPadding = padding - string.length();
-    final int rightPadding = totalPadding / 2;
-    final int leftPadding = totalPadding - rightPadding;
-    return " ".repeat(leftPadding) + string + " ".repeat(rightPadding);
-  }
-
-  private static @NotNull String pc(int n, int padding) {
-    return padCenter(String.valueOf(n), padding);
-  }
-
-  private static @NotNull String pc(String string, int padding) {
-    return padCenter(string, padding);
   }
 }
