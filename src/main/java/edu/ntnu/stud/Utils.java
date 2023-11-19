@@ -7,7 +7,13 @@ import java.util.regex.Pattern;
 public class Utils {
   public static final Pattern trainLinePattern = Pattern.compile("^[A-Z0-9]{2,7}$");
 
-  public static @NotNull String padCenter(@NotNull String string, int padding) {
+  public static @NotNull String padCenter(
+      @NotNull String string,
+      int padding
+  ) throws IllegalArgumentException {
+    if (string == null) {
+      throw new IllegalArgumentException("String cannot be null");
+    }
     if (string.length() > padding) {
       return string;
     }
@@ -21,7 +27,7 @@ public class Utils {
     return padCenter(String.valueOf(n), padding);
   }
 
-  public static @NotNull String pc(String string, int padding) {
+  public static @NotNull String pc(@NotNull String string, int padding) {
     return padCenter(string, padding);
   }
 }

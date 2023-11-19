@@ -9,17 +9,20 @@ import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 
 public class TrainGroup {
-  private final ArrayList<TrainDeparture> departures = new ArrayList<>();
+  private final @NotNull List<TrainDeparture> departures = new ArrayList<>();
 
   TrainGroup() {}
 
-  TrainGroup(@NotNull List<TrainDeparture> departures) {
+  TrainGroup(@NotNull List<TrainDeparture> departures) throws IllegalArgumentException {
+    if (departures == null) {
+      throw new IllegalArgumentException("Departures cannot be null");
+    }
     for (TrainDeparture departure : departures) {
       addDeparture(departure);
     }
   }
 
-  public void addDeparture(@NotNull TrainDeparture departure) {
+  public void addDeparture(@NotNull TrainDeparture departure) throws InvalidParameterException {
     final int id = departure.getTrainNumber();
     if (id != -1 && getDepartureFromNumber(id) != null) {
       throw new InvalidParameterException("Train number already exists");
@@ -27,7 +30,7 @@ public class TrainGroup {
     departures.add(departure);
   }
 
-  public TrainDeparture getDepartureFromNumber(int trainNumber) {
+  public @NotNull TrainDeparture getDepartureFromNumber(int trainNumber) {
     return departures
         .stream()
         .filter(departure -> departure.getTrainNumber() == trainNumber)
@@ -35,14 +38,19 @@ public class TrainGroup {
         .orElse(null);
   }
 
-  public TrainDeparture[] getDepartureFromDestination(@NotNull String destination) {
+  public @NotNull TrainDeparture[] getDepartureFromDestination(
+      @NotNull String destination
+  ) throws IllegalArgumentException {
+    if (destination == null) {
+      throw new IllegalArgumentException("Destination cannot be null");
+    }
     return departures
         .stream()
         .filter(departure -> departure.getDestination().equals(destination))
         .toArray(TrainDeparture[]::new);
   }
 
-  private Stream<TrainDeparture> getSortedDepartureStream() {
+  private @NotNull Stream<TrainDeparture> getSortedDepartureStream() {
     return departures
       .stream()
       .sorted((a, b) -> {
@@ -52,7 +60,12 @@ public class TrainGroup {
       });
   }
 
-  public TrainDeparture[] getDeparturesFromTime(@NotNull LocalTime time) {
+  public @NotNull TrainDeparture[] getDeparturesFromTime(
+      @NotNull LocalTime time
+  ) throws IllegalArgumentException {
+    if (time == null) {
+      throw new IllegalArgumentException("Time cannot be null");
+    }
     // TODO add reason for array or just dont return array
     return getSortedDepartureStream()
       .filter(departure -> departure.getDelayedDeparture().isAfter(time))
@@ -60,11 +73,14 @@ public class TrainGroup {
       .toArray(TrainDeparture[]::new);
   }
 
-  public TrainDeparture[] getDeparturesFromTime() {
+  public @NotNull TrainDeparture[] getDeparturesFromTime() {
     return getSortedDepartureStream().toArray(TrainDeparture[]::new);
   }
 
-  public int removePassedDepartures(@NotNull LocalTime time) {
+  public int removePassedDepartures(@NotNull LocalTime time) throws IllegalArgumentException {
+    if (time == null) {
+      throw new IllegalArgumentException("Time cannot be null");
+    }
     AtomicInteger removed = new AtomicInteger();
     departures.removeIf(departure -> {
       if (!departure.getDelayedDeparture().isAfter(time)) {

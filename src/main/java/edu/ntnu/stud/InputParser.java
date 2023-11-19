@@ -15,7 +15,10 @@ public class InputParser {
 
   private static Scanner scanner;
 
-  static void initialize(@NotNull InputStream stream) {
+  static void initialize(@NotNull InputStream stream) throws IllegalArgumentException {
+    if (stream == null) {
+      throw new IllegalArgumentException("Stream cannot be null");
+    }
     if (scanner != null) {
       return;
     }
@@ -38,30 +41,23 @@ public class InputParser {
     scanner = null;
   }
 
-  public static String getString(String prompt) {
+  public static @NotNull String getString(@NotNull String prompt) throws IllegalStateException {
+    if (prompt == null) {
+      throw new IllegalStateException("Prompt cannot be null");
+    }
     initialize();
     System.out.print(prompt + ": ");
     return scanner.nextLine();
   }
 
-  public static String getString(String prompt, @NonNls @NotNull String regex) {
-    return getString(prompt, regex, "Strengen passer ikke kriteriene");
-  }
-
-  public static String getString(
-      String prompt,
-      @NonNls @NotNull String regex,
+  public static @NotNull String getString(
+      @NotNull String prompt,
+      @NotNull Pattern pattern,
       String errorMessage
-  ) {
-    final Pattern pattern = Pattern.compile(regex);
-    return getString(prompt, pattern, errorMessage);
-  }
-
-  public static String getString(String prompt, Pattern pattern) {
-    return getString(prompt, pattern, "Strengen passer ikke kriteriene");
-  }
-
-  public static String getString(String prompt, Pattern pattern, String errorMessage) {
+  ) throws IllegalArgumentException {
+    if (pattern == null) {
+      throw new IllegalArgumentException("Pattern cannot be null");
+    }
     Matcher result;
     while (true) {
       result = pattern.matcher(getString(prompt));
@@ -74,7 +70,34 @@ public class InputParser {
     }
   }
 
-  public static int getInt(String prompt) {
+  public static @NotNull String getString(
+      @NotNull String prompt,
+      @NotNull String regex,
+      String errorMessage
+  ) throws IllegalArgumentException {
+    if (regex == null) {
+      throw new IllegalArgumentException("Regex cannot be null");
+    }
+    final Pattern pattern = Pattern.compile(regex);
+    return getString(prompt, pattern, errorMessage);
+  }
+
+  public static @NotNull String getString(
+      @NotNull String prompt,
+      @NonNls @NotNull String regex
+  ) throws IllegalArgumentException {
+    return getString(prompt, regex, "Strengen passer ikke kriteriene");
+  }
+
+  public static @NotNull String getString(
+      @NotNull String prompt,
+      @NotNull Pattern pattern
+  ) throws IllegalArgumentException {
+    return getString(prompt, pattern, "Strengen passer ikke kriteriene");
+  }
+
+
+  public static int getInt(@NotNull String prompt) throws IllegalArgumentException {
     while (true) {
       try {
         return Integer.parseInt(getString(prompt));
@@ -84,11 +107,14 @@ public class InputParser {
     }
   }
 
-  public static int getInt(String prompt, InputValidator<Integer> validator) {
-    return getInt(prompt, validator, "Heltallet passer ikke kriteriene");
-  }
-
-  public static int getInt(String prompt, InputValidator<Integer> validator, String errorMessage) {
+  public static int getInt(
+      @NotNull String prompt,
+      @NotNull InputValidator<Integer> validator,
+      String errorMessage
+  ) throws IllegalArgumentException {
+    if (validator == null) {
+      throw new IllegalArgumentException("Validator cannot be null");
+    }
     int result;
     while (true) {
       result = getInt(prompt);
@@ -101,7 +127,14 @@ public class InputParser {
     }
   }
 
-  public static float getFloat(String prompt) {
+  public static int getInt(
+      @NotNull String prompt,
+      @NotNull InputValidator<Integer> validator
+  ) throws IllegalArgumentException {
+    return getInt(prompt, validator, "Heltallet passer ikke kriteriene");
+  }
+
+  public static float getFloat(@NotNull String prompt) throws IllegalArgumentException {
     while (true) {
       try {
         return Float.parseFloat(getString(prompt));
@@ -111,15 +144,14 @@ public class InputParser {
     }
   }
 
-  public static float getFloat(String prompt, InputValidator<Float> validator) {
-    return getFloat(prompt, validator, "Desimaltallet passer ikke kriteriene");
-  }
-
   public static float getFloat(
-      String prompt,
-      InputValidator<Float> validator,
+      @NotNull String prompt,
+      @NotNull InputValidator<Float> validator,
       String errorMessage
-  ) {
+  ) throws IllegalArgumentException {
+    if (validator == null) {
+      throw new IllegalArgumentException("Validator cannot be null");
+    }
     float result;
     while (true) {
       result = getFloat(prompt);
@@ -132,7 +164,14 @@ public class InputParser {
     }
   }
 
-  public static char getChar(String prompt) {
+  public static float getFloat(
+      @NotNull String prompt,
+      @NotNull InputValidator<Float> validator
+  ) throws IllegalArgumentException {
+    return getFloat(prompt, validator, "Desimaltallet passer ikke kriteriene");
+  }
+
+  public static char getChar(@NotNull String prompt) throws IllegalArgumentException {
     String input;
     while (true) {
       input = getString(prompt, "^.$", null);
@@ -143,15 +182,14 @@ public class InputParser {
     }
   }
 
-  public static char getChar(String prompt, InputValidator<Character> validator) {
-    return getChar(prompt, validator, "Tegnet passer ikke kriteriene");
-  }
-
   public static char getChar(
-      String prompt,
-      InputValidator<Character> validator,
+      @NotNull String prompt,
+      @NotNull InputValidator<Character> validator,
       String errorMessage
-  ) {
+  ) throws IllegalArgumentException {
+    if (validator == null) {
+      throw new IllegalArgumentException("Validator cannot be null");
+    }
     char input;
     while (true) {
       input = getChar(prompt);
@@ -164,7 +202,14 @@ public class InputParser {
     }
   }
 
-  public static LocalTime getTime(String prompt) {
+  public static char getChar(
+      @NotNull String prompt,
+      @NotNull InputValidator<Character> validator
+  ) throws IllegalArgumentException {
+    return getChar(prompt, validator, "Tegnet passer ikke kriteriene");
+  }
+
+  public static @NotNull LocalTime getTime(@NotNull String prompt) throws IllegalArgumentException {
     final Pattern pattern = Pattern.compile("^[0-2]?[0-9]:[0-5][0-9]$");
     String result;
     while (true) {
@@ -175,7 +220,7 @@ public class InputParser {
       );
       if (result.length() == 4) {
         result = "0" + result;
-      };
+      }
       try {
         return LocalTime.parse(result);
       } catch (DateTimeParseException ignored) {
@@ -184,11 +229,14 @@ public class InputParser {
     }
   }
 
-  public static LocalTime getTime(
-      String prompt,
-      InputValidator<LocalTime> validator,
+  public static @NotNull LocalTime getTime(
+      @NotNull String prompt,
+      @NotNull InputValidator<LocalTime> validator,
       String errorMessage
-  ) {
+  ) throws IllegalArgumentException {
+    if (validator == null) {
+      throw new IllegalArgumentException("Validator cannot be null");
+    }
     LocalTime result;
     while (true) {
       result = getTime(prompt);
@@ -201,11 +249,14 @@ public class InputParser {
     }
   }
 
-  public static LocalTime getTime(String prompt, InputValidator<LocalTime> validator) {
+  public static @NotNull LocalTime getTime(
+      @NotNull String prompt,
+      @NotNull InputValidator<LocalTime> validator
+  ) throws IllegalArgumentException {
     return getTime(prompt, validator, "Tiden passer ikke kriteriene");
   }
 
-  public static boolean getBoolean(String prompt) {
+  public static boolean getBoolean(@NotNull String prompt) throws IllegalArgumentException {
     return getString(
         prompt + " [y/n]",
         "^[ynYN]$",
@@ -213,7 +264,10 @@ public class InputParser {
     ).equalsIgnoreCase("y");
   }
 
-  public static boolean getBoolean(String prompt, boolean defaultValue) {
+  public static boolean getBoolean(
+      @NotNull String prompt,
+      boolean defaultValue
+  ) throws IllegalArgumentException {
     final String result = getString(
         prompt + (defaultValue ? " [Y/n]" : " [y/N]"),
         "^[ynYN]?$",

@@ -9,12 +9,12 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class TrainDeparture {
-  private final LocalTime plannedDeparture;
-  private final String line;
-  private final String destination;
+  private final @NotNull LocalTime plannedDeparture;
+  private final @NotNull String line;
+  private final @NotNull String destination;
   private final int trainNumber;
   private int track;
-  private LocalTime delay;
+  private @NotNull LocalTime delay;
 
   @Override
   public boolean equals(Object o) {
@@ -51,7 +51,12 @@ public class TrainDeparture {
     return new TrainDeparture(plannedDeparture, line, trainNumber, destination, track, delay);
   }
 
-  TrainDeparture(LocalTime plannedDeparture, String line, int trainNumber, String destination) {
+  TrainDeparture(
+      LocalTime plannedDeparture,
+      String line,
+      int trainNumber,
+      String destination
+  ) throws InvalidParameterException {
     this(plannedDeparture, line, trainNumber, destination, -1);
   }
 
@@ -61,7 +66,7 @@ public class TrainDeparture {
       int trainNumber,
       String destination,
       int track
-  ) {
+  ) throws InvalidParameterException {
     this(plannedDeparture, line, trainNumber, destination, track, LocalTime.MIN);
   }
 
@@ -72,7 +77,7 @@ public class TrainDeparture {
       String destination,
       int track,
       LocalTime delay
-  ) {
+  ) throws InvalidParameterException {
     if (plannedDeparture == null) {
       throw new InvalidParameterException("Planned departure cannot be null");
     }
@@ -114,11 +119,11 @@ public class TrainDeparture {
       .plusSeconds(delay.getSecond());
   }
 
-  public String getLine() {
+  public @NotNull String getLine() {
     return line;
   }
 
-  public String getDestination() {
+  public @NotNull String getDestination() {
     return destination;
   }
 
@@ -130,14 +135,14 @@ public class TrainDeparture {
     return track;
   }
 
-  public void setTrack(int track) {
+  public void setTrack(int track) throws InvalidParameterException {
     if (track < -1 || track == 0) {
       throw new InvalidParameterException("Track id must be greater than 0, or -1 if undefined");
     }
     this.track = track;
   }
 
-  public LocalTime getDelay() {
+  public @NotNull LocalTime getDelay() {
     return delay;
   }
 
@@ -145,14 +150,14 @@ public class TrainDeparture {
     return !delay.equals(LocalTime.MIN);
   }
 
-  public void setDelay(LocalTime delay) {
+  public void setDelay(LocalTime delay) throws InvalidParameterException {
     if (delay == null) {
       throw new InvalidParameterException("Delay cannot be null");
     }
     this.delay = delay;
   }
 
-  public String toString() {
+  public @NotNull String toString() {
     return String.format("%s til %s%s: Planlagt avgang %s, %s fra spor %s",
       line,
       destination,

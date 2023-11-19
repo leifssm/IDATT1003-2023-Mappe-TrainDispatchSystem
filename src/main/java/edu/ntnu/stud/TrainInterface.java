@@ -149,8 +149,9 @@ public class TrainInterface {
     }
   }
 
-  private TrainDeparture findDepartureFromNumber() {
+  private @NotNull TrainDeparture findDepartureFromNumber() {
     System.out.println("Skriv inn nummeret til toget du vil finne.");
+    // TODO what will the user do if there is no trains?
     final int trainNumber = InputParser.getInt("Tognummer", n -> {
       TrainDeparture dep = departures.getDepartureFromNumber(n);
       if (dep == null) {
@@ -212,7 +213,7 @@ public class TrainInterface {
     System.out.println("╚═══════════╧═══════════╧══════╧═══════╧═════════════════╧════════╝");
   }
 
-  private static String parseDeparture(@NotNull TrainDeparture departure) {
+  private static @NotNull String parseDeparture(@NotNull TrainDeparture departure) {
     final String track = departure.getTrack() != -1
         ? Utils.pc(departure.getTrack(), 6)
         : "      ";
