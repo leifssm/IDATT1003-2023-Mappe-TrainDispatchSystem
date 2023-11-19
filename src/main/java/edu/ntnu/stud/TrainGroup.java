@@ -19,7 +19,7 @@ public class TrainGroup {
     }
   }
 
-  public void addDeparture(@NotNull TrainDeparture departure) {
+  public void addDeparture(@NotNull TrainDeparture departure) throws InvalidParameterException {
     final int id = departure.getTrainNumber();
     if (id != -1 && getDepartureFromNumber(id) != null) {
       throw new InvalidParameterException("Train number already exists");

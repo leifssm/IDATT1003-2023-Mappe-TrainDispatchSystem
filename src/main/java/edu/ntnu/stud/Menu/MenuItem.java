@@ -1,16 +1,18 @@
 package edu.ntnu.stud.Menu;
 
+import org.jetbrains.annotations.NotNull;
+
 public class MenuItem {
-  private final String name;
+  private final @NotNull String name;
 
-  private final Runnable action;
+  private final @NotNull Runnable action;
 
-  MenuItem(String name, Runnable action) {
+  MenuItem(@NotNull String name, @NotNull Runnable action) {
     this.name = name;
     this.action = action;
   }
 
-  public String toString() {
+  public @NotNull String toString() {
     return name;
   }
 
