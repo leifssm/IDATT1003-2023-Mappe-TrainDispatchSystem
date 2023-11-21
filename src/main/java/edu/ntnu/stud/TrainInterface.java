@@ -25,7 +25,7 @@ public class TrainInterface {
   public void start() {
     // TODO add method for all setters
     // TODO change to english
-    new Menu("══ Hovedmeny ══")
+    new Menu("Hovedmeny")
         .addOption("Legg til ny togavgang", this::addDeparture)
         .addOption("Gi togspor til togavgang", this::changeDepartureTrack)
         .addOption("Sett forsinkelse", this::giveDepartureDelay)
