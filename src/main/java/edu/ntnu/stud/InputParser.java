@@ -50,6 +50,11 @@ public class InputParser {
     return scanner.nextLine();
   }
 
+  public static @NotNull String getString() {
+    initialize();
+    return scanner.nextLine();
+  }
+
   public static @NotNull String getString(
       @NotNull String prompt,
       @NotNull Pattern pattern,
@@ -174,11 +179,10 @@ public class InputParser {
   public static char getChar(@NotNull String prompt) throws IllegalArgumentException {
     String input;
     while (true) {
-      input = getString(prompt, "^.$", null);
+      input = getString(prompt, "^.$", "Du kan bare gi ett tegn");
       if (input.length() == 1) {
         return input.charAt(0);
       }
-      System.out.println("Du kan ikke gi flere tegn");
     }
   }
 
