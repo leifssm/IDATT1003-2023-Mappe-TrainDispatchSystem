@@ -1,6 +1,5 @@
 package edu.ntnu.stud;
 
-import java.security.InvalidParameterException;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Objects;
@@ -42,7 +41,7 @@ public class TrainDeparture {
         (char) (Math.random() * 26 + 'A'),
         (int) (Math.random() * 100)
     );
-    final int track = (int) (Math.random() * 100);
+    final int track = (int) (Math.random() * 100) + 1;
     final LocalTime delay = LocalTime.of(
         (int) (Math.random() * .5 + .5),
         (int) (Math.random() * 60)
@@ -55,7 +54,7 @@ public class TrainDeparture {
       String line,
       int trainNumber,
       String destination
-  ) throws InvalidParameterException {
+  ) throws IllegalArgumentException {
     this(plannedDeparture, line, trainNumber, destination, -1);
   }
 
@@ -65,7 +64,7 @@ public class TrainDeparture {
       int trainNumber,
       String destination,
       int track
-  ) throws InvalidParameterException {
+  ) throws IllegalArgumentException {
     this(plannedDeparture, line, trainNumber, destination, track, LocalTime.MIN);
   }
 
@@ -76,31 +75,41 @@ public class TrainDeparture {
       String destination,
       int track,
       LocalTime delay
-  ) throws InvalidParameterException {
+  ) throws IllegalArgumentException {
     if (plannedDeparture == null) {
-      throw new InvalidParameterException("Planned departure cannot be null");
+      throw new IllegalArgumentException("Planned departure cannot be null");
+    }
+    if (plannedDeparture.equals("")) {
+      throw new IllegalArgumentException("Planned departure cannot be an empty string");
     }
     this.plannedDeparture = plannedDeparture;
 
     if (line == null) {
-      throw new InvalidParameterException("Line cannot be null");
+      throw new IllegalArgumentException("Line cannot be null");
+    }
+    if (line.length() < 2 || line.length() > 7) {
+      throw new IllegalArgumentException(
+          "Line must be a string with a length between 2 and 7 characters."
+      );
     }
     if (!Utils.trainLinePattern.matcher(line).matches()) {
-      throw new InvalidParameterException("Line can only contain capital letters and numbers");
+      throw new IllegalArgumentException(
+          "Line can only contain capital letters and numbers"
+      );
     }
     this.line = line;
 
 
     if (destination == null) {
-      throw new InvalidParameterException("Destination cannot be null");
+      throw new IllegalArgumentException("Destination cannot be null");
     }
     if (destination.isEmpty()) {
-      throw new InvalidParameterException("Destination cannot be a string of length 0");
+      throw new IllegalArgumentException("Destination cannot be a string of length 0");
     }
     this.destination = destination;
 
     if (trainNumber < 1) {
-      throw new InvalidParameterException("Train number cannot be less than 1");
+      throw new IllegalArgumentException("Train number cannot be less than 1");
     }
     this.trainNumber = trainNumber;
     setTrack(track);
@@ -134,9 +143,9 @@ public class TrainDeparture {
     return track;
   }
 
-  public void setTrack(int track) throws InvalidParameterException {
+  public void setTrack(int track) throws IllegalArgumentException {
     if (track < -1 || track == 0) {
-      throw new InvalidParameterException("Track id must be greater than 0, or -1 if undefined");
+      throw new IllegalArgumentException("Track id must be greater than 0, or -1 if undefined");
     }
     this.track = track;
   }
@@ -149,21 +158,21 @@ public class TrainDeparture {
     return !delay.equals(LocalTime.MIN);
   }
 
-  public void setDelay(LocalTime delay) throws InvalidParameterException {
+  public void setDelay(LocalTime delay) throws IllegalArgumentException {
     if (delay == null) {
-      throw new InvalidParameterException("Delay cannot be null");
+      throw new IllegalArgumentException("Delay cannot be null");
     }
     this.delay = delay;
   }
 
   public @NotNull String toString() {
-    return String.format("%s til %s%s: Planlagt avgang %s, %s fra spor %s",
+    return String.format("%s (Tog #%s) til %s: Planlagt kl %s%s %s",
       line,
+      trainNumber,
       destination,
-      trainNumber > -1 ? " (Tog #" + trainNumber + ")" : "",
       plannedDeparture,
-      isDelayed() ? "forsinket til " + getDelayedDeparture() : "med ingen forsinkelse",
-      track
+      isDelayed() ? ", men forsinket til " + getDelayedDeparture() : " med ingen forsinkelse",
+      track > 0 ? "fra spor " + trainNumber : "uten satt spor"
     );
   }
 }

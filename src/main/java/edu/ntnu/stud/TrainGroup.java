@@ -1,6 +1,5 @@
 package edu.ntnu.stud;
 
-import java.security.InvalidParameterException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +21,18 @@ public class TrainGroup {
     }
   }
 
-  public void addDeparture(@NotNull TrainDeparture departure) throws InvalidParameterException {
+  public void addDeparture(@NotNull TrainDeparture departure) throws IllegalArgumentException {
+    if (departure == null) {
+      throw new IllegalArgumentException("Departure cannot be null");
+    }
     final int id = departure.getTrainNumber();
-    if (id != -1 && getDepartureFromNumber(id) != null) {
-      throw new InvalidParameterException("Train number already exists");
+    if (getDepartureFromNumber(id) != null) {
+      throw new IllegalArgumentException("Train number already in use");
     }
     departures.add(departure);
   }
 
-  public @NotNull TrainDeparture getDepartureFromNumber(int trainNumber) {
+  public TrainDeparture getDepartureFromNumber(int trainNumber) {
     return departures
         .stream()
         .filter(departure -> departure.getTrainNumber() == trainNumber)
@@ -75,6 +77,10 @@ public class TrainGroup {
 
   public @NotNull TrainDeparture[] getDeparturesFromTime() {
     return getSortedDepartureStream().toArray(TrainDeparture[]::new);
+  }
+
+  public int length() {
+    return departures.size();
   }
 
   public int removePassedDepartures(@NotNull LocalTime time) throws IllegalArgumentException {
