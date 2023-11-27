@@ -14,9 +14,6 @@ public class Menu {
   private Runnable afterAction;
 
   public Menu(@NotNull String name) {
-    if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null");
-    }
     this.name = name;
   }
 
@@ -24,12 +21,6 @@ public class Menu {
       @NotNull String name,
       @NotNull Runnable action
   ) throws IllegalArgumentException {
-    if (name == null) {
-      throw new IllegalArgumentException("Name cannot be null");
-    }
-    if (action == null) {
-      throw new IllegalArgumentException("Action cannot be null");
-    }
     MenuItem item = new MenuItem(name, action);
     entries.add(item);
     return this;
@@ -76,6 +67,7 @@ public class Menu {
       afterAction.run();
     }
   }
+
   public void run() {
     while (true) {
       runOnce();

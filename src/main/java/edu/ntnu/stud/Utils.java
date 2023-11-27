@@ -10,10 +10,7 @@ public class Utils {
       @NotNull String string,
       int padding
   ) throws IllegalArgumentException {
-    if (string == null) {
-      throw new IllegalArgumentException("String cannot be null");
-    }
-    if (string.length() > padding) {
+    if (string.length() >= padding) {
       return string;
     }
     final int totalPadding = padding - string.length();

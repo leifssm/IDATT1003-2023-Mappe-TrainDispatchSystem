@@ -13,18 +13,23 @@ public class TrainGroup {
   TrainGroup() {}
 
   TrainGroup(@NotNull List<TrainDeparture> departures) throws IllegalArgumentException {
-    if (departures == null) {
-      throw new IllegalArgumentException("Departures cannot be null");
-    }
-    for (TrainDeparture departure : departures) {
-      addDeparture(departure);
+    try {
+      for (TrainDeparture departure : departures) {
+        addDeparture(departure);
+      }
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+      if (e.getMessage() == "Train number already in use") {
+        throw new IllegalArgumentException(
+            "List of departures cannot contain duplicate trainnumbers",
+            e
+        );
+      }
+      throw new IllegalArgumentException("List of departures cannot contain null", e);
     }
   }
 
   public void addDeparture(@NotNull TrainDeparture departure) throws IllegalArgumentException {
-    if (departure == null) {
-      throw new IllegalArgumentException("Departure cannot be null");
-    }
     final int id = departure.getTrainNumber();
     if (getDepartureFromNumber(id) != null) {
       throw new IllegalArgumentException("Train number already in use");
@@ -43,9 +48,6 @@ public class TrainGroup {
   public @NotNull TrainDeparture[] getDepartureFromDestination(
       @NotNull String destination
   ) throws IllegalArgumentException {
-    if (destination == null) {
-      throw new IllegalArgumentException("Destination cannot be null");
-    }
     return departures
         .stream()
         .filter(departure -> departure.getDestination().equals(destination))
@@ -65,9 +67,6 @@ public class TrainGroup {
   public @NotNull TrainDeparture[] getDeparturesFromTime(
       @NotNull LocalTime time
   ) throws IllegalArgumentException {
-    if (time == null) {
-      throw new IllegalArgumentException("Time cannot be null");
-    }
     // TODO add reason for array or just dont return array
     return getSortedDepartureStream()
       .filter(departure -> departure.getDelayedDeparture().isAfter(time))
@@ -84,9 +83,6 @@ public class TrainGroup {
   }
 
   public int removePassedDepartures(@NotNull LocalTime time) throws IllegalArgumentException {
-    if (time == null) {
-      throw new IllegalArgumentException("Time cannot be null");
-    }
     AtomicInteger removed = new AtomicInteger();
     departures.removeIf(departure -> {
       if (!departure.getDelayedDeparture().isAfter(time)) {
