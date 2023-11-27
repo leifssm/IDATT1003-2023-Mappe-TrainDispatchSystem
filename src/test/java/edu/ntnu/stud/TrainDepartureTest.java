@@ -1,10 +1,9 @@
 package edu.ntnu.stud;
 
+import java.time.LocalTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.time.LocalTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TrainDepartureTest {
@@ -143,7 +142,21 @@ class TrainDepartureTest {
             9,
             LocalTime.of(3, 5)
         ),
-        "Destination cannot be null",
+        "Argument for @NotNull parameter 'destination' of "
+            + "edu/ntnu/stud/TrainDeparture.setDestination must not be null",
+        "Expected thrown exception when destination is null"
+    );
+    TestHelper.assertThrowsWithMessage(
+        IllegalArgumentException.class,
+        () -> new TrainDeparture(
+            LocalTime.of(12, 34),
+            "4BU2",
+            19,
+            "",
+            9,
+            LocalTime.of(3, 5)
+        ),
+        "Destination cannot be a string of length 0",
         "Expected thrown exception when destination is null"
     );
     TestHelper.assertThrowsWithMessage(
@@ -173,6 +186,20 @@ class TrainDepartureTest {
   }
 
   @Test
+  void setPlannedDeparture() {
+    assertEquals(LocalTime.of(12, 34), departure.getPlannedDeparture());
+    TestHelper.assertThrowsWithMessage(
+        IllegalArgumentException.class,
+        () -> departure.setPlannedDeparture(null),
+        "Argument for @NotNull parameter 'plannedDeparture' of "
+            + "edu/ntnu/stud/TrainDeparture.setPlannedDeparture must not be null",
+        "Expected to not be able to set track to 0"
+    );
+    departure.setPlannedDeparture(LocalTime.of(1, 58));
+    assertEquals(LocalTime.of(1, 58), departure.getPlannedDeparture());
+  }
+
+  @Test
   void getPlannedDeparture() {
     assertNotEquals(null, departure.getPlannedDeparture());
     assertEquals(LocalTime.of(12, 34), departure.getPlannedDeparture());
@@ -196,6 +223,28 @@ class TrainDepartureTest {
     assertNotEquals(null, departure.getDestination());
     assertNotEquals("", departure.getDestination());
     assertEquals("Trondheim", departure.getDestination());
+  }
+
+  @Test
+  void setDestinaton() {
+    departure.setDestination("Kristiansand");
+    assertEquals("Kristiansand", departure.getDestination());
+    TestHelper.assertThrowsWithMessage(
+        IllegalArgumentException.class,
+        () -> departure.setDestination(null),
+        "Argument for @NotNull parameter 'destination' of "
+            + "edu/ntnu/stud/TrainDeparture.setDestination must not be null",
+        "Expected to not be able to set track to 0"
+    );
+    // TODO add test for error message
+    TestHelper.assertThrowsWithMessage(
+        IllegalArgumentException.class,
+        () -> departure.setDestination(""),
+        "Destination cannot be a string of length 0",
+        "Expected to not be able to set track to a negative number that isnt -1"
+    );
+    departure.setDestination("Geilo");
+    assertEquals("Geilo", departure.getDestination());
   }
 
   @Test

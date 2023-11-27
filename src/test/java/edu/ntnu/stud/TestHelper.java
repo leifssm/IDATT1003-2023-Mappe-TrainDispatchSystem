@@ -1,16 +1,15 @@
 package edu.ntnu.stud;
 
-import org.junit.jupiter.api.function.Executable;
-import org.opentest4j.AssertionFailedError;
-
 import java.io.*;
 import java.util.NoSuchElementException;
-
+import org.junit.jupiter.api.function.Executable;
+import org.opentest4j.AssertionFailedError;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestHelper {
   private static final InputStream originalIn = System.in;
   private static final PrintStream originalOut = System.out;
+
   public static void setupMockInput(String... input) throws NullPointerException {
     String joinedString = String.join("\n", input) + "\n";
     ByteArrayInputStream stream =  new ByteArrayInputStream(joinedString.getBytes());

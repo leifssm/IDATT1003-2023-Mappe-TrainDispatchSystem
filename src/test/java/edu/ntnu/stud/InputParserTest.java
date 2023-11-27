@@ -1,12 +1,10 @@
 package edu.ntnu.stud;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
 import java.time.LocalTime;
 import java.util.regex.Pattern;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InputParserTest {
@@ -21,8 +19,8 @@ class InputParserTest {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> InputParser.initialize(null),
-        "Argument for @NotNull parameter 'stream' of " +
-            "edu/ntnu/stud/InputParser.initialize must not be null",
+        "Argument for @NotNull parameter 'stream' of "
+            + "edu/ntnu/stud/InputParser.initialize must not be null",
         "InputParser should not be able to be initialized with a null stream"
     );
   }
@@ -127,7 +125,23 @@ class InputParserTest {
 
   @Test
   void getBooleanWithDefault() {
-    TestHelper.setupMockInput("da", "ds", "FS", "A", "B", "E", "FF", "G", "YY", "NN", "", "HE", "");
+    TestHelper.setupMockInput(
+        "da",
+        "ds",
+        "FS",
+        "A",
+        "B",
+        "E",
+        "Y",
+        "FF",
+        "G",
+        "YY",
+        "NN",
+        "",
+        "HE",
+        ""
+    );
+    assertTrue(InputParser.getBoolean("Test", false));
     assertTrue(InputParser.getBoolean("Test", true));
     assertFalse(InputParser.getBoolean("Test", false));
   }

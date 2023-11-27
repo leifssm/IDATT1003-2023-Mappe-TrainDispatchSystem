@@ -1,8 +1,5 @@
 package edu.ntnu.stud;
 
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.*;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +9,8 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
-
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TrainGroupTest {
@@ -47,11 +45,58 @@ class TrainGroupTest {
   }
 
   @Test
+  void constructor() {
+    TestHelper.assertThrowsWithMessage(
+        IllegalArgumentException.class,
+        () -> new TrainGroup(null),
+        "Argument for @NotNull parameter 'departures' of "
+            + "edu/ntnu/stud/TrainGroup.<init> must not be null",
+        "Trying to create a TrainGroup with null should throw"
+    );
+    ArrayList<TrainDeparture> departures = new ArrayList<>();
+    departures.add(new TrainDeparture(
+        LocalTime.of(12, 0),
+        "A1",
+        1,
+        "Oslo"
+    ));
+    departures.add(new TrainDeparture(
+        LocalTime.of(12, 30),
+        "B2",
+        1,
+        "Trondheim"
+    ));
+    TestHelper.assertThrowsWithMessage(
+        IllegalArgumentException.class,
+        () -> new TrainGroup(departures),
+        "List of departures cannot contain duplicate trainnumbers",
+        "Trying to create a TrainGroup with duplicates should throw"
+    );
+    assertDoesNotThrow(
+        () -> new TrainGroup(new ArrayList<>()),
+        "Empty args should not throw"
+    );
+    assertDoesNotThrow(
+        () -> new TrainGroup(),
+        "Empty list should not throw"
+    );
+    ArrayList<TrainDeparture> departuresWithNull = new ArrayList<>();
+    departuresWithNull.add(null);
+    TestHelper.assertThrowsWithMessage(
+        IllegalArgumentException.class,
+        () -> new TrainGroup(departuresWithNull),
+        "List of departures cannot contain null",
+        "Trying to create a TrainGroup with null should throw"
+    );
+  }
+
+  @Test
   void addDeparture() {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departures.addDeparture(null),
-        "Argument for @NotNull parameter 'departure' of edu/ntnu/stud/TrainGroup.addDeparture must not be null",
+        "Argument for @NotNull parameter 'departure' of "
+            + "edu/ntnu/stud/TrainGroup.addDeparture must not be null",
         "Trying to add null to the group should throw a IllegalArgumentException"
     );
     TrainDeparture departure = new TrainDeparture(
@@ -93,7 +138,10 @@ class TrainGroupTest {
         departure3.getLine(),
         "Expected line to be C3"
     );
-    assertNull(departures.getDepartureFromNumber(4), "Expected null when train number is not in use");
+    assertNull(
+        departures.getDepartureFromNumber(4),
+        "Expected null when train number is not in use"
+    );
   }
 
   @Test
@@ -116,27 +164,29 @@ class TrainGroupTest {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departures.getDepartureFromDestination(null),
-        "Argument for @NotNull parameter 'destination' of " +
-            "edu/ntnu/stud/TrainGroup.getDepartureFromDestination must not be null",
+        "Argument for @NotNull parameter 'destination' of "
+            + "edu/ntnu/stud/TrainGroup.getDepartureFromDestination must not be null",
         "Trying to get departures with destination null should throw"
     );
   }
 
   @Test
   void getDeparturesFromTime() {
+    TrainDeparture[] allDepartures = departures.getDeparturesFromTime();
+    assertEquals(3, allDepartures.length, "Expected three departures");
     TrainDeparture[] departuresFromNine = departures.getDeparturesFromTime(
         LocalTime.of(11, 59)
     );
     assertEquals(2, departuresFromNine.length, "Expected two departures");
     TrainDeparture[] departuresFromTwelve = departures.getDeparturesFromTime(
-        LocalTime.of(12, 00)
+        LocalTime.of(12, 0)
     );
     assertEquals(1, departuresFromTwelve.length, "Expected only one departure");
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departures.getDeparturesFromTime(null),
-        "Argument for @NotNull parameter 'time' of " +
-            "edu/ntnu/stud/TrainGroup.getDeparturesFromTime must not be null",
+        "Argument for @NotNull parameter 'time' of "
+            + "edu/ntnu/stud/TrainGroup.getDeparturesFromTime must not be null",
         "Trying to get departures from time null should throw"
     );
   }

@@ -3,7 +3,6 @@ package edu.ntnu.stud.menu;
 import edu.ntnu.stud.TestHelper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class MenuTest {
@@ -17,8 +16,8 @@ class MenuTest {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> new Menu(null),
-        "Argument for @NotNull parameter 'name' of " +
-            "edu/ntnu/stud/menu/Menu.<init> must not be null",
+        "Argument for @NotNull parameter 'name' of "
+            + "edu/ntnu/stud/menu/Menu.<init> must not be null",
         "Expected thrown exception when name is null"
     );
     assertDoesNotThrow(
@@ -34,20 +33,20 @@ class MenuTest {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> menu.addOption(null, () -> {}),
-        "Argument for @NotNull parameter 'name' of " +
-            "edu/ntnu/stud/menu/Menu.addOption must not be null",
+        "Argument for @NotNull parameter 'name' of "
+            + "edu/ntnu/stud/menu/Menu.addOption must not be null",
         "Expected thrown exception when name is null"
     );
 
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> menu.addOption("Test Option", null),
-        "Argument for @NotNull parameter 'action' of " +
-            "edu/ntnu/stud/menu/Menu.addOption must not be null",
+        "Argument for @NotNull parameter 'action' of "
+            + "edu/ntnu/stud/menu/Menu.addOption must not be null",
         "Expected thrown exception when name is null"
     );
 
-    TestHelper.setupMockInput("4","1");
+    TestHelper.setupMockInput("4", "1");
     TestHelper.expectOutput(
         "══ Test Menu ══",
         "1: Test Option 1",
@@ -68,7 +67,7 @@ class MenuTest {
   void setRunBefore() {
     Menu menu = new Menu("Test Menu");
 
-    TestHelper.setupMockInput("4","1");
+    TestHelper.setupMockInput("4", "1");
     TestHelper.expectOutput(
         "Run before",
         "══ Test Menu ══",
@@ -96,7 +95,7 @@ class MenuTest {
   void setRunAfter() {
     Menu menu = new Menu("Test Menu");
 
-    TestHelper.setupMockInput("4","1");
+    TestHelper.setupMockInput("4", "1");
     TestHelper.expectOutput(
         "══ Test Menu ══",
         "1: Test Option 1",
@@ -136,7 +135,7 @@ class MenuTest {
 
   @Test
   void runOnce() {
-    TestHelper.setupMockInput("9","-10", "-1", "0", "6", "2");
+    TestHelper.setupMockInput("9", "-10", "-1", "0", "6", "2");
     TestHelper.expectOutput(
         "══ Test Menu ══",
         "1: Test Option 1",

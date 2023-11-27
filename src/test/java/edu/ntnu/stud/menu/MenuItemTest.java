@@ -2,7 +2,6 @@ package edu.ntnu.stud.menu;
 
 import edu.ntnu.stud.TestHelper;
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class MenuItemTest {
@@ -11,15 +10,15 @@ class MenuItemTest {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> new MenuItem(null, () -> {}),
-        "Argument for @NotNull parameter 'name' of " +
-            "edu/ntnu/stud/menu/MenuItem.<init> must not be null",
+        "Argument for @NotNull parameter 'name' of "
+            + "edu/ntnu/stud/menu/MenuItem.<init> must not be null",
         "Expected thrown exception when name is null"
     );
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> new MenuItem("Test", null),
-        "Argument for @NotNull parameter 'action' of " +
-            "edu/ntnu/stud/menu/MenuItem.<init> must not be null",
+        "Argument for @NotNull parameter 'action' of "
+            + "edu/ntnu/stud/menu/MenuItem.<init> must not be null",
         "Expected thrown exception when action is null"
     );
   }
