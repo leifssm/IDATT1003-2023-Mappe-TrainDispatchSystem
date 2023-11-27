@@ -16,9 +16,6 @@ public class InputParser {
   private static Scanner scanner;
 
   static void initialize(@NotNull InputStream stream) throws IllegalArgumentException {
-    if (stream == null) {
-      throw new IllegalArgumentException("Stream cannot be null");
-    }
     if (scanner != null) {
       return;
     }
@@ -42,9 +39,6 @@ public class InputParser {
   }
 
   public static @NotNull String getString(@NotNull String prompt) throws IllegalStateException {
-    if (prompt == null) {
-      throw new IllegalStateException("Prompt cannot be null");
-    }
     initialize();
     System.out.print(prompt + ": ");
     return scanner.nextLine();
@@ -60,9 +54,6 @@ public class InputParser {
       @NotNull Pattern pattern,
       String errorMessage
   ) throws IllegalArgumentException {
-    if (pattern == null) {
-      throw new IllegalArgumentException("Pattern cannot be null");
-    }
     Matcher result;
     while (true) {
       result = pattern.matcher(getString(prompt));
@@ -80,9 +71,6 @@ public class InputParser {
       @NotNull String regex,
       String errorMessage
   ) throws IllegalArgumentException {
-    if (regex == null) {
-      throw new IllegalArgumentException("Regex cannot be null");
-    }
     final Pattern pattern = Pattern.compile(regex);
     return getString(prompt, pattern, errorMessage);
   }
@@ -117,9 +105,6 @@ public class InputParser {
       @NotNull InputValidator<Integer> validator,
       String errorMessage
   ) throws IllegalArgumentException {
-    if (validator == null) {
-      throw new IllegalArgumentException("Validator cannot be null");
-    }
     int result;
     while (true) {
       result = getInt(prompt);
@@ -154,9 +139,6 @@ public class InputParser {
       @NotNull InputValidator<Float> validator,
       String errorMessage
   ) throws IllegalArgumentException {
-    if (validator == null) {
-      throw new IllegalArgumentException("Validator cannot be null");
-    }
     float result;
     while (true) {
       result = getFloat(prompt);
@@ -191,9 +173,6 @@ public class InputParser {
       @NotNull InputValidator<Character> validator,
       String errorMessage
   ) throws IllegalArgumentException {
-    if (validator == null) {
-      throw new IllegalArgumentException("Validator cannot be null");
-    }
     char input;
     while (true) {
       input = getChar(prompt);
@@ -238,9 +217,6 @@ public class InputParser {
       @NotNull InputValidator<LocalTime> validator,
       String errorMessage
   ) throws IllegalArgumentException {
-    if (validator == null) {
-      throw new IllegalArgumentException("Validator cannot be null");
-    }
     LocalTime result;
     while (true) {
       result = getTime(prompt);

@@ -109,9 +109,6 @@ public class TrainDeparture {
   public void setPlannedDeparture(
       @NotNull LocalTime plannedDeparture
   ) throws IllegalArgumentException {
-    if (plannedDeparture == null) {
-      throw new IllegalArgumentException("Planned departure cannot be null");
-    }
     this.plannedDeparture = plannedDeparture;
   }
 
@@ -131,9 +128,6 @@ public class TrainDeparture {
   }
 
   public void setDestination(@NotNull String destination) throws IllegalArgumentException {
-    if (destination == null) {
-      throw new IllegalArgumentException("Destination cannot be null");
-    }
     if (destination.isEmpty()) {
       throw new IllegalArgumentException("Destination cannot be a string of length 0");
     }
@@ -164,9 +158,6 @@ public class TrainDeparture {
   }
 
   public void setDelay(LocalTime delay) throws IllegalArgumentException {
-    if (delay == null) {
-      throw new IllegalArgumentException("Delay cannot be null");
-    }
     this.delay = delay;
   }
 
