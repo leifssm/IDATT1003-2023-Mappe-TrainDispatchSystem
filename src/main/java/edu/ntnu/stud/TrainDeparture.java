@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 
 public class TrainDeparture {
-  private final @NotNull LocalTime plannedDeparture;
+  private @NotNull LocalTime plannedDeparture;
   private final @NotNull String line;
-  private final @NotNull String destination;
   private final int trainNumber;
+  private @NotNull String destination;
   private int track;
   private @NotNull LocalTime delay;
 
@@ -76,14 +76,6 @@ public class TrainDeparture {
       int track,
       LocalTime delay
   ) throws IllegalArgumentException {
-    if (plannedDeparture == null) {
-      throw new IllegalArgumentException("Planned departure cannot be null");
-    }
-    if (plannedDeparture.equals("")) {
-      throw new IllegalArgumentException("Planned departure cannot be an empty string");
-    }
-    this.plannedDeparture = plannedDeparture;
-
     if (line == null) {
       throw new IllegalArgumentException("Line cannot be null");
     }
@@ -99,25 +91,28 @@ public class TrainDeparture {
     }
     this.line = line;
 
-
-    if (destination == null) {
-      throw new IllegalArgumentException("Destination cannot be null");
-    }
-    if (destination.isEmpty()) {
-      throw new IllegalArgumentException("Destination cannot be a string of length 0");
-    }
-    this.destination = destination;
-
     if (trainNumber < 1) {
       throw new IllegalArgumentException("Train number cannot be less than 1");
     }
     this.trainNumber = trainNumber;
+
+    setPlannedDeparture(plannedDeparture);
+    setDestination(destination);
     setTrack(track);
     setDelay(delay);
   }
 
   public LocalTime getPlannedDeparture() {
     return plannedDeparture;
+  }
+
+  public void setPlannedDeparture(
+      @NotNull LocalTime plannedDeparture
+  ) throws IllegalArgumentException {
+    if (plannedDeparture == null) {
+      throw new IllegalArgumentException("Planned departure cannot be null");
+    }
+    this.plannedDeparture = plannedDeparture;
   }
 
   public LocalTime getDelayedDeparture() {
@@ -133,6 +128,16 @@ public class TrainDeparture {
 
   public @NotNull String getDestination() {
     return destination;
+  }
+
+  public void setDestination(@NotNull String destination) throws IllegalArgumentException {
+    if (destination == null) {
+      throw new IllegalArgumentException("Destination cannot be null");
+    }
+    if (destination.isEmpty()) {
+      throw new IllegalArgumentException("Destination cannot be a string of length 0");
+    }
+    this.destination = destination;
   }
 
   public int getTrainNumber() {
