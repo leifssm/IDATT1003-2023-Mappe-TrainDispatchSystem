@@ -19,6 +19,11 @@ public class TrainInterface {
   private LocalTime currentTime = LocalTime.MIN;
 
   /**
+   * The minimum size of the display table.
+   */
+  private static final int MIN_TABLE_DISPLAY_SIZE = 10;
+
+  /**
    * Creates a new train interface.
    */
   TrainInterface() {}
@@ -139,6 +144,9 @@ public class TrainInterface {
    */
   private void changeDepartureTrack() {
     TrainDeparture departure = findDepartureFromNumber();
+    if (departure == null) {
+      return;
+    }
     System.out.println("Hvilket spor skal den gå fra?");
     final int track = InputParser.getInt(
         "Spor",
@@ -164,6 +172,9 @@ public class TrainInterface {
    */
   private void giveDepartureDelay() {
     TrainDeparture departure = findDepartureFromNumber();
+    if (departure == null) {
+      return;
+    }
 
     final LocalTime previousDelay = departure.getDelay();
     if (departure.isDelayed()) {
@@ -186,9 +197,13 @@ public class TrainInterface {
    *
    * @return A train departure with the corresponding train number
    */
-  private @NotNull TrainDeparture findDepartureFromNumber() {
+  private TrainDeparture findDepartureFromNumber() {
+    if (departures.length() == 0) {
+      System.out.println("Det er ingen togavganger å søke etter.");
+      return null;
+    }
     System.out.println("Skriv inn nummeret til toget du vil finne.");
-    // TODO what will the user do if there is no trains? add a check before each function using this
+
     final int trainNumber = InputParser.getInt("Tognummer", n -> {
       TrainDeparture dep = departures.getDepartureFromNumber(n);
       if (dep == null) {
@@ -251,8 +266,7 @@ public class TrainInterface {
     for (TrainDeparture departure : sortedDepartures) {
       System.out.println(formatDeparture(departure));
     }
-    // TODO fix magic variable
-    for (int i = 0; i < 5 - sortedDepartures.length; i++) {
+    for (int i = 0; i < MIN_TABLE_DISPLAY_SIZE - sortedDepartures.length; i++) {
       System.out.println("║           │           │      │       │                 │        ║");
     }
     System.out.println("╚═══════════╧═══════════╧══════╧═══════╧═════════════════╧════════╝");
