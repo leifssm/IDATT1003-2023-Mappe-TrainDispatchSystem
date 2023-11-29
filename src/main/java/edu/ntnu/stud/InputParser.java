@@ -69,19 +69,6 @@ public class InputParser {
   }
 
   /**
-   * Prompts the user and return the given string.
-   *
-   * @param prompt The prompt to show the user.
-   * @return The string the user entered.
-   * @throws IllegalStateException If the prompt is null.
-   */
-  public static @NotNull String getString(@NotNull String prompt) throws IllegalStateException {
-    initialize();
-    System.out.print(prompt + ": ");
-    return scanner.nextLine();
-  }
-
-  /**
    * Gets the input from the user without a prompt, and returns the given string.
    *
    * @return The string the user entered.
@@ -89,6 +76,18 @@ public class InputParser {
   public static @NotNull String getString() {
     initialize();
     return scanner.nextLine();
+  }
+
+  /**
+   * Prompts the user and return the given string.
+   *
+   * @param prompt The prompt to show the user.
+   * @return The string the user entered.
+   * @throws IllegalStateException If the prompt is null.
+   */
+  public static @NotNull String getString(@NotNull String prompt) throws IllegalStateException {
+    System.out.print(prompt + ": ");
+    return getString();
   }
 
   /**
@@ -177,11 +176,21 @@ public class InputParser {
    * @throws IllegalArgumentException If the prompt is null.
    */
   public static int getInt(@NotNull String prompt) throws IllegalArgumentException {
+    String string = "";
+    final Pattern pattern = Pattern.compile("^-?[0-9]{10,}$");
     while (true) {
       try {
-        return Integer.parseInt(getString(prompt));
-      } catch (NumberFormatException ignored) {
-        System.out.println("The value is not a valid number");
+        string = getString(prompt);
+        return Integer.parseInt(string);
+      } catch (NumberFormatException error) {
+        System.out.println(error.getMessage());
+        if (pattern.matcher(string).matches()) {
+          System.out.println(
+              "The number has to be between -2147483648 and 2147483647"
+          );
+        } else {
+          System.out.println("The value is not a valid number");
+        }
       }
     }
   }
