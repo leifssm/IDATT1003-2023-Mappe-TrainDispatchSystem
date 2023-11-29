@@ -10,26 +10,56 @@ import java.util.regex.Pattern;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A singleton class with lazy instantiation that manages and parses all user input.
+ */
 public class InputParser {
+  /**
+   * A functional interface for validating user input.
+   *
+   * @param <T> The expected type of input to validate.
+   */
   public interface InputValidator<T> { boolean test(T input); }
 
+  /**
+   * The scanner used to read inputs from.
+   */
   private static Scanner scanner;
 
+  /**
+   * Initialize the scanner with the given input stream. Does not override an already initialized
+   * scanner.
+   *
+   * @param stream The input stream to read from.
+   * @throws IllegalArgumentException If the stream is null
+   */
   static void initialize(@NotNull InputStream stream) throws IllegalArgumentException {
-    if (scanner != null) {
+    if (isInitialized()) {
       return;
     }
     scanner = new Scanner(stream, StandardCharsets.UTF_8);
   }
 
+  /**
+   * Initializes the scanner with {@link System#in}. Does not override an already initialized
+   * scanner.
+   */
   static void initialize() {
     initialize(System.in);
   }
 
+  /**
+   * Returns if the scanner is initialized.
+   *
+   * @return If the scanner is initialized.
+   */
   static boolean isInitialized() {
     return scanner != null;
   }
 
+  /**
+   * Closes the scanner if it is initialized.
+   */
   public static void close() {
     if (InputParser.scanner == null) {
       return;
@@ -38,17 +68,40 @@ public class InputParser {
     scanner = null;
   }
 
+  /**
+   * Prompts the user and return the given string.
+   *
+   * @param prompt The prompt to show the user.
+   * @return The string the user entered.
+   * @throws IllegalStateException If the prompt is null.
+   */
   public static @NotNull String getString(@NotNull String prompt) throws IllegalStateException {
     initialize();
     System.out.print(prompt + ": ");
     return scanner.nextLine();
   }
 
+  /**
+   * Gets the input from the user without a prompt, and returns the given string.
+   * @return The string the user entered.
+   */
   public static @NotNull String getString() {
     initialize();
     return scanner.nextLine();
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that matches the given
+   * pattern. If the string doesn't match, the error message is shown if it is not null, and the
+   * user is prompted again.
+   *
+   * @param prompt The prompt to show the user.
+   * @param pattern The pattern to match the input against.
+   * @param errorMessage The error message to show the user if the input doesn't match the pattern.
+   *                     Pass {@code null} to not show an error message.
+   * @return The string the user entered that matches the pattern.
+   * @throws IllegalArgumentException If the prompt or the pattern is null.
+   */
   public static @NotNull String getString(
       @NotNull String prompt,
       @NotNull Pattern pattern,
@@ -66,6 +119,18 @@ public class InputParser {
     }
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that matches the given
+   * regex. If the string doesn't match, the error message is shown if it is not null, and the
+   * user is prompted again.
+   *
+   * @param prompt The prompt to show the user.
+   * @param regex The regex to match the input against.
+   * @param errorMessage The error message to show the user if the input doesn't match the pattern.
+   *                     Pass {@code null} to not show an error message.
+   * @return The string the user entered that matches the pattern.
+   * @throws IllegalArgumentException If the prompt or the pattern is null.
+   */
   public static @NotNull String getString(
       @NotNull String prompt,
       @NotNull String regex,
@@ -75,6 +140,12 @@ public class InputParser {
     return getString(prompt, pattern, errorMessage);
   }
 
+  /**
+   * Shorthand for {@link InputParser#getString(String, String, String)}. Defaults the error message
+   * to "Strengen passer ikke kriteriene".
+   *
+   * @see InputParser#getString(String, String, String)
+   */
   public static @NotNull String getString(
       @NotNull String prompt,
       @NonNls @NotNull String regex
@@ -82,6 +153,12 @@ public class InputParser {
     return getString(prompt, regex, "Strengen passer ikke kriteriene");
   }
 
+  /**
+   * Shorthand for {@link InputParser#getString(String, Pattern, String)}. Defaults the error message
+   * to "Strengen passer ikke kriteriene".
+   *
+   * @see InputParser#getString(String, Pattern, String)
+   */
   public static @NotNull String getString(
       @NotNull String prompt,
       @NotNull Pattern pattern

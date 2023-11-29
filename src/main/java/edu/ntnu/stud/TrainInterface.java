@@ -4,13 +4,28 @@ import edu.ntnu.stud.menu.Menu;
 import java.time.LocalTime;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * A user interface for the train system.
+ */
 public class TrainInterface {
+  /**
+   * The departures of the train system.
+   */
   private final TrainGroup departures = new TrainGroup();
 
+  /**
+   * The current time of the train system, starts as {@link LocalTime#MIN}.
+   */
   private LocalTime currentTime = LocalTime.MIN;
 
+  /**
+   * Creates a new train interface.
+   */
   TrainInterface() {}
 
+  /**
+   * Initializes the train interface with random departures.
+   */
   public void init() {
     departures.addDeparture(TrainDeparture.createRandomDeparture(30, "Trondheim"));
     departures.addDeparture(TrainDeparture.createRandomDeparture(63, "Oslo S"));
@@ -22,6 +37,9 @@ public class TrainInterface {
     departures.addDeparture(TrainDeparture.createRandomDeparture(78, "Alta"));
   }
 
+  /**
+   * Starts the train interface's menu.
+   */
   public void start() {
     // TODO add method for all setters
     // TODO change to english
@@ -37,16 +55,20 @@ public class TrainInterface {
           System.exit(0);
         })
         .setRunBefore(this::showDepartures)
-        .setRunAfter(() -> stall())
+        .setRunAfter(TrainInterface::stall)
         .run();
   }
 
+  /**
+   * Lets the user add a new departure. It asks the user for inputs, validates it and creates a new
+   * departure.
+   */
   private void addDeparture() {
-
+    // Gets the planned departure from the user
     System.out.println("Når skal toget gå?");
     final LocalTime plannedDeparture = InputParser.getTime("Avgang");
 
-    // Henter toglinje fra bruker
+    // Gets the train line from the user
     System.out.println(
         "Hvilken toglinje er det? Linjenavnet kan bare inneholde store bokstaver og tall,"
             + " og kan bare inneholdet 2-7 tegn."
@@ -58,7 +80,7 @@ public class TrainInterface {
             + " og kan bare inneholdet 2-7 tegn."
     );
 
-    // Henter toglinje fra bruker
+    // Gets the destination from the user
     System.out.println("Hva er endestoppet?");
     final String destination = InputParser.getString(
         "Endestopp",
@@ -66,7 +88,7 @@ public class TrainInterface {
         "Endestoppet kan ikke være tomt"
     );
 
-    // Henter toglinje fra bruker
+    // Gets a non-colliding train number from the user
     System.out.println("Hva er tognummeret? Tallet må være større eller lik 1.");
     final int trainNumber = InputParser.getInt("Tognummer", n -> {
       if (n < 1) {
@@ -80,7 +102,7 @@ public class TrainInterface {
       return false;
     }, null);
 
-
+    // Gets the track from the user
     System.out.println("Hvilket spor skal den gå fra? Skriv -1 hvis den ikke skal bli satt enda.");
     final int track = InputParser.getInt(
         "Spor",
@@ -88,6 +110,7 @@ public class TrainInterface {
         "Spor kan ikke være 0 eller mindre enn -1."
     );
 
+    // Gets the delay from the user
     LocalTime delay = LocalTime.MIN;
     System.out.println("Er toget allerede forsinket?");
     final boolean isDelayed = InputParser.getBoolean("Forsinket?", false);
@@ -96,7 +119,7 @@ public class TrainInterface {
       delay = InputParser.getTime("Forsinkelse");
     }
 
-    // TODO add try catch
+    // Should not throw an exception, since the data is already validated
     final TrainDeparture departure = new TrainDeparture(
         plannedDeparture,
         line,
@@ -110,6 +133,10 @@ public class TrainInterface {
     System.out.println("La til avgang: " + departure);
   }
 
+  /**
+   * Lets the user change the track of a departure. Asks for a train number, checks if a
+   * corresponding train exists, then lets the user change the track
+   */
   private void changeDepartureTrack() {
     TrainDeparture departure = findDepartureFromNumber();
     System.out.println("Hvilket spor skal den gå fra?");
@@ -131,16 +158,22 @@ public class TrainInterface {
     }
   }
 
+  /**
+   * Lets the user change the delay of a departure. Asks for a train number, checks if a
+   * corresponding train exists, then lets the user change the track.
+   */
   private void giveDepartureDelay() {
     TrainDeparture departure = findDepartureFromNumber();
+
     final LocalTime previousDelay = departure.getDelay();
     if (departure.isDelayed()) {
       System.out.printf("Toget er allerede forsinka med %s.\n", previousDelay);
     }
+
     System.out.println("Hvor mye vil du endre togets forsinkelse til?");
     final LocalTime delay = InputParser.getTime("Forsinkelse");
-    System.out.println(previousDelay.compareTo(delay));
-    if (previousDelay.compareTo(delay) == 0) {
+
+    if (previousDelay.equals(delay)) {
       System.out.printf("Forsinkelsen var allerede satt til %s, ingen endring gjort.\n", delay);
     } else {
       departure.setDelay(delay);
@@ -148,9 +181,14 @@ public class TrainInterface {
     }
   }
 
+  /**
+   * Helper method to find a departure from a train number.
+   *
+   * @return A train departure with the corresponding train number
+   */
   private @NotNull TrainDeparture findDepartureFromNumber() {
     System.out.println("Skriv inn nummeret til toget du vil finne.");
-    // TODO what will the user do if there is no trains?
+    // TODO what will the user do if there is no trains? add a check before each function using this
     final int trainNumber = InputParser.getInt("Tognummer", n -> {
       TrainDeparture dep = departures.getDepartureFromNumber(n);
       if (dep == null) {
@@ -163,6 +201,9 @@ public class TrainInterface {
     return departure;
   }
 
+  /**
+   * Lets the user query the departures, and gets all departures for a destination.
+   */
   private void findDepartureFromDestination() {
     TrainDeparture[] departures = null;
     while (departures == null || departures.length == 0) {
@@ -180,22 +221,26 @@ public class TrainInterface {
     System.out.println();
   }
 
+  /**
+   * Lets the user change the current time, but doesn't let the user pick an earlier time.
+   */
   private void setClock() {
     System.out.printf(
         "Skriv inn nytt klokkeslett, klokkeslettet må være større enn det forrige (%s)\n",
         currentTime
     );
-    currentTime = InputParser.getTime("Klokkeslett", time -> {
-      boolean isAfter = time.isAfter(currentTime);
-      if (!isAfter) {
-        System.out.printf("Klokkeslettet må være etter %s.\n", currentTime);
-      }
-      return isAfter;
-    }, null);
+    currentTime = InputParser.getTime(
+        "Klokkeslett",
+        time -> time.isAfter(currentTime),
+        "Klokkeslettet må være etter %s.\n".formatted(currentTime)
+    );
 
     System.out.printf("Klokken ble satt til %s.\n", currentTime);
   }
 
+  /**
+   * Prints the departures to the console with a stylized table.
+   */
   private void showDepartures() {
     final TrainDeparture[] sortedDepartures = departures.getDeparturesFromTime(currentTime);
 
@@ -204,30 +249,35 @@ public class TrainInterface {
     System.out.println("╔═══════════╤══════════╩╤══════╤══╩════╤══╩══════════════╤════════╗");
     System.out.println("║ Planlagt  │ Forventet │ Spor │ Linje │ Destinasjon     │ Tognr. ║");
     for (TrainDeparture departure : sortedDepartures) {
-      System.out.println(parseDeparture(departure));
+      System.out.println(formatDeparture(departure));
     }
+    // TODO fix magic variable
     for (int i = 0; i < 5 - sortedDepartures.length; i++) {
       System.out.println("║           │           │      │       │                 │        ║");
     }
     System.out.println("╚═══════════╧═══════════╧══════╧═══════╧═════════════════╧════════╝");
   }
 
-  private static @NotNull String parseDeparture(@NotNull TrainDeparture departure) {
+  /**
+   * Parses a train departure to a string.
+   *
+   * @param departure The train departure to format
+   * @return A string representation of the train departure for the train table
+   * @throws IllegalArgumentException If the departure is null
+   */
+  private static @NotNull String formatDeparture(@NotNull TrainDeparture departure) {
     final String track = departure.getTrack() != -1
         ? Utils.pc(departure.getTrack(), 6)
         : "      ";
     final String line = Utils.pc(departure.getLine(), 7);
 
-
     final String destination = String.format("%-15s", departure.getDestination());
-
-
 
     final String trainNumber = departure.getTrainNumber() != -1
         ? Utils.pc(departure.getTrainNumber(), 8)
         : "        ";
-    final String format = "║   %s   │   %s   │%s│%s│ %s │%s║";
-    return format.formatted(
+
+    return "║   %s   │   %s   │%s│%s│ %s │%s║".formatted(
         departure.getPlannedDeparture(),
         departure.isDelayed() ? departure.getDelayedDeparture() : "     ",
         track,
@@ -237,6 +287,9 @@ public class TrainInterface {
     );
   }
 
+  /**
+   * Stalls the thread for 1 second so that the user can read the feedback.
+   */
   private static void stall() {
     try {
       Thread.sleep(1000);
