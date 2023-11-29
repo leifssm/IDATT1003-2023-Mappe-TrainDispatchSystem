@@ -467,4 +467,12 @@ public class InputParser {
     }
     return result.equalsIgnoreCase("y");
   }
+
+  /**
+   * Prompts the user to press enter, and stalls the program until the user does so.
+   */
+  public static void waitForUser() {
+    System.out.println("\nPress enter to continue");
+    getString();
+  }
 }

@@ -75,7 +75,7 @@ public class TrainInterface {
           System.exit(0);
         })
         .setRunBefore(this::showDepartures)
-        .setRunAfter(TrainInterface::stall)
+        .setRunAfter(InputParser::waitForUser)
         .run();
   }
 
@@ -325,16 +325,5 @@ public class TrainInterface {
         destination,
         trainNumber
     );
-  }
-
-  /**
-   * Stalls the thread for 1 second so that the user can read the feedback.
-   */
-  private static void stall() {
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException ignored) {
-      // Do nothing
-    }
   }
 }
