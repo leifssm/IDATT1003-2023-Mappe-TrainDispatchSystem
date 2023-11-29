@@ -22,7 +22,7 @@ public class InputParser {
   public interface InputValidator<T> { boolean test(T input); }
 
   /**
-   * The scanner used to read inputs from.
+   * The scanner object that is used to read inputs from.
    */
   private static Scanner scanner;
 
@@ -83,6 +83,7 @@ public class InputParser {
 
   /**
    * Gets the input from the user without a prompt, and returns the given string.
+   *
    * @return The string the user entered.
    */
   public static @NotNull String getString() {
@@ -99,7 +100,7 @@ public class InputParser {
    * @param pattern The pattern to match the input against.
    * @param errorMessage The error message to show the user if the input doesn't match the pattern.
    *                     Pass {@code null} to not show an error message.
-   * @return The string the user entered that matches the pattern.
+   * @return A string given by the user that matches the pattern.
    * @throws IllegalArgumentException If the prompt or the pattern is null.
    */
   public static @NotNull String getString(
@@ -126,10 +127,10 @@ public class InputParser {
    *
    * @param prompt The prompt to show the user.
    * @param regex The regex to match the input against.
-   * @param errorMessage The error message to show the user if the input doesn't match the pattern.
+   * @param errorMessage The error message to show the user if the input doesn't match the regex.
    *                     Pass {@code null} to not show an error message.
-   * @return The string the user entered that matches the pattern.
-   * @throws IllegalArgumentException If the prompt or the pattern is null.
+   * @return A string given by the user that matches the regex.
+   * @throws IllegalArgumentException If the prompt or the regex is null.
    */
   public static @NotNull String getString(
       @NotNull String prompt,
@@ -142,7 +143,7 @@ public class InputParser {
 
   /**
    * Shorthand for {@link InputParser#getString(String, String, String)}. Defaults the error message
-   * to "Strengen passer ikke kriteriene".
+   * to "The string does not match the criteria".
    *
    * @see InputParser#getString(String, String, String)
    */
@@ -150,12 +151,12 @@ public class InputParser {
       @NotNull String prompt,
       @NonNls @NotNull String regex
   ) throws IllegalArgumentException {
-    return getString(prompt, regex, "Strengen passer ikke kriteriene");
+    return getString(prompt, regex, "The string does not match the criteria");
   }
 
   /**
-   * Shorthand for {@link InputParser#getString(String, Pattern, String)}. Defaults the error message
-   * to "Strengen passer ikke kriteriene".
+   * Shorthand for {@link InputParser#getString(String, Pattern, String)}. Defaults the error
+   * message to "The string does not match the criteria".
    *
    * @see InputParser#getString(String, Pattern, String)
    */
@@ -163,20 +164,42 @@ public class InputParser {
       @NotNull String prompt,
       @NotNull Pattern pattern
   ) throws IllegalArgumentException {
-    return getString(prompt, pattern, "Strengen passer ikke kriteriene");
+    return getString(prompt, pattern, "The string does not match the criteria");
   }
 
-
+  /**
+   * Prompts the user with the given prompt until the user enters a string that can be converted to
+   * an int. If the string can't be converted, the error message "The value is not a valid number"
+   * is shown and the user is prompted again.
+   *
+   * @param prompt The prompt to show the user.
+   * @return An int given by the user.
+   * @throws IllegalArgumentException If the prompt is null.
+   */
   public static int getInt(@NotNull String prompt) throws IllegalArgumentException {
     while (true) {
       try {
         return Integer.parseInt(getString(prompt));
       } catch (NumberFormatException ignored) {
-        System.out.println("Verdien er ikke et gyldig tall");
+        System.out.println("The value is not a valid number");
       }
     }
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that can be converted to
+   * an integer that passes the validation. If the string can't be converted, the error message
+   * "The value is not a valid number" is shown and the user is prompted again. If the integer does
+   * not match with the given validation, and the error message is not null, it is shown to the
+   * user.
+   *
+   * @param prompt The prompt to show the user.
+   * @param validator The validator function to test the integer with.
+   * @param errorMessage The error message to show the user if the integer doesn't pass validation.
+   *                     Pass {@code null} to not show an error message.
+   * @return An integer given by the user that matches the validation.
+   * @throws IllegalArgumentException If the prompt or validator function is null.
+   */
   public static int getInt(
       @NotNull String prompt,
       @NotNull InputValidator<Integer> validator,
@@ -194,23 +217,52 @@ public class InputParser {
     }
   }
 
+  /**
+   * Shorthand for {@link InputParser#getInt(String, InputValidator, String)}. Defaults the error
+   * message to "The number does not match the criteria".
+   *
+   * @see InputParser#getInt(String, InputValidator, String)
+   */
   public static int getInt(
       @NotNull String prompt,
       @NotNull InputValidator<Integer> validator
   ) throws IllegalArgumentException {
-    return getInt(prompt, validator, "Heltallet passer ikke kriteriene");
+    return getInt(prompt, validator, "The number does not match the criteria");
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that can be converted to
+   * a float. If the string can't be converted, the error message "The value is not a valid decimal
+   * number" is shown and the user is prompted again.
+   *
+   * @param prompt The prompt to show the user.
+   * @return A float given by the user.
+   * @throws IllegalArgumentException If the prompt is null.
+   */
   public static float getFloat(@NotNull String prompt) throws IllegalArgumentException {
     while (true) {
       try {
         return Float.parseFloat(getString(prompt));
       } catch (NumberFormatException ignored) {
-        System.out.println("Verdien er ikke et gyldig desimaltall");
+        System.out.println("The value is not a valid decimal number");
       }
     }
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that can be converted to
+   * a float that passes the validation. If the string can't be converted, the error message "The
+   * value is not a valid decimal number" is shown and the user is prompted again. If the float
+   * does not match with the given validation, and the error message is not null, it is shown to
+   * the user.
+   *
+   * @param prompt The prompt to show the user.
+   * @param validator The validator function to test the float with.
+   * @param errorMessage The error message to show the user if the float doesn't pass validation.
+   *                     Pass {@code null} to not show an error message.
+   * @return A float given by the user that matches the validation.
+   * @throws IllegalArgumentException If the prompt or validator function is null.
+   */
   public static float getFloat(
       @NotNull String prompt,
       @NotNull InputValidator<Float> validator,
@@ -228,23 +280,48 @@ public class InputParser {
     }
   }
 
+  /**
+   * Shorthand for {@link InputParser#getFloat(String, InputValidator, String)}. Defaults the error
+   * message to "The decimal number does not fit the criteria".
+   *
+   * @see InputParser#getFloat(String, InputValidator, String)
+   */
   public static float getFloat(
       @NotNull String prompt,
       @NotNull InputValidator<Float> validator
   ) throws IllegalArgumentException {
-    return getFloat(prompt, validator, "Desimaltallet passer ikke kriteriene");
+    return getFloat(prompt, validator, "The decimal number does not fit the criteria");
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that can be converted to
+   * a character. If the string can't be converted, the error message "You must give only one
+   * character" is shown and the user is prompted again.
+   *
+   * @param prompt The prompt to show the user.
+   * @return A character given by the user.
+   * @throws IllegalArgumentException If the prompt is null.
+   */
   public static char getChar(@NotNull String prompt) throws IllegalArgumentException {
-    String input;
-    while (true) {
-      input = getString(prompt, "^.$", "Du kan bare gi ett tegn");
-      if (input.length() == 1) {
-        return input.charAt(0);
-      }
-    }
+    final Pattern pattern = Pattern.compile("^.$");
+    final String input = getString(prompt, pattern, "You must give only one character");
+    return input.charAt(0);
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that can be converted to
+   * a character that passes the validation. If the string can't be converted, the error message
+   * "You must give only one character" is shown and the user is prompted again. If the character
+   * does not match with the given validation, and the error message is not null, it is shown to
+   * the user.
+   *
+   * @param prompt The prompt to show the user.
+   * @param validator The validator function to test the character with.
+   * @param errorMessage The error message to show the user if the character doesn't pass
+   *                     validation. Pass {@code null} to not show an error message.
+   * @return A character given by the user that matches the validation.
+   * @throws IllegalArgumentException If the prompt or validator function is null.
+   */
   public static char getChar(
       @NotNull String prompt,
       @NotNull InputValidator<Character> validator,
@@ -262,21 +339,37 @@ public class InputParser {
     }
   }
 
+  /**
+   * Shorthand for {@link InputParser#getChar(String, InputValidator, String)}. Defaults the error
+   * message to "The character does not fit the criteria".
+   *
+   * @see InputParser#getChar(String, InputValidator, String)
+   */
   public static char getChar(
       @NotNull String prompt,
       @NotNull InputValidator<Character> validator
   ) throws IllegalArgumentException {
-    return getChar(prompt, validator, "Tegnet passer ikke kriteriene");
+    return getChar(prompt, validator, "The character does not fit the criteria");
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that can be converted to
+   * a time. If the string can't be converted, the error message "Please write the time in the
+   * format of "h:mm" or "hh:mm"" or "The time is not valid" is shown and the user is prompted
+   * again.
+   *
+   * @param prompt The prompt to show the user.
+   * @return A time given by the user.
+   * @throws IllegalArgumentException If the prompt is null.
+   */
   public static @NotNull LocalTime getTime(@NotNull String prompt) throws IllegalArgumentException {
-    final Pattern pattern = Pattern.compile("^[0-2]?[0-9]:[0-5][0-9]$");
+    final Pattern pattern = Pattern.compile("^[0-9]{1,2}:[0-9]{1,2}$");
     String result;
     while (true) {
       result = getString(
           prompt,
           pattern,
-          "Vennligst skriv inn tiden på formatet \"h:mm\" eller \"hh:mm\""
+          "Please write the time in the format of \"h:mm\" or \"hh:mm\""
       );
       if (result.length() == 4) {
         result = "0" + result;
@@ -284,11 +377,25 @@ public class InputParser {
       try {
         return LocalTime.parse(result);
       } catch (DateTimeParseException ignored) {
-        System.out.println("Tiden er ikke gyldig");
+        System.out.println("The time is not valid");
       }
     }
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters a string that can be converted to
+   * a time that passes the validation. If the string can't be converted, the error message "Please
+   * write the time in the format of "h:mm" or "hh:mm"" or "The time is not valid" is shown and the
+   * user is prompted again. If the time does not match with the given validation, and the error
+   * message is not null, it is shown to the user.
+   *
+   * @param prompt The prompt to show the user.
+   * @param validator The validator function to test the time with.
+   * @param errorMessage The error message to show the user if the time doesn't pass validation.
+   *                     Pass {@code null} to not show an error message.
+   * @return A time given by the user that matches the validation.
+   * @throws IllegalArgumentException If the prompt or validator function is null.
+   */
   public static @NotNull LocalTime getTime(
       @NotNull String prompt,
       @NotNull InputValidator<LocalTime> validator,
@@ -306,21 +413,46 @@ public class InputParser {
     }
   }
 
+  /**
+   * Shorthand for {@link InputParser#getTime(String, InputValidator, String)}. Defaults the error
+   * message to "The time does not fit the criteria".
+   *
+   * @see InputParser#getTime(String, InputValidator, String)
+   */
   public static @NotNull LocalTime getTime(
       @NotNull String prompt,
       @NotNull InputValidator<LocalTime> validator
   ) throws IllegalArgumentException {
-    return getTime(prompt, validator, "Tiden passer ikke kriteriene");
+    return getTime(prompt, validator, "The time does not fit the criteria");
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters either y or n, and converts it to
+   * a boolean. If the string can't be converted, the error message "Please only use one of the
+   * given characters" is shown and the user is prompted again.
+   *
+   * @param prompt The prompt to show the user.
+   * @return A boolean given by the user.
+   * @throws IllegalArgumentException If the prompt is null.
+   */
   public static boolean getBoolean(@NotNull String prompt) throws IllegalArgumentException {
     return getString(
         prompt + " [y/n]",
         "^[ynYN]$",
-        "Vennligst bare bruk ett av tegnene gitt"
+        "Please only use one of the given characters"
     ).equalsIgnoreCase("y");
   }
 
+  /**
+   * Prompts the user with the given prompt until the user enters either y or n, and converts it to
+   * a boolean. If the user does not enter anything the default value is implied. If the string
+   * can't be converted, the error message "Please only use one of the given characters" is shown
+   * and the user is prompted again.
+   *
+   * @param prompt The prompt to show the user.
+   * @return A boolean that is given by the user of defaulted.
+   * @throws IllegalArgumentException If the prompt is null.
+   */
   public static boolean getBoolean(
       @NotNull String prompt,
       boolean defaultValue
@@ -328,7 +460,7 @@ public class InputParser {
     final String result = getString(
         prompt + (defaultValue ? " [Y/n]" : " [y/N]"),
         "^[ynYN]?$",
-        "Vennligst bare bruk ett av tegnene gitt"
+        "Please only use one of the given characters"
     );
     if (result.isEmpty()) {
       return defaultValue;

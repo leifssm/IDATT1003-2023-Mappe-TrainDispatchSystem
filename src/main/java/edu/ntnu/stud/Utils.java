@@ -29,7 +29,7 @@ public class Utils {
       return string;
     }
     final int totalPadding = padding - string.length();
-    final int rightPadding = totalPadding / 2;
+    final int rightPadding = (int) Math.ceil((double) totalPadding / 2);
     final int leftPadding = totalPadding - rightPadding;
     return " ".repeat(leftPadding) + string + " ".repeat(rightPadding);
   }

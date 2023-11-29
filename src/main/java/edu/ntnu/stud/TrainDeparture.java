@@ -290,13 +290,13 @@ public class TrainDeparture {
    * @return A string representation of the train departure
    */
   public @NotNull String toString() {
-    return String.format("%s (Tog #%s) til %s: Planlagt kl %s%s %s",
+    return String.format("%s (Train #%s) to %s: Expected %s%s %s",
       line,
       trainNumber,
       destination,
       plannedDeparture,
-      isDelayed() ? ", men forsinket til " + getDelayedDeparture() : " med ingen forsinkelse",
-      track > 0 ? "fra spor " + trainNumber : "uten satt spor"
+      isDelayed() ? ", but delayed until " + getDelayedDeparture() : " with no delays",
+      track > 0 ? "from track " + trainNumber : "without an assigned track"
     );
   }
 }

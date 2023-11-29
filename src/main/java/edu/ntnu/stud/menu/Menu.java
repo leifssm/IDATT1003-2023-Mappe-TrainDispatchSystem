@@ -97,18 +97,18 @@ public class Menu {
       beforeAction.run();
     }
     print();
-    String error = "Tallet må være 1";
+    String error = "The number must be bigger than 1";
     if (entries.size() > 1) {
       // TODO fix all %d
-      error = String.format("Tallet må være mellom 1 og %d", entries.size());
+      error = String.format("The number must be between 1 and %d", entries.size());
     }
     final int choice = InputParser.getInt(
-        "Valg",
+        "Option",
         n -> 1 <= n && n <= entries.size(),
         error
     ) - 1;
     final MenuItem item = entries.get(choice);
-    System.out.printf("\n ══ Valgte \"%s\" ══\n", item);
+    System.out.printf("\n ══ Picked option \"%s\" ══\n", item);
     item.run();
     if (afterAction != null) {
       afterAction.run();

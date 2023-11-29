@@ -1,7 +1,7 @@
 package edu.ntnu.stud;
 
 /**
- * The access point for the application, creates and runs a train interface instance
+ * The access point for the application, creates and runs a train interface instance.
  */
 public class TrainDispatchApp {
   /**
