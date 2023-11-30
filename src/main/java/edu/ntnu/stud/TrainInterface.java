@@ -174,12 +174,12 @@ public class TrainInterface {
     departure.setTrack(track);
     if (previousTrack != track) {
       System.out.printf(
-          "\nTrack changed from %s to %s.\n",
+          "\nTrack changed from %d to %d.\n",
           previousTrack,
           track
       );
     } else {
-      System.out.printf("\nTrack was already sat to %s, no change was made.\n", track);
+      System.out.printf("\nTrack was already sat to %d, no change was made.\n", track);
     }
   }
 
@@ -224,7 +224,7 @@ public class TrainInterface {
     final int trainNumber = InputParser.getInt("Train number", n -> {
       TrainDeparture dep = departures.getDepartureFromNumber(n);
       if (dep == null) {
-        System.out.printf("Couldn't find a departure with the number %s. Try again.\n", n);
+        System.out.printf("Couldn't find a departure with the number %d. Try again.\n", n);
       }
       return dep != null;
     }, null);
@@ -257,7 +257,7 @@ public class TrainInterface {
             + ":"
     );
     for (int i = 0; i < departures.length; i++) {
-      System.out.printf(" %s. %s\n", i + 1, departures[i]);
+      System.out.printf(" %d. %s\n", i + 1, departures[i]);
     }
     System.out.println();
   }
@@ -311,18 +311,16 @@ public class TrainInterface {
         : "       ";
     final String line = Utils.pc(departure.getLine(), 7);
 
-    final String destination = String.format("%-16s", departure.getDestination());
-
     final String trainNumber = departure.getTrainNumber() != -1
         ? Utils.pc(departure.getTrainNumber(), 7)
         : "       ";
 
-    return "║   %s   │   %s   │%s│%s│ %s │%s║".formatted(
+    return "║   %s   │   %s   │%s│%s│ %-16s │%s║".formatted(
         departure.getPlannedDeparture(),
         departure.isDelayed() ? departure.getDelayedDeparture() : "     ",
         track,
         line,
-        destination,
+        departure.getDestination(),
         trainNumber
     );
   }

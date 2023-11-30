@@ -75,7 +75,7 @@ public class TrainDeparture {
         (int) (Math.random() * 60)
     );
     final String line = String.format(
-        "%s%s",
+        "%c%d",
         (char) (Math.random() * 26 + 'A'),
         (int) (Math.random() * 100)
     );

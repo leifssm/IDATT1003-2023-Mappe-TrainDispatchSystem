@@ -99,7 +99,6 @@ public class Menu {
     print();
     String error = "The number must be bigger than 1";
     if (entries.size() > 1) {
-      // TODO fix all %d
       error = String.format("The number must be between 1 and %d", entries.size());
     }
     final int choice = InputParser.getInt(
