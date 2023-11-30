@@ -69,7 +69,7 @@ class TrainGroupTest {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> new TrainGroup(departures),
-        "List of departures cannot contain duplicate trainnumbers",
+        "List of departures cannot contain duplicate train numbers",
         "Trying to create a TrainGroup with duplicates should throw"
     );
     assertDoesNotThrow(

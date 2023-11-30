@@ -56,7 +56,22 @@ class InputParserTest {
 
   @Test
   void getInt() {
-    TestHelper.setupMockInput("", " ", "en", "to", "-", "0.1", "0,1", "-1");
+    TestHelper.setupMockInput(
+        "",
+        " ",
+        "en",
+        "to",
+        "-",
+        "0.1",
+        "0,1",
+        "-2147483649",
+        "2147483648",
+        "-2147483648",
+        "2147483647",
+        "-1"
+    );
+    assertEquals(-2147483648, InputParser.getInt("Test"));
+    assertEquals(2147483647, InputParser.getInt("Test"));
     assertEquals(-1, InputParser.getInt("Test"));
   }
 
@@ -144,5 +159,13 @@ class InputParserTest {
     assertTrue(InputParser.getBoolean("Test", false));
     assertTrue(InputParser.getBoolean("Test", true));
     assertFalse(InputParser.getBoolean("Test", false));
+  }
+
+  @Test
+  void waitForUser() {
+    TestHelper.setupMockInput("", "any string", " ");
+    InputParser.waitForUser();
+    InputParser.waitForUser();
+    InputParser.waitForUser();
   }
 }

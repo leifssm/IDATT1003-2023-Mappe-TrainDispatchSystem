@@ -11,11 +11,11 @@ class UtilsTest {
     assertEquals("  ", Utils.padCenter("", 2));
     assertEquals("   ", Utils.padCenter("", 3));
     assertEquals("    ", Utils.padCenter("", 4));
-    assertEquals("  a ", Utils.padCenter("a", 4));
+    assertEquals(" a  ", Utils.padCenter("a", 4));
     assertEquals(" ab ", Utils.padCenter("ab", 4));
-    assertEquals(" abc", Utils.padCenter("abc", 4));
+    assertEquals("abc ", Utils.padCenter("abc", 4));
     assertEquals("abcd", Utils.padCenter("abcd", 4));
-    assertEquals("   abc  ", Utils.pc("abc", 8));
+    assertEquals("  abc   ", Utils.pc("abc", 8));
     assertEquals(" 23 ", Utils.pc(23, 4));
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,

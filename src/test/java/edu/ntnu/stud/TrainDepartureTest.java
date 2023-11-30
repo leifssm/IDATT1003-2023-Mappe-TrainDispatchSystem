@@ -50,7 +50,7 @@ class TrainDepartureTest {
             9,
             LocalTime.of(3, 5)
         ),
-        "Line cannot be null",
+        "Argument for @NotNull parameter 'line' of edu/ntnu/stud/TrainDeparture.<init> must not be null",
         "Expected thrown exception when line is null"
     );
     TestHelper.assertThrowsWithMessage(
@@ -143,7 +143,7 @@ class TrainDepartureTest {
             LocalTime.of(3, 5)
         ),
         "Argument for @NotNull parameter 'destination' of "
-            + "edu/ntnu/stud/TrainDeparture.setDestination must not be null",
+            + "edu/ntnu/stud/TrainDeparture.<init> must not be null",
         "Expected thrown exception when destination is null"
     );
     TestHelper.assertThrowsWithMessage(
@@ -156,7 +156,7 @@ class TrainDepartureTest {
             9,
             LocalTime.of(3, 5)
         ),
-        "Destination cannot be a string of length 0",
+        "Destination cannot be an empty string",
         "Expected thrown exception when destination is null"
     );
     TestHelper.assertThrowsWithMessage(
@@ -169,7 +169,8 @@ class TrainDepartureTest {
             9,
             null
         ),
-        "Delay cannot be null",
+        "Argument for @NotNull parameter 'delay' of "
+            + "edu/ntnu/stud/TrainDeparture.<init> must not be null",
         "Expected thrown exception when delay is null"
     );
   }
@@ -183,6 +184,20 @@ class TrainDepartureTest {
 
     assertEquals("Trondheim", departure1.getDestination());
     assertEquals("Alta", departure2.getDestination());
+  }
+
+  @Test
+  void testHashCode() {
+    assertEquals(departure.hashCode(), 50);
+  }
+
+  @Test
+  void testEquals() {
+    TrainDeparture departureWithSimilarId = TrainDeparture.createRandomDeparture(19, "Moss");
+    TrainDeparture departureWithNonSimilarId = TrainDeparture.createRandomDeparture(30, "Moss");
+
+    assertEquals(departure, departureWithSimilarId);
+    assertNotEquals(departure, departureWithNonSimilarId);
   }
 
   @Test
@@ -236,11 +251,10 @@ class TrainDepartureTest {
             + "edu/ntnu/stud/TrainDeparture.setDestination must not be null",
         "Expected to not be able to set track to 0"
     );
-    // TODO add test for error message
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departure.setDestination(""),
-        "Destination cannot be a string of length 0",
+        "Destination cannot be an empty string",
         "Expected to not be able to set track to a negative number that isnt -1"
     );
     departure.setDestination("Geilo");
@@ -255,7 +269,6 @@ class TrainDepartureTest {
 
   @Test
   void getTrack() {
-    // TODO not really required
     assertNotEquals(-1, departure.getTrack());
     assertEquals(9, departure.getTrack());
   }
@@ -271,7 +284,6 @@ class TrainDepartureTest {
         "Expected to not be able to set track to 0"
     );
     assertEquals(10, departure.getTrack());
-    // TODO add test for error message
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departure.setTrack(-2),
@@ -304,7 +316,8 @@ class TrainDepartureTest {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departure.setDelay(null),
-        "Delay cannot be null",
+        "Argument for @NotNull parameter 'delay' of "
+            + "edu/ntnu/stud/TrainDeparture.setDelay must not be null",
         "Expected to not be able to set delay to null"
     );
   }
@@ -312,17 +325,17 @@ class TrainDepartureTest {
   @Test
   void testToString() {
     assertEquals(
-        "4BU2 (Tog #19) til Trondheim: Planlagt kl 12:34, men forsinket til 15:39 fra spor 19",
+        "4BU2 (Train #19) to Trondheim: Expected 12:34, but delayed until 15:39 from track 19",
         departure.toString()
     );
     departure.setDelay(LocalTime.MIN);
     assertEquals(
-        "4BU2 (Tog #19) til Trondheim: Planlagt kl 12:34 med ingen forsinkelse fra spor 19",
+        "4BU2 (Train #19) to Trondheim: Expected 12:34 with no delays from track 19",
         departure.toString()
     );
     departure.setTrack(-1);
     assertEquals(
-        "4BU2 (Tog #19) til Trondheim: Planlagt kl 12:34 med ingen forsinkelse uten satt spor",
+        "4BU2 (Train #19) to Trondheim: Expected 12:34 with no delays without an assigned track",
         departure.toString()
     );
   }

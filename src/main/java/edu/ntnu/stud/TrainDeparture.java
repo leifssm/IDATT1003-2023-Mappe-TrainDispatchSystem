@@ -290,7 +290,7 @@ public class TrainDeparture {
    * @return A string representation of the train departure
    */
   public @NotNull String toString() {
-    return String.format("%s (Train #%s) to %s: Expected %s%s %s",
+    return String.format("%s (Train #%d) to %s: Expected %s%s %s",
       line,
       trainNumber,
       destination,

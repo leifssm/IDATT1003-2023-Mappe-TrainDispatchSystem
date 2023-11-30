@@ -52,9 +52,9 @@ class MenuTest {
         "1: Test Option 1",
         "2: Test Option 2",
         "",
-        "Valg: Tallet må være mellom 1 og 2",
-        "Valg: ",
-        " ══ Valgte \"Test Option 1\" ══"
+        "Option: The number must be between 1 and 2",
+        "Option: ",
+        " ══ Picked option \"Test Option 1\" ══"
     );
 
     menu
@@ -74,9 +74,9 @@ class MenuTest {
         "1: Test Option 1",
         "2: Test Option 2",
         "",
-        "Valg: Tallet må være mellom 1 og 2",
-        "Valg: ",
-        " ══ Valgte \"Test Option 1\" ══"
+        "Option: The number must be between 1 and 2",
+        "Option: ",
+        " ══ Picked option \"Test Option 1\" ══"
     );
 
     assertDoesNotThrow(
@@ -101,9 +101,9 @@ class MenuTest {
         "1: Test Option 1",
         "2: Test Option 2",
         "",
-        "Valg: Tallet må være mellom 1 og 2",
-        "Valg: ",
-        " ══ Valgte \"Test Option 1\" ══",
+        "Option: The number must be between 1 and 2",
+        "Option: ",
+        " ══ Picked option \"Test Option 1\" ══",
         "Run after"
     );
 
@@ -144,13 +144,13 @@ class MenuTest {
         "4: Test Option 4",
         "5: Test Option 5",
         "",
-        "Valg: Tallet må være mellom 1 og 5",
-        "Valg: Tallet må være mellom 1 og 5",
-        "Valg: Tallet må være mellom 1 og 5",
-        "Valg: Tallet må være mellom 1 og 5",
-        "Valg: Tallet må være mellom 1 og 5",
-        "Valg: ",
-        " ══ Valgte \"Test Option 2\" ══"
+        "Option: The number must be between 1 and 5",
+        "Option: The number must be between 1 and 5",
+        "Option: The number must be between 1 and 5",
+        "Option: The number must be between 1 and 5",
+        "Option: The number must be between 1 and 5",
+        "Option: ",
+        " ══ Picked option \"Test Option 2\" ══"
     );
 
     new Menu("Test Menu")
