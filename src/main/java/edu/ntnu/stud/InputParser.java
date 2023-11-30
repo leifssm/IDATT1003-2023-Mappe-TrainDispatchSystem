@@ -177,13 +177,12 @@ public class InputParser {
    */
   public static int getInt(@NotNull String prompt) throws IllegalArgumentException {
     String string = "";
-    final Pattern pattern = Pattern.compile("^-?[0-9]{10,}$");
+    final Pattern pattern = Pattern.compile("^-?[0-9]+$");
     while (true) {
       try {
         string = getString(prompt);
         return Integer.parseInt(string);
       } catch (NumberFormatException error) {
-        System.out.println(error.getMessage());
         if (pattern.matcher(string).matches()) {
           System.out.println(
               "The number has to be between -2147483648 and 2147483647"

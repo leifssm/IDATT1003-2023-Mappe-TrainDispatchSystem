@@ -160,7 +160,7 @@ public class TrainInterface {
    * corresponding train exists, then lets the user change the track
    */
   private void changeDepartureTrack() {
-    TrainDeparture departure = findDepartureFromNumber();
+    final TrainDeparture departure = findDepartureFromNumber();
     if (departure == null) {
       return;
     }
@@ -188,7 +188,7 @@ public class TrainInterface {
    * corresponding train exists, then lets the user change the track.
    */
   private void giveDepartureDelay() {
-    TrainDeparture departure = findDepartureFromNumber();
+    final TrainDeparture departure = findDepartureFromNumber();
     if (departure == null) {
       return;
     }
@@ -215,20 +215,19 @@ public class TrainInterface {
    * @return A train departure with the corresponding train number
    */
   private TrainDeparture findDepartureFromNumber() {
-    // TODO add escape?
     if (departures.length() == 0) {
       System.out.println("There are no train departures to find.");
       return null;
     }
     System.out.println("Write the train number of the train you want to find.");
     final int trainNumber = InputParser.getInt("Train number", n -> {
-      TrainDeparture dep = departures.getDepartureFromNumber(n);
+      final TrainDeparture dep = departures.getDepartureFromNumber(n);
       if (dep == null) {
         System.out.printf("Couldn't find a departure with the number %d. Try again.\n", n);
       }
       return dep != null;
     }, null);
-    TrainDeparture departure = departures.getDepartureFromNumber(trainNumber);
+    final TrainDeparture departure = departures.getDepartureFromNumber(trainNumber);
     System.out.printf("Found the train %s.\n", departure);
     return departure;
   }
@@ -237,6 +236,10 @@ public class TrainInterface {
    * Lets the user query the departures, and gets all departures for a destination.
    */
   private void findDepartureFromDestination() {
+    if (departures.length() == 0) {
+      System.out.println("There are no train departures to find.");
+      return;
+    }
     TrainDeparture[] departures = null;
     while (departures == null || departures.length == 0) {
       System.out.println("Write the destination of the departure(s) you want to find.");

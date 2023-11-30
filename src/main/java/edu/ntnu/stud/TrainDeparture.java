@@ -47,7 +47,7 @@ public class TrainDeparture {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TrainDeparture departure = (TrainDeparture) o;
+    final TrainDeparture departure = (TrainDeparture) o;
     return trainNumber == departure.trainNumber;
   }
 

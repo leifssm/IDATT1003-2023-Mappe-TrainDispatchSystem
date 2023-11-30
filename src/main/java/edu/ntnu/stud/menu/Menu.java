@@ -50,7 +50,7 @@ public class Menu {
       @NotNull String name,
       @NotNull Runnable action
   ) throws IllegalArgumentException {
-    MenuItem item = new MenuItem(name, action);
+    final MenuItem item = new MenuItem(name, action);
     entries.add(item);
     return this;
   }
