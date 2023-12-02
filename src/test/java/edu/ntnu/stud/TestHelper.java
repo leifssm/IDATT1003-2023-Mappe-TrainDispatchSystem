@@ -6,6 +6,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 import static org.junit.jupiter.api.Assertions.*;
 
+// TODO add javadoc
 public class TestHelper {
   private static final InputStream originalIn = System.in;
   private static final PrintStream originalOut = System.out;

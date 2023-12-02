@@ -1,15 +1,8 @@
 package edu.ntnu.stud;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.nio.charset.Charset;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-import org.jetbrains.annotations.NotNull;
+
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,6 +38,7 @@ class TrainGroupTest {
   }
 
   @Test
+  @DisplayName("Tests all combinations of valid and invalid arguments for the constructor")
   void constructor() {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
@@ -91,6 +85,7 @@ class TrainGroupTest {
   }
 
   @Test
+  @DisplayName("addDeparture() throws when any given parameter is null or a duplicate")
   void addDeparture() {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
@@ -119,6 +114,10 @@ class TrainGroupTest {
   }
 
   @Test
+  @DisplayName(
+      "getDepartureFromNumber() should a departure with a matching train number, or null if "
+          + "one doesn't exist"
+  )
   void getDepartureFromNumber() {
     TrainDeparture departure1 = departures.getDepartureFromNumber(1);
     assertEquals(
@@ -145,6 +144,7 @@ class TrainGroupTest {
   }
 
   @Test
+  @DisplayName("getDepartureFromDestination() should return an array with all mathing departures")
   void getDepartureFromDestination() {
     TrainDeparture[] osloDepartures = departures.getDepartureFromDestination("Oslo");
     assertEquals(1, osloDepartures.length, "Expected only one departure to Oslo");
@@ -171,6 +171,7 @@ class TrainGroupTest {
   }
 
   @Test
+  @DisplayName("getDeparturesFromTime() gets all departures after a given time")
   void getDeparturesFromTime() {
     TrainDeparture[] allDepartures = departures.getDeparturesFromTime();
     assertEquals(3, allDepartures.length, "Expected three departures");
@@ -192,18 +193,18 @@ class TrainGroupTest {
   }
 
   @Test
-  @DisplayName("Name") // TODO add to all
-  void length() {
-    assertEquals(3, departures.length(), "Expected three departures");
+  @DisplayName("size() should return the size of the group")
+  void size() {
+    assertEquals(3, departures.size(), "Expected three departures");
   }
 
   @Test
+  @DisplayName("removePassedDepartures() removes passed departures")
   void removePassedDepartures() {
-    assertEquals(3, departures.length(), "Expected three departures");
+    assertEquals(3, departures.size(), "Expected three departures");
     departures.removePassedDepartures(LocalTime.of(11, 59));
-    assertEquals(2, departures.length(), "Expected two departures");
+    assertEquals(2, departures.size(), "Expected two departures");
     departures.removePassedDepartures(LocalTime.of(12, 0));
-    assertEquals(1, departures.length(), "Expected one departure");
-
+    assertEquals(1, departures.size(), "Expected one departure");
   }
 }

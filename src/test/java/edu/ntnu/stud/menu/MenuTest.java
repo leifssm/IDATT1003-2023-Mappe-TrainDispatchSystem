@@ -2,6 +2,7 @@ package edu.ntnu.stud.menu;
 
 import edu.ntnu.stud.TestHelper;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -12,6 +13,7 @@ class MenuTest {
   }
 
   @Test
+  @DisplayName("Constructor should only throw when name is null")
   void constructor() {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
@@ -27,6 +29,7 @@ class MenuTest {
   }
 
   @Test
+  @DisplayName("addOption() throws when any given parameter is null")
   void addOption() {
     Menu menu = new Menu("Test Menu");
 
@@ -64,8 +67,14 @@ class MenuTest {
   }
 
   @Test
+  @DisplayName("setRunBefore() should never throw")
   void setRunBefore() {
     Menu menu = new Menu("Test Menu");
+
+    assertDoesNotThrow(
+        () -> menu.setRunBefore(null),
+        "RunBefore should be able to be set to null"
+    );
 
     TestHelper.setupMockInput("4", "1");
     TestHelper.expectOutput(
@@ -79,11 +88,6 @@ class MenuTest {
         " ══ Picked option \"Test Option 1\" ══"
     );
 
-    assertDoesNotThrow(
-        () -> menu.setRunBefore(null),
-        "RunBefore should be able to be set to null"
-    );
-
     menu
         .addOption("Test Option 1", () -> {})
         .addOption("Test Option 2", () -> {})
@@ -92,8 +96,14 @@ class MenuTest {
   }
 
   @Test
+  @DisplayName("setRunAfter() should never throw")
   void setRunAfter() {
     Menu menu = new Menu("Test Menu");
+
+    assertDoesNotThrow(
+        () -> menu.setRunAfter(null),
+        "RunAfter should be able to be set to null"
+    );
 
     TestHelper.setupMockInput("4", "1");
     TestHelper.expectOutput(
@@ -107,12 +117,6 @@ class MenuTest {
         "Run after"
     );
 
-    assertDoesNotThrow(
-        () -> menu.setRunAfter(null),
-        "RunAfter should be able to be set to null"
-    );
-
-
     menu
         .addOption("Test Option 1", () -> {})
         .addOption("Test Option 2", () -> {})
@@ -121,6 +125,7 @@ class MenuTest {
   }
 
   @Test
+  @DisplayName("print() gives expected output")
   void print() {
     TestHelper.expectOutput(
         "══ Test Menu ══",
@@ -134,6 +139,7 @@ class MenuTest {
   }
 
   @Test
+  @DisplayName("runOnce() gives expected output")
   void runOnce() {
     TestHelper.setupMockInput("9", "-10", "-1", "0", "6", "2");
     TestHelper.expectOutput(

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.time.LocalTime;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,6 +16,7 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("initialize() throws when trying to initialize with null")
   void initialize() {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
@@ -26,6 +28,7 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("isInitialized() returns if the parser is initialized")
   void isInitialized() {
     assertFalse(InputParser.isInitialized());
     InputParser.initialize(new ByteArrayInputStream("".getBytes()));
@@ -34,6 +37,7 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getString() returns a string from the user")
   void getString() {
     TestHelper.setupMockInput("test", "test2", "hello");
     assertEquals("test", InputParser.getString());
@@ -42,12 +46,14 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getString() can be set to validate the input with a regex")
   void getStringRegexWithValidation() {
     TestHelper.setupMockInput("teST", "test2", "hello");
     assertEquals("hello", InputParser.getString("Test", "[a-z]+"));
   }
 
   @Test
+  @DisplayName("getString() can be set to validate the input with a pattern")
   void getStringPatternWithValidation() {
     TestHelper.setupMockInput("teST", "test2", "hello");
     Pattern pattern = Pattern.compile("[a-z]+");
@@ -55,6 +61,7 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getInt() returns an int from the user")
   void getInt() {
     TestHelper.setupMockInput(
         "",
@@ -76,12 +83,14 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getInt() can be set to validate the input")
   void getIntWithValidation() {
     TestHelper.setupMockInput("", " ", "en", "to", "-", "-1", "0", "1");
     assertEquals(1, InputParser.getInt("Test", n -> n > 0));
   }
 
   @Test
+  @DisplayName("getFloat() returns a float from the user")
   void getFloat() {
     TestHelper.setupMockInput("", " ", "en", "to", "-", "-0.1", "0.1", "1.9", "2");
     assertEquals(-0.10000000149011612, InputParser.getFloat("Test"));
@@ -91,12 +100,14 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getFloat() can be set to validate the input")
   void getFloatWithValidation() {
     TestHelper.setupMockInput("", " ", "en", "to", "-", "-0.1", "0.1", "1.9", "2", "7", "8");
     assertEquals(8, InputParser.getFloat("Test", n -> n > 7));
   }
 
   @Test
+  @DisplayName("getChar() returns an int from the user")
   void getChar() {
     TestHelper.setupMockInput("", "das", "ds", "FSFA", "A", "d", "+/", "/", "7", "  ", " ");
     assertEquals('A', InputParser.getChar("Test"));
@@ -107,12 +118,14 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getChar() can be set to validate the input")
   void getCharWithValidation() {
     TestHelper.setupMockInput("", "das", "ds", "FSFA", "A", "B", "C", "D", "E", "FF", "G");
     assertEquals('G', InputParser.getChar("Test", n -> n > 'E'));
   }
 
   @Test
+  @DisplayName("getTime() returns a LocalTime from the user")
   void getTime() {
     TestHelper.setupMockInput("", "2", "12:0", "0:60", "000:00", "24:00", "4:00", "23:59", "04:00");
     assertEquals(LocalTime.of(4, 0), InputParser.getTime("Test"));
@@ -121,6 +134,7 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getTime() can be set to validate the input")
   void getTimeWithValidation() {
     TestHelper.setupMockInput("4:00", "23:59", "14:00");
     assertEquals(
@@ -130,6 +144,7 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getBoolean() returns a boolean from the user")
   void getBoolean() {
     TestHelper.setupMockInput("", "das", "ds", "FSF", "A", "B", "Y", "n", "E", "FF", "G", "N", "y");
     assertTrue(InputParser.getBoolean("Test"));
@@ -139,6 +154,7 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("getBoolean() can return a default value if the user does not pass anything")
   void getBooleanWithDefault() {
     TestHelper.setupMockInput(
         "da",
@@ -162,6 +178,7 @@ class InputParserTest {
   }
 
   @Test
+  @DisplayName("waitForUser() waits for the user to enter any value")
   void waitForUser() {
     TestHelper.setupMockInput("", "any string", " ");
     InputParser.waitForUser();

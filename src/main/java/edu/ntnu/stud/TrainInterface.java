@@ -215,7 +215,7 @@ public class TrainInterface {
    * @return A train departure with the corresponding train number
    */
   private TrainDeparture findDepartureFromNumber() {
-    if (departures.length() == 0) {
+    if (departures.size() == 0) {
       System.out.println("There are no train departures to find.");
       return null;
     }
@@ -236,7 +236,7 @@ public class TrainInterface {
    * Lets the user query the departures, and gets all departures for a destination.
    */
   private void findDepartureFromDestination() {
-    if (departures.length() == 0) {
+    if (departures.size() == 0) {
       System.out.println("There are no train departures to find.");
       return;
     }

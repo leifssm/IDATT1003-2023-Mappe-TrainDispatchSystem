@@ -1,10 +1,12 @@
 package edu.ntnu.stud;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UtilsTest {
   @Test
+  @DisplayName("padCenter() pads the string equally with spaces on both sides")
   void padCenter() {
     assertEquals("", Utils.padCenter("", 0));
     assertEquals(" ", Utils.padCenter("", 1));

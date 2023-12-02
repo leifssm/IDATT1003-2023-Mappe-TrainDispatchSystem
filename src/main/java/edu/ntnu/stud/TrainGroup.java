@@ -135,7 +135,7 @@ public class TrainGroup {
    *
    * @return The number of departures in the group.
    */
-  public int length() {
+  public int size() {
     return departures.size();
   }
 

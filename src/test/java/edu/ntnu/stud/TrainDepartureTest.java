@@ -3,6 +3,7 @@ package edu.ntnu.stud;
 import java.time.LocalTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,6 +29,7 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("Tests if all combinations of valid and invalid arguments gives expected result")
   void constructor() {
     assertDoesNotThrow(
         () -> new TrainDeparture(
@@ -176,6 +178,7 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("createRandomDeparture() should return a departure with random values")
   void createRandomDeparture() {
     TrainDeparture departure1 = TrainDeparture.createRandomDeparture(1, "Trondheim");
     TrainDeparture departure2 = TrainDeparture.createRandomDeparture(5, "Alta");
@@ -187,11 +190,16 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("hashCode() return a unique int linked to the train number")
   void testHashCode() {
-    assertEquals(departure.hashCode(), 50);
+    TrainDeparture departure1 = TrainDeparture.createRandomDeparture(23, "Trondheim");
+    TrainDeparture departure2 = TrainDeparture.createRandomDeparture(84, "Alta");
+    assertEquals(54, departure1.hashCode());
+    assertEquals(115, departure2.hashCode());
   }
 
   @Test
+  @DisplayName("equals() should compare by train number")
   void testEquals() {
     TrainDeparture departureWithSimilarId = TrainDeparture.createRandomDeparture(19, "Moss");
     TrainDeparture departureWithNonSimilarId = TrainDeparture.createRandomDeparture(30, "Moss");
@@ -201,6 +209,9 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName(
+      "setPlannedDeparture() should only throw when setting delay to a non null LocalTime instance"
+  )
   void setPlannedDeparture() {
     assertEquals(LocalTime.of(12, 34), departure.getPlannedDeparture());
     TestHelper.assertThrowsWithMessage(
@@ -215,18 +226,21 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("getPlannedDeparture() should return the planned departure")
   void getPlannedDeparture() {
     assertNotEquals(null, departure.getPlannedDeparture());
     assertEquals(LocalTime.of(12, 34), departure.getPlannedDeparture());
   }
 
   @Test
+  @DisplayName("getDelayedDeparture() should return the delayed departure")
   void getDelayedDeparture() {
     assertNotEquals(null, departure.getDelayedDeparture());
     assertEquals(LocalTime.of(15, 39), departure.getDelayedDeparture());
   }
 
   @Test
+  @DisplayName("getLine() should return the line name")
   void getLine() {
     assertNotEquals(null, departure.getLine());
     assertNotEquals("", departure.getLine());
@@ -234,6 +248,7 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("getDestination() should return the destination")
   void getDestination() {
     assertNotEquals(null, departure.getDestination());
     assertNotEquals("", departure.getDestination());
@@ -241,6 +256,10 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName(
+      "setDestination() should throw only when trying to set the destination to "
+          + "null or to an empty string"
+  )
   void setDestinaton() {
     departure.setDestination("Kristiansand");
     assertEquals("Kristiansand", departure.getDestination());
@@ -262,18 +281,24 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("getTrainNumber() should return the train number")
   void getTrainNumber() {
     assertNotEquals(-1, departure.getTrainNumber());
     assertEquals(19, departure.getTrainNumber());
   }
 
   @Test
+  @DisplayName("getTrack() should return the assigned track")
   void getTrack() {
     assertNotEquals(-1, departure.getTrack());
     assertEquals(9, departure.getTrack());
   }
 
   @Test
+  @DisplayName(
+      "setTrack() should throw only when trying to set the track to "
+          + "0 or to a negative number that isnt -1"
+  )
   void setTrack() {
     departure.setTrack(10);
     assertEquals(10, departure.getTrack());
@@ -295,12 +320,14 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("getDelay() should return the delay")
   void getDelay() {
     assertNotEquals(null, departure.getDelay());
     assertEquals(LocalTime.of(3, 5), departure.getDelay());
   }
 
   @Test
+  @DisplayName("isDelayed() should return if the delay is greater than 00:00")
   void isDelayed() {
     assertTrue(departure.isDelayed());
     departure.setDelay(LocalTime.MIN);
@@ -308,11 +335,12 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("setDelay() should throw if trying to set to null")
   void setDelay() {
     departure.setDelay(LocalTime.of(1, 2));
     assertEquals(LocalTime.of(1, 2), departure.getDelay());
     departure.setDelay(LocalTime.MIN);
-    assertEquals(LocalTime.MIN, departure.getDelay());
+    assertFalse(departure.isDelayed());
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departure.setDelay(null),
@@ -323,6 +351,7 @@ class TrainDepartureTest {
   }
 
   @Test
+  @DisplayName("toString() should return a string representation of the departure")
   void testToString() {
     assertEquals(
         "4BU2 (Train #19) to Trondheim: Expected 12:34, but delayed until 15:39 from track 19",
