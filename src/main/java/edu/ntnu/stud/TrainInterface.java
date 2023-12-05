@@ -93,6 +93,7 @@ public class TrainInterface {
         .addOption("Find departure by number", this::findDepartureFromNumber)
         .addOption("Find departures by destination", this::findDepartureFromDestination)
         .addOption("Set the time", this::setClock)
+        .addOption("Remove passed departures", this::removeOldDepartures)
         .addOption("Quit", () -> {
           InputParser.close();
           System.exit(0);
@@ -100,6 +101,101 @@ public class TrainInterface {
         .setRunBefore(this::showDepartures)
         .setRunAfter(InputParser::waitForUser)
         .run();
+  }
+
+  /**
+   * Gets a valid train number from the user that doesn't collide with an existing train number.
+   *
+   * @return A valid train number that doesn't collide with another departure.
+   */
+  private int getNonCollidingTrainNumberFromUser() {
+    System.out.println("What is the train number? The number has to be bigger than or equal to 1.");
+
+    return InputParser.getInt("Train number", n -> {
+      if (n < 1) {
+        System.out.println("The train number cannot be smaller than 1.");
+        return false;
+      }
+      if (departures.doesDepartureExists(n)) {
+        System.out.println("The train number is already in use.");
+        return false;
+      }
+      return true;
+    }, null);
+  }
+
+  /**
+   * Gets a valid track number from the user.
+   *
+   * @return A valid track number.
+   */
+  private int getTrackNumberFromUser() {
+    System.out.println(
+        "What track is it supposed to leave from? Write -1 if it should be unassigned."
+    );
+
+    return InputParser.getInt(
+        "Track",
+        n -> n >= -1 && n != 0,
+        "Track cannot be 0 or smaller than -1."
+    );
+  }
+
+  /**
+   * Gets a valid destination from the user.
+   *
+   * @return A valid destination.
+   */
+  private @NotNull String getDestinationFromUser() {
+    System.out.println("What is the train's destination?");
+    return InputParser.getString(
+        "Destination",
+        Utils.destinationPattern,
+        "The destination must be between 1 and 16 characters."
+    );
+  }
+
+  /**
+   * Gets a valid train line from the user.
+   *
+   * @return A valid train line.
+   */
+  private @NotNull String getTrainLineFromUser() {
+    System.out.println(
+        "Whats the train's line? The line can only contain capital letters and numbers, and must "
+            + "contain between 2 and 7 letters."
+    );
+    return InputParser.getString(
+        "Line",
+        Utils.trainLinePattern,
+        "The line can only contain capital letters and numbers, and must contain "
+            + "between 2 and 7 letters."
+    );
+  }
+
+  private @NotNull LocalTime getTrainDelay() {
+    System.out.println("Is the train already delayed?");
+    final boolean isDelayed = InputParser.getBoolean("Delayed?", false);
+
+    if (isDelayed) {
+      System.out.println("How long is the train delayed?");
+      return InputParser.getTime("Delay");
+    }
+    return LocalTime.MIN;
+  }
+
+  private @NotNull LocalTime getTimeAfterTime(@NotNull LocalTime timeToCompare) {
+    System.out.printf(
+        "Enter a new time, the time must be later than the current time (%s).\n",
+        timeToCompare
+    );
+
+    // Gets a time from the user that is after the current time, and sets it
+    return InputParser.getTime(
+        "Time",
+         time -> time.isAfter(timeToCompare),
+        "The time must be after %s.".formatted(timeToCompare)
+    );
   }
 
   /**
@@ -111,58 +207,15 @@ public class TrainInterface {
     System.out.println("When does the train leave?");
     final LocalTime plannedDeparture = InputParser.getTime("Departure");
 
-    // Gets the train line from the user
-    System.out.println(
-        "Whats the train's line? The line can only contain capital letters and numbers, and must "
-            + "contain between 2 and 7 letters."
-    );
-    final String line = InputParser.getString(
-        "Line",
-        Utils.trainLinePattern,
-        "The line can only contain capital letters and numbers, and must contain "
-            + "between 2 and 7 letters."
-    );
+    final String line = getTrainLineFromUser();
 
-    // Gets the destination from the user
-    System.out.println("What is the train's destination?");
-    final String destination = InputParser.getString(
-        "Destination",
-        ".+",
-        "The destination cannot be empty."
-    );
+    final String destination = getDestinationFromUser();
 
-    // Gets a non-colliding train number from the user
-    System.out.println("What is the train number? The number has to be bigger than or equal to 1.");
-    final int trainNumber = InputParser.getInt("Train number", n -> {
-      if (n < 1) {
-        System.out.println("The train number cannot be smaller than 1.");
-        return false;
-      }
-      if (departures.doesDepartureExists(n)) {
-        System.out.println("The train number is already in use.");
-        return false;
-      }
-      return true;
-    }, null);
+    final int trainNumber = getNonCollidingTrainNumberFromUser();
 
-    // Gets the track from the user
-    System.out.println(
-        "What track is it supposed to leave from? Write -1 if it should be unassigned."
-    );
-    final int track = InputParser.getInt(
-        "Track",
-        n -> n >= -1 && n != 0,
-        "Track cannot be 0 or smaller than -1."
-    );
+    final int track = getTrackNumberFromUser();
 
-    // Gets the delay from the user
-    LocalTime delay = LocalTime.MIN;
-    System.out.println("Is the train already delayed?");
-    final boolean isDelayed = InputParser.getBoolean("Delayed?", false);
-    if (isDelayed) {
-      System.out.println("How long is the train delayed?");
-      delay = InputParser.getTime("Delay");
-    }
+    final LocalTime delay = getTrainDelay();
 
     // Should not throw an exception, since the data is already validated
     final TrainDeparture departure = new TrainDeparture(
@@ -190,26 +243,23 @@ public class TrainInterface {
       return;
     }
 
-    // Gets the new track from the user
-    System.out.println("Which track should it leave from?");
-    final int track = InputParser.getInt(
-        "Track",
-        n -> n >= 1,
-        "Track cannot be smaller than 1."
-    );
+    final int track = getTrackNumberFromUser();
 
-    // Prints a relevant message to the user
     final int previousTrack = departure.getTrack();
 
+    // Prints a relevant message to the user
     if (previousTrack != track) {
       System.out.printf(
-          "\nTrack changed from %d to %d.\n",
-          previousTrack,
-          track
+          "\nTrack changed from %s, to %s.\n",
+          previousTrack == -1 ? "being unassigned" : "going from track " + previousTrack,
+          track == -1 ? "being unassigned" : "going from track " + track
       );
       departure.setTrack(track);
     } else {
-      System.out.printf("\nTrack was already sat to %d, no change was made.\n", track);
+      System.out.printf(
+          "\nThe track was already %s, no change was made.\n",
+          track == -1 ? "unassigned" : "sat to track " + track
+      );
     }
   }
 
@@ -262,10 +312,10 @@ public class TrainInterface {
         "Train number",
         n -> {
           final boolean departureExists = departures.doesDepartureExists(n);
-          if (departureExists) {
+          if (!departureExists) {
             System.out.printf("Couldn't find a departure with the number %d. Try again.\n", n);
           }
-          return !departureExists;
+          return departureExists;
         },
         null
     );
@@ -297,7 +347,7 @@ public class TrainInterface {
 
       if (departures.length == 0) {
         System.out.printf(
-            "Couldn't find any departures with the destination %s. Try again.",
+            "Couldn't find any departures with the destination %s. Try again.\n",
             destination
         );
       }
@@ -318,19 +368,20 @@ public class TrainInterface {
    * Lets the user change the current time, but doesn't let the user pick an earlier time.
    */
   private void setClock() {
-    System.out.printf(
-        "Enter a new time, the time must be later than the current time (%s).\n",
-        currentTime
-    );
+    currentTime = getTimeAfterTime(currentTime);
+    System.out.printf("\nThe time got changed to %s.\n", currentTime);
+  }
 
-    // Gets a time from the user that is after the current time, and sets it
-    currentTime = InputParser.getTime(
-        "Time",
-        time -> time.isAfter(currentTime),
-        "The time must be after %s.\n".formatted(currentTime)
-    );
-
-    System.out.printf("The time got changed to %s.\n", currentTime);
+  private void removeOldDepartures() {
+    int removed = departures.removeDeparturesBefore(currentTime);
+    if (removed == 0) {
+      System.out.printf(
+          "No departures were removed, as there are no departures before %s.\n",
+          currentTime
+      );
+    } else {
+      System.out.printf("Removed %d departures.\n", removed);
+    }
   }
 
   /**
@@ -343,6 +394,7 @@ public class TrainInterface {
     System.out.printf("                      ║  Departures  ║ %s ║\n", currentTime);
     System.out.println("╔═══════════╤═════════╩═╤═══════╤════╩══╤════╩═════════════╤═══════╗");
     System.out.println("║  Arrives  │ Expected  │ Track │ Line  │ Destination      │ Train ║");
+    System.out.println("╟───────────┼───────────┼───────┼───────┼──────────────────┼───────╢");
     for (TrainDeparture departure : sortedDepartures) {
       System.out.println(formatDeparture(departure));
     }
@@ -361,13 +413,13 @@ public class TrainInterface {
    */
   private static @NotNull String formatDeparture(@NotNull TrainDeparture departure) {
     final String track = departure.getTrack() != -1
-        ? Utils.pc(departure.getTrack(), 7)
+        ? Utils.padCenter(departure.getTrack(), 7)
         : "       ";
 
-    final String line = Utils.pc(departure.getLine(), 7);
+    final String line = Utils.padCenter(departure.getLine(), 7);
 
     final String trainNumber = departure.getTrainNumber() != -1
-        ? Utils.pc(departure.getTrainNumber(), 7)
+        ? Utils.padCenter(departure.getTrainNumber(), 7)
         : "       ";
 
     return "║   %s   │   %s   │%s│%s│ %-16s │%s║".formatted(

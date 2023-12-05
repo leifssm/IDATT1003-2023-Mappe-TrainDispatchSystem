@@ -1,8 +1,5 @@
 package edu.ntnu.stud;
 
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,6 +11,11 @@ public class Utils {
    * Pattern for validating train line names.
    */
   public static final Pattern trainLinePattern = Pattern.compile("^[A-Z0-9]{2,7}$");
+
+  /**
+   * Pattern for validating destination names.
+   */
+  public static final Pattern destinationPattern = Pattern.compile("^[a-zæøå -]{1,16}$", Pattern.CASE_INSENSITIVE);
 
   /**
    * Pads the given string evenly on both sides so that the string end up at least with a length
@@ -49,23 +51,5 @@ public class Utils {
    */
   public static @NotNull String padCenter(int n, int padding) {
     return padCenter(String.valueOf(n), padding);
-  }
-
-  /**
-   * Shorthand for {@link Utils#padCenter(int, int)}.
-   *
-   * @see Utils#padCenter(int, int)
-   */
-  public static @NotNull String pc(int n, int padding) {
-    return padCenter(n, padding);
-  }
-
-  /**
-   * Shorthand for {@link Utils#padCenter(String, int)}.
-   *
-   * @see Utils#padCenter(String, int)
-   */
-  public static @NotNull String pc(@NotNull String string, int padding) {
-    return padCenter(string, padding);
   }
 }
