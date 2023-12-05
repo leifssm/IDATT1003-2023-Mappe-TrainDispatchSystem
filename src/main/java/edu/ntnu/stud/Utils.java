@@ -1,5 +1,8 @@
 package edu.ntnu.stud;
 
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,22 +28,36 @@ public class Utils {
       @NotNull String string,
       int padding
   ) throws IllegalArgumentException {
+    // If the string doesn't need padding, return it.
     if (string.length() >= padding) {
       return string;
     }
+
+    // Adds the padding evenly on both sides of the string
     final int totalPadding = padding - string.length();
+
     final int rightPadding = (int) Math.ceil((double) totalPadding / 2);
     final int leftPadding = totalPadding - rightPadding;
+
     return " ".repeat(leftPadding) + string + " ".repeat(rightPadding);
   }
 
   /**
-   * Shorthand for {@link Utils#padCenter(String, int)}, except that it accepts an integer.
+   * Extension of {@link Utils#padCenter(String, int)}, except that it accepts an integer.
    *
    * @see Utils#padCenter(String, int)
    */
-  public static @NotNull String pc(int n, int padding) {
+  public static @NotNull String padCenter(int n, int padding) {
     return padCenter(String.valueOf(n), padding);
+  }
+
+  /**
+   * Shorthand for {@link Utils#padCenter(int, int)}.
+   *
+   * @see Utils#padCenter(int, int)
+   */
+  public static @NotNull String pc(int n, int padding) {
+    return padCenter(n, padding);
   }
 
   /**

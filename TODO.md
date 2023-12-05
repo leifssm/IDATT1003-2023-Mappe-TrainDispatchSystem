@@ -53,7 +53,7 @@ I første del av mappen skal du fokusere på å:
   - [ ] Hvordan klassen responderer på ugyldige data - hvilken strategi følger klassen (kaster
         unntak? setter dummy-verdi?)
   - [X] Implementer nødvendige felt i klassen, med egnede datatyper. Tips: for tid kan det være lurt å bruke klassen LocalTime
-  - [ ] Lag enhetstester for å teste at klassen for togavgang fungerer som den skal og er robust. Husk både positive- og negative tester.
+  - [X] Lag enhetstester for å teste at klassen for togavgang fungerer som den skal og er robust. Husk både positive- og negative tester.
 - [X] Kjør CheckStyle på koden din med Google-reglene.
 - [X] Opprett en klasse som på sikt skal bli brukergrensesnittet og dermed ta seg av all brukerinteraksjon. Opprett to metoder; start() og init().
 - [X] Bruk start-metoden til å skrive enkel testkode for å teste at Train-Departure-klassen fungerer iht spek ved f.eks. å opprette 3-4 instanser av klassen, og skrive ut objektene(hint: Kan lønne seg å lage en egen metode for å skrive ut detaljene til en togavgang...).
@@ -80,16 +80,16 @@ prosjektet)?
   GitLab?
   - [X] Finnes det flere innsjekkinger (commits) ?
   - [X] Beskriver commit-meldingene endringene på en kort og konsis måte?
-- [ ] Enhetstester:
-- [ ] Har enhetstestene beskrivende navn som dokumenterer hva testene gjør?
+- [X] Enhetstester:
+- [X] Har enhetstestene beskrivende navn som dokumenterer hva testene gjør?
 - [ ] Følger de mønstret Arrange-Act-Assert?
-- [ ] Tas det hensyn til både positive og negative tilfeller?
-- [ ] Er testdekningen god nok?
-- [ ] Kjører samtlige tester uten feil?
+- [X] Tas det hensyn til både positive og negative tilfeller?
+- [X] Er testdekningen god nok?
+- [X] Kjører samtlige tester uten feil?
 - [ ] Er klassene for togavgang, brukergrensesnitt og applikasjon implementert iht
 oppgavebeskrivelsen?
-- [ ] Kodekvalitet:
-- [ ] Er koden godt dokumentert iht JavaDoc-standard?
-- [ ] Er koden robust (validering mm)?
-- [ ] Har variabler, metoder og klasser beskrivende navn?
-- [ ] Er klassene gruppert i en logisk pakkestruktur?
+- [X] Kodekvalitet:
+  - [X] Er koden godt dokumentert iht JavaDoc-standard?
+  - [X] Er koden robust (validering mm)?
+  - [X] Har variabler, metoder og klasser beskrivende navn?
+  - [X] Er klassene gruppert i en logisk pakkestruktur?

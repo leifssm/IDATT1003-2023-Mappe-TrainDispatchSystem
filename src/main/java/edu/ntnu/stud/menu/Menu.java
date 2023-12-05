@@ -50,6 +50,7 @@ public class Menu {
       @NotNull String name,
       @NotNull Runnable action
   ) throws IllegalArgumentException {
+    // Creates a new MenuItem and adds it to its list.
     final MenuItem item = new MenuItem(name, action);
     entries.add(item);
     return this;
@@ -62,6 +63,7 @@ public class Menu {
    * @return The {@code this} object.
    */
   public Menu setRunBefore(Runnable beforeAction) {
+    // Set the action to run before the menu is shown.
     this.beforeAction = beforeAction;
     return this;
   }
@@ -73,6 +75,7 @@ public class Menu {
    * @return The {@code this} object.
    */
   public Menu setRunAfter(Runnable afterAction) {
+    // Set the action to run after the menu is shown.
     this.afterAction = afterAction;
     return this;
   }
@@ -81,6 +84,7 @@ public class Menu {
    * Print the menu to the console.
    */
   public void print() {
+    // Prints the title and entries to the console.
     System.out.println("══ " + name + " ══");
     for (int i = 0; i < entries.size(); i++) {
       final MenuItem item = entries.get(i);
@@ -93,22 +97,34 @@ public class Menu {
    * Prints the menu and runs the selected option once.
    */
   public void runOnce() {
+    if (entries.isEmpty()) {
+      throw new IllegalStateException("The menu must have at least one option");
+    }
+
+    // Runs the before action if it is set.
     if (beforeAction != null) {
       beforeAction.run();
     }
     print();
-    String error = "The number must be bigger than 1";
-    if (entries.size() > 1) {
-      error = String.format("The number must be between 1 and %d", entries.size());
-    }
+
+    // Creates a relevant error message.
+    final String error = entries.size() == 1
+        ? "The number must be 1"
+        : "The number must be between 1 and %d".formatted(entries.size());
+
+    // Gets a valid validates the user input.
     final int choice = InputParser.getInt(
         "Option",
         n -> 1 <= n && n <= entries.size(),
         error
     ) - 1;
+
+    // Runs the selected option.
     final MenuItem item = entries.get(choice);
     System.out.printf("\n ══ Picked option \"%s\" ══\n", item);
     item.run();
+
+    // Runs the after action if it is set.
     if (afterAction != null) {
       afterAction.run();
     }
@@ -118,6 +134,7 @@ public class Menu {
    * Prints the menu and runs the selected option until the program is terminated.
    */
   public void run() {
+    // Loops the menu until the program is terminated.
     while (true) {
       runOnce();
     }

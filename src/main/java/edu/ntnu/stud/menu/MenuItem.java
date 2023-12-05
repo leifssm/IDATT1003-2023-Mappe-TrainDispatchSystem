@@ -24,6 +24,7 @@ class MenuItem {
    * @throws IllegalArgumentException If the name or the action is null.
    */
   MenuItem(@NotNull String name, @NotNull Runnable action) {
+    // Set the name and action of the menu item.
     this.name = name;
     this.action = action;
   }

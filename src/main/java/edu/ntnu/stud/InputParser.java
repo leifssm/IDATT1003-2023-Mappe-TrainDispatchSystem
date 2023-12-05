@@ -108,11 +108,15 @@ public class InputParser {
       String errorMessage
   ) throws IllegalArgumentException {
     Matcher result;
+
+    // Gets a string from the user until it matches the pattern.
     while (true) {
       result = pattern.matcher(getString(prompt));
       if (result.matches()) {
         return result.group();
       }
+
+      // Prints the error message if it is set.
       if (errorMessage != null) {
         System.out.println(errorMessage);
       }
@@ -136,6 +140,7 @@ public class InputParser {
       @NotNull String regex,
       String errorMessage
   ) throws IllegalArgumentException {
+    // Compiles a regex into a pattern and calls the associated getString method.
     final Pattern pattern = Pattern.compile(regex);
     return getString(prompt, pattern, errorMessage);
   }
@@ -150,6 +155,7 @@ public class InputParser {
       @NotNull String prompt,
       @NonNls @NotNull String regex
   ) throws IllegalArgumentException {
+    // Defaults the error message
     return getString(prompt, regex, "The string does not match the criteria");
   }
 
@@ -163,6 +169,7 @@ public class InputParser {
       @NotNull String prompt,
       @NotNull Pattern pattern
   ) throws IllegalArgumentException {
+    // Defaults the error message
     return getString(prompt, pattern, "The string does not match the criteria");
   }
 
@@ -176,13 +183,18 @@ public class InputParser {
    * @throws IllegalArgumentException If the prompt is null.
    */
   public static int getInt(@NotNull String prompt) throws IllegalArgumentException {
+    // Stores the string to a variable so that the value can be used in the catch block also.
     String string = "";
     final Pattern pattern = Pattern.compile("^-?[0-9]+$");
+
     while (true) {
       try {
+        // Gets an input from the user until it can be parsed as an int.
         string = getString(prompt);
         return Integer.parseInt(string);
       } catch (NumberFormatException error) {
+        // If the input matches the pattern, the string must be a valid number, but still threw,
+        // so it must be causing an integer overflow.
         if (pattern.matcher(string).matches()) {
           System.out.println(
               "The number has to be between -2147483648 and 2147483647"
@@ -215,10 +227,13 @@ public class InputParser {
   ) throws IllegalArgumentException {
     int result;
     while (true) {
+      // Gets an int from the user until it matches the validation.
       result = getInt(prompt);
       if (validator.test(result)) {
         return result;
       }
+
+      // Prints the error message if it is set.
       if (errorMessage != null) {
         System.out.println(errorMessage);
       }
@@ -235,6 +250,7 @@ public class InputParser {
       @NotNull String prompt,
       @NotNull InputValidator<Integer> validator
   ) throws IllegalArgumentException {
+    // Defaults the error message
     return getInt(prompt, validator, "The number does not match the criteria");
   }
 
@@ -249,6 +265,7 @@ public class InputParser {
    */
   public static float getFloat(@NotNull String prompt) throws IllegalArgumentException {
     while (true) {
+      // Gets a string from the user until it can be parsed as a float.
       try {
         return Float.parseFloat(getString(prompt));
       } catch (NumberFormatException ignored) {
@@ -278,10 +295,13 @@ public class InputParser {
   ) throws IllegalArgumentException {
     float result;
     while (true) {
+      // Gets a float from the user until it matches the validation.
       result = getFloat(prompt);
       if (validator.test(result)) {
         return result;
       }
+
+      // Prints the error message if it is set.
       if (errorMessage != null) {
         System.out.println(errorMessage);
       }
@@ -298,6 +318,7 @@ public class InputParser {
       @NotNull String prompt,
       @NotNull InputValidator<Float> validator
   ) throws IllegalArgumentException {
+    // Defaults the error message
     return getFloat(prompt, validator, "The decimal number does not fit the criteria");
   }
 
@@ -311,6 +332,7 @@ public class InputParser {
    * @throws IllegalArgumentException If the prompt is null.
    */
   public static char getChar(@NotNull String prompt) throws IllegalArgumentException {
+    // Gets a string from the user until it matches the regex of one character.
     final Pattern pattern = Pattern.compile("^.$");
     final String input = getString(prompt, pattern, "You must give only one character");
     return input.charAt(0);
@@ -337,10 +359,13 @@ public class InputParser {
   ) throws IllegalArgumentException {
     char input;
     while (true) {
+      // Gets a char from the user until it matches the validation.
       input = getChar(prompt);
       if (validator.test(input)) {
         return input;
       }
+
+      // Prints the error message if it is set.
       if (errorMessage != null) {
         System.out.println(errorMessage);
       }
@@ -357,6 +382,7 @@ public class InputParser {
       @NotNull String prompt,
       @NotNull InputValidator<Character> validator
   ) throws IllegalArgumentException {
+    // Defaults the error message
     return getChar(prompt, validator, "The character does not fit the criteria");
   }
 
@@ -374,15 +400,20 @@ public class InputParser {
     final Pattern pattern = Pattern.compile("^[0-9]{1,2}:[0-9]{1,2}$");
     String result;
     while (true) {
+      // Gets a string from the user until it matches a time regex
       result = getString(
           prompt,
           pattern,
           "Please write the time in the format of \"h:mm\" or \"hh:mm\""
       );
+
+      // If only one hour digit is given, it adds a zero for convenience
       if (result.length() == 4) {
         result = "0" + result;
       }
+
       try {
+        // Tries parsing the string as a time, and loops if it fails
         return LocalTime.parse(result);
       } catch (DateTimeParseException ignored) {
         System.out.println("The time is not valid");
@@ -411,10 +442,13 @@ public class InputParser {
   ) throws IllegalArgumentException {
     LocalTime result;
     while (true) {
+      // Gets a time from the user until it matches the validation.
       result = getTime(prompt);
       if (validator.test(result)) {
         return result;
       }
+
+      // Prints the error message if it is set.
       if (errorMessage != null) {
         System.out.println(errorMessage);
       }
@@ -431,6 +465,7 @@ public class InputParser {
       @NotNull String prompt,
       @NotNull InputValidator<LocalTime> validator
   ) throws IllegalArgumentException {
+    // Defaults the error message
     return getTime(prompt, validator, "The time does not fit the criteria");
   }
 
@@ -444,6 +479,7 @@ public class InputParser {
    * @throws IllegalArgumentException If the prompt is null.
    */
   public static boolean getBoolean(@NotNull String prompt) throws IllegalArgumentException {
+    // Gets a character from the user until it is either y or n, and converts it to a boolean.
     return getString(
         prompt + " [y/n]",
         "^[ynYN]$",
@@ -465,11 +501,14 @@ public class InputParser {
       @NotNull String prompt,
       boolean defaultValue
   ) throws IllegalArgumentException {
+    // Gets a string from the user until it is either y, n or an empty string
     final String result = getString(
         prompt + (defaultValue ? " [Y/n]" : " [y/N]"),
         "^[ynYN]?$",
         "Please only use one of the given characters"
     );
+
+    // If the string is empty the default value is returned
     if (result.isEmpty()) {
       return defaultValue;
     }
@@ -480,6 +519,7 @@ public class InputParser {
    * Prompts the user to press enter, and stalls the program until the user does so.
    */
   public static void waitForUser() {
+    // Waits for the user to enter any string.
     System.out.println("\nPress enter to continue");
     getString();
   }

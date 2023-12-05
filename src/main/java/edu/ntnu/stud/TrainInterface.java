@@ -32,6 +32,7 @@ public class TrainInterface {
    * Initializes the train interface with random departures.
    */
   public void init() {
+    // Creates random departures
     departures.addDeparture(
         TrainDeparture.createRandomDeparture(30, "Trondheim")
     );
@@ -63,6 +64,7 @@ public class TrainInterface {
    */
   public void start() {
     // TODO add method for all setters
+    // Uses a Menu instance to create a menu with all possible options
     new Menu("Main Menu")
         .addOption("Add new departure", this::addDeparture)
         .addOption("Assign track to departure", this::changeDepartureTrack)
@@ -115,11 +117,11 @@ public class TrainInterface {
         System.out.println("The train number cannot be smaller than 1.");
         return false;
       }
-      if (departures.getDepartureFromNumber(n) == null) {
-        return true;
+      if (departures.doesDepartureExists(n)) {
+        System.out.println("The train number is already in use.");
+        return false;
       }
-      System.out.println("The train number is already in use.");
-      return false;
+      return true;
     }, null);
 
     // Gets the track from the user
@@ -160,24 +162,31 @@ public class TrainInterface {
    * corresponding train exists, then lets the user change the track
    */
   private void changeDepartureTrack() {
+    // Gets the departure from the user, and returns if it doesn't find one since the user can't
+    // change the track of a departure if none exists.
     final TrainDeparture departure = findDepartureFromNumber();
     if (departure == null) {
       return;
     }
+
+    // Gets the new track from the user
     System.out.println("Which track should it leave from?");
     final int track = InputParser.getInt(
         "Track",
         n -> n >= 1,
         "Track cannot be smaller than 1."
     );
+
+    // Prints a relevant message to the user
     final int previousTrack = departure.getTrack();
-    departure.setTrack(track);
+
     if (previousTrack != track) {
       System.out.printf(
           "\nTrack changed from %d to %d.\n",
           previousTrack,
           track
       );
+      departure.setTrack(track);
     } else {
       System.out.printf("\nTrack was already sat to %d, no change was made.\n", track);
     }
@@ -188,19 +197,24 @@ public class TrainInterface {
    * corresponding train exists, then lets the user change the track.
    */
   private void giveDepartureDelay() {
+    // Gets the departure from the user, and returns if it doesn't find one since the user can't
+    // change the delay of a departure if none exists.
     final TrainDeparture departure = findDepartureFromNumber();
     if (departure == null) {
       return;
     }
 
+    // Gives the user the delay if one already exists
     final LocalTime previousDelay = departure.getDelay();
     if (departure.isDelayed()) {
       System.out.printf("The train is already delayed with %s.\n", previousDelay);
     }
 
+    // Gets the new delay from the user
     System.out.println("How much do you want to change the delay to?");
     final LocalTime delay = InputParser.getTime("Delay");
 
+    // Prints a relevant message to the user
     if (previousDelay.equals(delay)) {
       System.out.printf("The train is already delayed with %s, no change was made.\n", delay);
     } else {
@@ -215,18 +229,27 @@ public class TrainInterface {
    * @return A train departure with the corresponding train number
    */
   private TrainDeparture findDepartureFromNumber() {
+    // Returns null if there are no departures to select from
     if (departures.size() == 0) {
       System.out.println("There are no train departures to find.");
       return null;
     }
+
+    // Gets a valid train number from the user
     System.out.println("Write the train number of the train you want to find.");
-    final int trainNumber = InputParser.getInt("Train number", n -> {
-      final TrainDeparture dep = departures.getDepartureFromNumber(n);
-      if (dep == null) {
-        System.out.printf("Couldn't find a departure with the number %d. Try again.\n", n);
-      }
-      return dep != null;
-    }, null);
+    final int trainNumber = InputParser.getInt(
+        "Train number",
+        n -> {
+          final boolean departureExists = departures.doesDepartureExists(n);
+          if (departureExists) {
+            System.out.printf("Couldn't find a departure with the number %d. Try again.\n", n);
+          }
+          return !departureExists;
+        },
+        null
+    );
+
+    // Returns the departure with the given train number
     final TrainDeparture departure = departures.getDepartureFromNumber(trainNumber);
     System.out.printf("Found the train %s.\n", departure);
     return departure;
@@ -236,28 +259,33 @@ public class TrainInterface {
    * Lets the user query the departures, and gets all departures for a destination.
    */
   private void findDepartureFromDestination() {
+    // Returns if there are no departures to select from
     if (departures.size() == 0) {
       System.out.println("There are no train departures to find.");
       return;
     }
-    TrainDeparture[] departures = null;
-    while (departures == null || departures.length == 0) {
+
+    // Gets a destination from the user until the program finds at least one departure with that
+    // destination
+    TrainDeparture[] departures;
+    do {
       System.out.println("Write the destination of the departure(s) you want to find.");
       final String destination = InputParser.getString("Destination");
+
       departures = this.departures.getDepartureFromDestination(destination);
+
       if (departures.length == 0) {
         System.out.printf(
             "Couldn't find any departures with the destination %s. Try again.",
             destination
         );
       }
-    }
-    System.out.println(
-        "\nFound "
-            + departures.length
-            + " departure"
-            + (departures.length >= 2 ? "s" : "")
-            + ":"
+    } while (departures.length == 0);
+
+    System.out.printf(
+        "\nFound %d departure%s:\n",
+        departures.length,
+        departures.length >= 2 ? "s" : ""
     );
     for (int i = 0; i < departures.length; i++) {
       System.out.printf(" %d. %s\n", i + 1, departures[i]);
@@ -273,6 +301,8 @@ public class TrainInterface {
         "Enter a new time, the time must be later than the current time (%s).\n",
         currentTime
     );
+
+    // Gets a time from the user that is after the current time, and sets it
     currentTime = InputParser.getTime(
         "Time",
         time -> time.isAfter(currentTime),
@@ -312,6 +342,7 @@ public class TrainInterface {
     final String track = departure.getTrack() != -1
         ? Utils.pc(departure.getTrack(), 7)
         : "       ";
+
     final String line = Utils.pc(departure.getLine(), 7);
 
     final String trainNumber = departure.getTrainNumber() != -1

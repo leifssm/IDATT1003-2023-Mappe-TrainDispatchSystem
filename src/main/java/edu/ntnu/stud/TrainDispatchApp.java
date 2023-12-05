@@ -10,6 +10,7 @@ public class TrainDispatchApp {
    * @param args The command line arguments, not used
    */
   public static void main(String[] args) {
+    // Creates a new train interface instance before initializing and starting it.
     final TrainInterface trainInterface = new TrainInterface();
     trainInterface.init();
     trainInterface.start();

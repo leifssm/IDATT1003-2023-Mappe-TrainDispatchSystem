@@ -173,7 +173,7 @@ class TrainGroupTest {
   @Test
   @DisplayName("getDeparturesFromTime() gets all departures after a given time")
   void getDeparturesFromTime() {
-    TrainDeparture[] allDepartures = departures.getDeparturesFromTime();
+    TrainDeparture[] allDepartures = departures.getDepartures();
     assertEquals(3, allDepartures.length, "Expected three departures");
     TrainDeparture[] departuresFromNine = departures.getDeparturesFromTime(
         LocalTime.of(11, 59)
