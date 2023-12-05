@@ -15,7 +15,10 @@ public class Utils {
   /**
    * Pattern for validating destination names.
    */
-  public static final Pattern destinationPattern = Pattern.compile("^[a-zæøå -]{1,16}$", Pattern.CASE_INSENSITIVE);
+  public static final Pattern destinationPattern = Pattern.compile(
+      "^[a-zæøå -]{1,16}$",
+      Pattern.CASE_INSENSITIVE
+  );
 
   /**
    * Pads the given string evenly on both sides so that the string end up at least with a length
