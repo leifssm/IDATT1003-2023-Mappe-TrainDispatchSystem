@@ -305,14 +305,14 @@ class TrainDepartureTest {
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departure.setTrack(0),
-        "Track id must be greater than 0, or -1 if undefined",
+        "Track id must be greater than 0, or -1 if it is undefined",
         "Expected to not be able to set track to 0"
     );
     assertEquals(10, departure.getTrack());
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departure.setTrack(-2),
-        "Track id must be greater than 0, or -1 if undefined",
+        "Track id must be greater than 0, or -1 if it is undefined",
         "Expected to not be able to set track to a negative number that isnt -1"
     );
     departure.setTrack(-1);

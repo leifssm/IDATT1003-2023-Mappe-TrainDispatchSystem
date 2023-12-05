@@ -144,6 +144,40 @@ class TrainGroupTest {
   }
 
   @Test
+  @DisplayName(
+      "doesDepartureExists() should return true if a departure with the given train number exists"
+  )
+  void doesDepartureExists() {
+    assertTrue(
+        departures.doesDepartureExists(1),
+        "Expected departure with train number 1 to exist"
+    );
+    assertTrue(
+        departures.doesDepartureExists(3),
+        "Expected departure with train number 3 to exist"
+    );
+    assertFalse(
+        departures.doesDepartureExists(4),
+        "Expected departure with train number 4 to not exist"
+    );
+    TrainDeparture existingDeparture = departures.getDepartureFromNumber(2);
+    assertTrue(
+        departures.doesDepartureExists(existingDeparture),
+        "Expected departure to exist"
+    );
+    TrainDeparture nonExistingDeparture = new TrainDeparture(
+        LocalTime.of(16, 0),
+        "D4",
+        4,
+        "Bergen"
+    );
+    assertFalse(
+        departures.doesDepartureExists(nonExistingDeparture),
+        "Didn't expect departure with train number 4 to not exist"
+    );
+  }
+
+  @Test
   @DisplayName("getDepartureFromDestination() should return an array with all mathing departures")
   void getDepartureFromDestination() {
     TrainDeparture[] osloDepartures = departures.getDepartureFromDestination("Oslo");

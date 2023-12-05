@@ -139,8 +139,34 @@ class MenuTest {
   }
 
   @Test
-  @DisplayName("runOnce() gives expected output")
-  void runOnce() {
+  @DisplayName("runOnce() gives expected output with one option")
+  void runOnceWithOneOption() {
+    TestHelper.setupMockInput("0", "2", "1");
+    TestHelper.expectOutput(
+        "══ Test Menu ══",
+        "1: Test Option 1",
+        "",
+        "Option: The number must be 1",
+        "Option: The number must be 1",
+        "Option: ",
+        " ══ Picked option \"Test Option 1\" ══"
+    );
+
+    new Menu("Test Menu")
+        .addOption("Test Option 1", () -> {})
+        .runOnce();
+
+    TestHelper.assertThrowsWithMessage(
+        IllegalStateException.class,
+        () -> new Menu("Test Menu").runOnce(),
+        "The menu must have at least one option",
+        "Expected thrown exception when menu has no options"
+    );
+  }
+
+  @Test
+  @DisplayName("runOnce() gives expected output with multiple options")
+  void runOnceWithMultipleOptions() {
     TestHelper.setupMockInput("9", "-10", "-1", "0", "6", "2");
     TestHelper.expectOutput(
         "══ Test Menu ══",
