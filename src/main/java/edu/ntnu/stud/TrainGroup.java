@@ -177,7 +177,7 @@ public class TrainGroup {
    * @return The number of departures removed
    * @throws IllegalArgumentException If the given time is null
    */
-  public int removePassedDepartures(@NotNull LocalTime time) throws IllegalArgumentException {
+  public int removeDeparturesBefore(@NotNull LocalTime time) throws IllegalArgumentException {
     // Removes all departures that are not after the given time, and returns the number of removed
     // departures
     final int oldLength = departures.size();

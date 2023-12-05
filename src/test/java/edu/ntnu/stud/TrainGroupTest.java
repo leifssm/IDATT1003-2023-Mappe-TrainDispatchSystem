@@ -202,9 +202,9 @@ class TrainGroupTest {
   @DisplayName("removePassedDepartures() removes passed departures")
   void removePassedDepartures() {
     assertEquals(3, departures.size(), "Expected three departures");
-    departures.removePassedDepartures(LocalTime.of(11, 59));
+    departures.removeDeparturesBefore(LocalTime.of(11, 59));
     assertEquals(2, departures.size(), "Expected two departures");
-    departures.removePassedDepartures(LocalTime.of(12, 0));
+    departures.removeDeparturesBefore(LocalTime.of(12, 0));
     assertEquals(1, departures.size(), "Expected one departure");
   }
 }
