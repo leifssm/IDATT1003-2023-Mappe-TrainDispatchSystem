@@ -7,8 +7,10 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.intellij.lang.annotations.RegExp;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A singleton class with lazy instantiation that manages and parses all user input.
@@ -19,7 +21,7 @@ public class InputParser {
    *
    * @param <T> The expected type of input to validate.
    */
-  public interface InputValidator<T> { boolean test(T input); }
+  public interface InputValidator<T> { boolean test(@NotNull T input); }
 
   /**
    * The scanner object that is used to read inputs from.
@@ -137,8 +139,8 @@ public class InputParser {
    */
   public static @NotNull String getString(
       @NotNull String prompt,
-      @NotNull String regex,
-      String errorMessage
+      @NotNull @RegExp String regex,
+      @Nullable String errorMessage
   ) throws IllegalArgumentException {
     // Compiles a regex into a pattern and calls the associated getString method.
     final Pattern pattern = Pattern.compile(regex);
@@ -153,7 +155,7 @@ public class InputParser {
    */
   public static @NotNull String getString(
       @NotNull String prompt,
-      @NonNls @NotNull String regex
+      @NonNls @NotNull @RegExp String regex
   ) throws IllegalArgumentException {
     // Defaults the error message
     return getString(prompt, regex, "The string does not match the criteria");
@@ -223,7 +225,7 @@ public class InputParser {
   public static int getInt(
       @NotNull String prompt,
       @NotNull InputValidator<Integer> validator,
-      String errorMessage
+      @Nullable String errorMessage
   ) throws IllegalArgumentException {
     int result;
     while (true) {
@@ -291,7 +293,7 @@ public class InputParser {
   public static float getFloat(
       @NotNull String prompt,
       @NotNull InputValidator<Float> validator,
-      String errorMessage
+      @Nullable String errorMessage
   ) throws IllegalArgumentException {
     float result;
     while (true) {
@@ -355,7 +357,7 @@ public class InputParser {
   public static char getChar(
       @NotNull String prompt,
       @NotNull InputValidator<Character> validator,
-      String errorMessage
+      @Nullable String errorMessage
   ) throws IllegalArgumentException {
     char input;
     while (true) {
@@ -438,7 +440,7 @@ public class InputParser {
   public static @NotNull LocalTime getTime(
       @NotNull String prompt,
       @NotNull InputValidator<LocalTime> validator,
-      String errorMessage
+      @Nullable String errorMessage
   ) throws IllegalArgumentException {
     LocalTime result;
     while (true) {

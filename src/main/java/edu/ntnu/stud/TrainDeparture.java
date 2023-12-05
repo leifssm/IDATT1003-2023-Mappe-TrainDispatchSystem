@@ -72,7 +72,10 @@ public class TrainDeparture {
    * @param destination The trains destination
    * @return A randomized train departure
    */
-  static @NotNull TrainDeparture createRandomDeparture(int trainNumber, String destination) {
+  static @NotNull TrainDeparture createRandomDeparture(
+      int trainNumber,
+      @NotNull String destination
+  ) {
     // Generate a random departure time, line, track and delay, and combines them with the given
     // parameters to create a randomized train departure.
     final LocalTime plannedDeparture = LocalTime.of(

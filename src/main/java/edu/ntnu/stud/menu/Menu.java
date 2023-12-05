@@ -4,6 +4,7 @@ import edu.ntnu.stud.InputParser;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A helper object that makes creating a user interface easier.
@@ -46,7 +47,7 @@ public class Menu {
    * @return The {@code this} object.
    * @throws IllegalArgumentException If the name or the action is null.
    */
-  public Menu addOption(
+  public @NotNull Menu addOption(
       @NotNull String name,
       @NotNull Runnable action
   ) throws IllegalArgumentException {
@@ -62,7 +63,7 @@ public class Menu {
    * @param beforeAction The action to run, set to null to remove.
    * @return The {@code this} object.
    */
-  public Menu setRunBefore(Runnable beforeAction) {
+  public @NotNull Menu setRunBefore(@Nullable Runnable beforeAction) {
     // Set the action to run before the menu is shown.
     this.beforeAction = beforeAction;
     return this;
@@ -74,7 +75,7 @@ public class Menu {
    * @param afterAction The action to run, set to null to remove.
    * @return The {@code this} object.
    */
-  public Menu setRunAfter(Runnable afterAction) {
+  public @NotNull Menu setRunAfter(@Nullable Runnable afterAction) {
     // Set the action to run after the menu is shown.
     this.afterAction = afterAction;
     return this;

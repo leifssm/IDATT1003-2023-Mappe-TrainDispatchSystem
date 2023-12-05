@@ -3,6 +3,7 @@ package edu.ntnu.stud;
 import edu.ntnu.stud.menu.Menu;
 import java.time.LocalTime;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A user interface for the train system.
@@ -228,7 +229,7 @@ public class TrainInterface {
    *
    * @return A train departure with the corresponding train number
    */
-  private TrainDeparture findDepartureFromNumber() {
+  private @Nullable TrainDeparture findDepartureFromNumber() {
     // Returns null if there are no departures to select from
     if (departures.size() == 0) {
       System.out.println("There are no train departures to find.");

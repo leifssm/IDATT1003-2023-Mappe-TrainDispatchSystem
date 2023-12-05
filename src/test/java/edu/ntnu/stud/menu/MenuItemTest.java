@@ -28,7 +28,6 @@ class MenuItemTest {
     );
   }
 
-  // TODO make all relevant methods public or private
   @Test
   @DisplayName("toString() returns the name of the item")
   void testToString() {

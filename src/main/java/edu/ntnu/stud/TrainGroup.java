@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents a group of train departures, manages train number overlap and the sorting,
@@ -69,7 +70,7 @@ public class TrainGroup {
    * @param trainNumber The train number to search for
    * @return The departure with the given train number, or null if it doesn't find one.
    */
-  public TrainDeparture getDepartureFromNumber(int trainNumber) {
+  public @Nullable TrainDeparture getDepartureFromNumber(int trainNumber) {
     // Creates a stream, and filters it by matching train number. Returns any match or null, which
     // is not a problem since the train number is unique
     return departures
