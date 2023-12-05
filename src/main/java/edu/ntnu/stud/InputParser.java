@@ -404,7 +404,7 @@ public class InputParser {
     while (true) {
       // Gets a string from the user until it matches a time regex
       result = getString(
-          prompt,
+          prompt + " [h:mm / hh:mm]",
           pattern,
           "Please write the time in the format of \"h:mm\" or \"hh:mm\""
       );
@@ -519,10 +519,23 @@ public class InputParser {
 
   /**
    * Prompts the user to press enter, and stalls the program until the user does so.
+   *
+   * @param prompt The prompt to show the user.
+   */
+  public static void waitForUser(@NotNull String prompt) {
+    // Waits for the user to enter any string.
+    System.out.println("\n" + prompt);
+    getString();
+  }
+
+  /**
+   * Shorthand for {@link InputParser#waitForUser(String)}. Defaults the prompt
+   * message to "Press enter to continue".
+   *
+   * @see InputParser#getInt(String, InputValidator, String)
    */
   public static void waitForUser() {
     // Waits for the user to enter any string.
-    System.out.println("\nPress enter to continue");
-    getString();
+    waitForUser("Press enter to continue");
   }
 }
