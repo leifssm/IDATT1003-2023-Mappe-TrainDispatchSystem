@@ -64,6 +64,26 @@ public class TrainInterface {
    * Starts the train interface's menu.
    */
   public void start() {
+    // ASCII art from https://patorjk.com/software/taag/
+    System.out.println(
+        """
+                            ________             _____
+                            ___  __/____________ ___(_)______
+                            __  /  __  ___/  __ `/_  /__  __ \\
+                            _  /   _  /   / /_/ /_  / _  / / /
+                            /_/    /_/    \\__,_/ /_/  /_/ /_/
+
+                 ________ ____                      _____      ______
+                 ___  __ \\__(_)____________________ __  /_________  /_
+                 __  / / /_  /__  ___/__  __ \\  __ `/  __/  ___/_  __ \\
+                 _  /_/ /_  / _(__  )__  /_/ / /_/ // /_ / /__ _  / / /
+                 /_____/ /_/  /____/ _  .___/\\__,_/ \\__/ \\___/ /_/ /_/
+                                     /_/
+                                  Created by Leif Mørstad
+            """
+    );
+    InputParser.waitForUser("                      Press enter to continue");
+
     // TODO add method for all setters
     // Uses a Menu instance to create a menu with all possible options
     new Menu("Main Menu")
