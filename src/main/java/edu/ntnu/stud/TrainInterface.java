@@ -136,7 +136,7 @@ public class TrainInterface {
    * @return A valid destination.
    */
   private @NotNull String getDestinationFromUser() {
-    System.out.println("What is the train's destination?");
+    System.out.println("What do you want the train's destination to be?");
     return InputParser.getString(
         "Destination",
         Utils.DESTINATION_PATTERN,
@@ -163,6 +163,11 @@ public class TrainInterface {
     );
   }
 
+  /**
+   * Gets a valid train delay from the user.
+   *
+   * @return A valid train delay.
+   */
   private @NotNull LocalTime getTrainDelay() {
     System.out.println("Is the train already delayed?");
     final boolean isDelayed = InputParser.getBoolean("Delayed?", false);
@@ -174,6 +179,12 @@ public class TrainInterface {
     return LocalTime.MIN;
   }
 
+  /**
+   * Gets a time from the user that is after the given time.
+   *
+   * @param timeToCompare The time that the user's time must be after
+   * @return A time that is after the given time
+   */
   private @NotNull LocalTime getTimeAfterTime(@NotNull LocalTime timeToCompare) {
     System.out.printf(
         "Enter a new time, the time must be later than the current time (%s).\n",
