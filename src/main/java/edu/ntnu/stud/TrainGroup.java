@@ -134,10 +134,10 @@ public class TrainGroup {
   }
 
   /**
-   * Returns an array with all departures after the given time and forward.
+   * Returns an array with all departures from the given time and forward.
    *
-   * @param time The time to get departures query after
-   * @return An array with all departures after the given time and forward.
+   * @param time The time to get departures query from
+   * @return An array with all departures from the given time and forward.
    * @throws IllegalArgumentException If the given time is null
    */
   public @NotNull TrainDeparture[] getDeparturesFromTime(
@@ -146,7 +146,7 @@ public class TrainGroup {
     // Filters the stream by departure time, and returns an array of all matches. I have used an
     // array here because of the same reason listed in getDepartureFromDestination()
     return getSortedDepartureStream()
-      .filter(departure -> departure.getDelayedDeparture().isAfter(time))
+      .filter(departure -> !departure.getDelayedDeparture().isBefore(time))
       .toArray(TrainDeparture[]::new);
   }
 
@@ -171,7 +171,7 @@ public class TrainGroup {
   }
 
   /**
-   * Removes all departures that are not after the given time.
+   * Removes all departures that are before the given time.
    *
    * @param time The time to keep departures after
    * @return The number of departures removed
@@ -181,7 +181,7 @@ public class TrainGroup {
     // Removes all departures that are not after the given time, and returns the number of removed
     // departures
     final int oldLength = departures.size();
-    departures.removeIf(departure -> !departure.getDelayedDeparture().isAfter(time));
+    departures.removeIf(departure -> departure.getDelayedDeparture().isBefore(time));
     return oldLength - departures.size();
   }
 }

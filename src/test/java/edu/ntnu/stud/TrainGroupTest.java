@@ -205,18 +205,18 @@ class TrainGroupTest {
   }
 
   @Test
-  @DisplayName("getDeparturesFromTime() gets all departures after a given time")
+  @DisplayName("getDeparturesFromTime() gets all departures from and after a given time")
   void getDeparturesFromTime() {
     TrainDeparture[] allDepartures = departures.getDepartures();
     assertEquals(3, allDepartures.length, "Expected three departures");
     TrainDeparture[] departuresFromNine = departures.getDeparturesFromTime(
-        LocalTime.of(11, 59)
+        LocalTime.of(12, 0)
     );
     assertEquals(2, departuresFromNine.length, "Expected two departures");
     TrainDeparture[] departuresFromTwelve = departures.getDeparturesFromTime(
-        LocalTime.of(12, 0)
+        LocalTime.of(12, 1)
     );
-    assertEquals(1, departuresFromTwelve.length, "Expected only one departure");
+    assertEquals(1, departuresFromTwelve.length, "Expected one departures");
     TestHelper.assertThrowsWithMessage(
         IllegalArgumentException.class,
         () -> departures.getDeparturesFromTime(null),
@@ -236,9 +236,14 @@ class TrainGroupTest {
   @DisplayName("removePassedDepartures() removes passed departures")
   void removePassedDepartures() {
     assertEquals(3, departures.size(), "Expected three departures");
+
     departures.removeDeparturesBefore(LocalTime.of(11, 59));
     assertEquals(2, departures.size(), "Expected two departures");
+
     departures.removeDeparturesBefore(LocalTime.of(12, 0));
+    assertEquals(2, departures.size(), "Expected two departure");
+
+    departures.removeDeparturesBefore(LocalTime.of(12, 1));
     assertEquals(1, departures.size(), "Expected one departure");
   }
 }
