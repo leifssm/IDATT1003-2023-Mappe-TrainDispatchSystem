@@ -343,9 +343,8 @@ public class TrainInterface {
     } while (departures.length == 0);
 
     System.out.printf(
-        "\nFound %d departure%s:\n",
-        departures.length,
-        departures.length >= 2 ? "s" : ""
+        "\nFound %s:\n",
+        Utils.pluralize(departures.length, "departure")
     );
     for (int i = 0; i < departures.length; i++) {
       System.out.printf(" %d. %s\n", i + 1, departures[i]);
@@ -369,7 +368,7 @@ public class TrainInterface {
           currentTime
       );
     } else {
-      System.out.printf("Removed %d departures.\n", removed);
+      System.out.printf("\nRemoved %s.\n", Utils.pluralize(removed, "departure"));
     }
   }
 

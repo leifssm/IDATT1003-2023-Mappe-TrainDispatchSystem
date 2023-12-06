@@ -54,4 +54,16 @@ public class Utils {
   public static @NotNull String padCenter(int n, int padding) {
     return padCenter(String.valueOf(n), padding);
   }
+
+  /**
+   * Prints the quantity and the noun, and adds an 's' to the end of the given noun if the
+   * quantity is not 1.
+   *
+   * @param quantity The quantity of the specified noun
+   * @param noun The noun to use as a reference
+   * @return A grammatically correct string representing the amount of the noun
+   */
+  public static @NotNull String pluralize(int quantity, @NotNull String noun) {
+    return quantity + " " + (quantity == 1 ? noun : noun + "s");
+  }
 }
