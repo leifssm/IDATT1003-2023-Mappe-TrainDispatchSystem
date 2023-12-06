@@ -23,7 +23,7 @@
   - [X] Oppdatere klokken (tidspunktet på dagen) – ved å spørre bruker etter nytt klokkeslett.
   - [X] Avslutte applikasjonen
   - [ ] Evt mer
-- [ ] En togavgang skal automatisk fjernes fra oversikten dersom avreisetidspunktet (pluss eventuell forsinkelse) er tidligere enn klokken (tidspunktet på dagen).
+- [X] En togavgang skal automatisk fjernes fra oversikten dersom avreisetidspunktet (pluss eventuell forsinkelse) er tidligere enn klokken (tidspunktet på dagen).
   - Eksempel: har et tog avreisetidspunkt kl 12:35 og er 5 minutter forsinket, skal togavgangen vises i oversikten så lenge klokken (tidspunktet på dagen) er tidligere enn 12:40. I det øyeblikket klokken passerer 12:40, skal togavgangen fjernes fra oversikten.
 - [X] Når klokken settes til nytt klokkeslett, skal det ikke være mulig å sette tidspunktet tidligere enn gjeldende tidspunkt. M.a.o. er klokken 12:45, skal det ikke være mulig å sette klokken til 12:40.
 # Informasjonstavlen
@@ -37,24 +37,24 @@
 
 # Del 1
 - [X] forstå oppgaven/prosjektet
-- [ ] få opprettet prosjektet som et Maven-prosjekt
-- [ ] sette prosjektet under versjonskontroll koblet til GitHub/GitLab
-- [ ] implementere entitetsklassen (klassen som representerer en togavgang)
-- [ ] implementere testklasse for å teste entitetsklassen.
+- [X] få opprettet prosjektet som et Maven-prosjekt
+- [X] sette prosjektet under versjonskontroll koblet til GitHub/GitLab
+- [X] implementere entitetsklassen (klassen som representerer en togavgang)
+- [X] implementere testklasse for å teste entitetsklassen.
 - [ ] starte på rapporten
-- [ ] Lage entitetsklasse for tog-avgang (engelsk: "Train Departure")
+- [X] Lage entitetsklasse for tog-avgang (engelsk: "Train Departure")
 - [ ] Dokumenter klassen grundig, inkludert
-- [ ] Rolle/ansvar
-- [ ] Hvilke informasjon klassen holder på og hvilken datatyper du har valgt for hver info og hvorfor (begrunnelse)
-- [ ] En vurdering av hvilke informasjon skal kun settes ved opprettelse av instans (m.a.o. ingen set-metoder for disse), og hvilke informasjon må kunne endres etter at instansen er opprettet
-- [ ] Hvordan klassen responderer på ugyldige data - hvilken strategi følger klassen (kaster unntak? setter dummy-verdi?)
-- [ ] Implementer nødvendige felt i klassen, med egnede datatyper. Tips: for tid kan det være lurt å bruke klassen LocalTime
-- [ ] Lag enhetstester for å teste at klassen for togavgang fungerer som den skal og er robust. Husk både positive- og negative tester.
-- [ ] Kjør CheckStyle på koden din med Google-reglene.
-- [ ] Opprett en klasse som på sikt skal bli brukergrensesnittet og dermed ta seg av all brukerinteraksjon. Opprett to metoder; start() og init().
-- [ ] Bruk start-metoden til å skrive enkel testkode for å teste at Train-Departure-klassen fungerer iht spek ved f.eks. å opprette 3-4 instanser av klassen, og skrive ut objektene(hint: Kan lønne seg å lage en egen metode for å skrive ut detaljene til en togavgang...).
-- [ ] Opprett til slutt en klasse som skal være selve applikasjonen og som inneholder public static void main(String[] args)-metoden.
-- [ ] Opprett main()-metoden. La denne metoden lage en instans av UI-klassen og kall deretter metodene init() og start() til UI-objektet.
+  - [ ] Rolle/ansvar
+  - [ ] Hvilke informasjon klassen holder på og hvilken datatyper du har valgt for hver info og hvorfor (begrunnelse)
+  - [ ] En vurdering av hvilke informasjon skal kun settes ved opprettelse av instans (m.a.o. ingen set-metoder for disse), og hvilke informasjon må kunne endres etter at instansen er opprettet
+  - [ ] Hvordan klassen responderer på ugyldige data - hvilken strategi følger klassen (kaster unntak? setter dummy-verdi?)
+- [X] Implementer nødvendige felt i klassen, med egnede datatyper. Tips: for tid kan det være lurt å bruke klassen LocalTime
+- [X] Lag enhetstester for å teste at klassen for togavgang fungerer som den skal og er robust. Husk både positive- og negative tester.
+- [X] Kjør CheckStyle på koden din med Google-reglene.
+- [X] Opprett en klasse som på sikt skal bli brukergrensesnittet og dermed ta seg av all brukerinteraksjon. Opprett to metoder; start() og init().
+- [X] Bruk start-metoden til å skrive enkel testkode for å teste at Train-Departure-klassen fungerer iht spek ved f.eks. å opprette 3-4 instanser av klassen, og skrive ut objektene(hint: Kan lønne seg å lage en egen metode for å skrive ut detaljene til en togavgang...).
+- [X] Opprett til slutt en klasse som skal være selve applikasjonen og som inneholder public static void main(String[] args)-metoden.
+- [X] Opprett main()-metoden. La denne metoden lage en instans av UI-klassen og kall deretter metodene init() og start() til UI-objektet.
 
 # Rapport
 - [ ] Sett deg inn i rapportmalen
@@ -64,45 +64,45 @@
 - [ ] I resultat-kapitelet kan du allerede nå gi en kort beskrivelse av hvilke klasser du ser for deg du vil lage i prosjektet, og vise et klassediagram som viser avhengigheten mellom de.
 
 # Dobbeltsjekk
-- [ ] Kompilering/bygging og prosjektstruktur:
-  - [ ] Er prosjektet et Maven-prosjekt med en ryddig og riktig katalogstruktur?
-  - [ ] Kan prosjektet kompilere uten feil (mvn compile)?
-  - [ ] Er prosjektet plassert på fornuftig sted på din harddisk (finner du lett tilbake til prosjektet)?
-- [ ] Versjonskontroll med git:
-  - [ ] Er prosjektet underlagt versjonskontroll med sentralt repository i GitHub eller GitLab?
-  - [ ] Finnes det flere innsjekkinger (commits) ?
-  - [ ] Beskriver commit-meldingene endringene på en kort og konsis måte?
+- [X] Kompilering/bygging og prosjektstruktur:
+  - [X] Er prosjektet et Maven-prosjekt med en ryddig og riktig katalogstruktur?
+  - [X] Kan prosjektet kompilere uten feil (mvn compile)?
+  - [X] Er prosjektet plassert på fornuftig sted på din harddisk (finner du lett tilbake til prosjektet)?
+- [X] Versjonskontroll med git:
+  - [X] Er prosjektet underlagt versjonskontroll med sentralt repository i GitHub eller GitLab?
+  - [X] Finnes det flere innsjekkinger (commits) ?
+  - [X] Beskriver commit-meldingene endringene på en kort og konsis måte?
 - [ ] Enhetstester:
   - [ ] Har enhetstestene beskrivende navn som dokumenterer hva testene gjør?
   - [ ] Følger de mønstret Arrange-Act-Assert?
   - [ ] Tas det hensyn til både positive og negative tilfeller?
-  - [ ] Er testdekningen god nok?
-  - [ ] Kjører samtlige tester uten feil?
+  - [X] Er testdekningen god nok?
+  - [X] Kjører samtlige tester uten feil?
   - [ ] Er klassene for togavgang, brukergrensesnitt og applikasjon implementert iht oppgavebeskrivelsen?
 - [ ] Kodekvalitet:
   - [ ] Er koden godt dokumentert iht JavaDoc-standard?
-  - [ ] Er koden robust (validering mm)?
+  - [X] Er koden robust (validering mm)?
   - [ ] Har variabler, metoder og klasser beskrivende navn?
-  - [ ] Er klassene gruppert i en logisk pakkestruktur?
-- [ ] Tognummeret skal ikke forveksles med f.eks. registreringsnummer på bil. M.a.o. det er ikke et nummer som er unikt for akkurat det togsettet (lokomotiv + vogner), men for den spesifikke togavgangen som går på det spesifikke tidspunktet på den spesifikke strekningen
+  - [X] Er klassene gruppert i en logisk pakkestruktur?
+- [X] Tognummeret skal ikke forveksles med f.eks. registreringsnummer på bil. M.a.o. det er ikke et nummer som er unikt for akkurat det togsettet (lokomotiv + vogner), men for den spesifikke togavgangen som går på det spesifikke tidspunktet på den spesifikke strekningen
 
 # Mer sjekk
-- [ ] Satt opp prosjektet riktig, på et egnet sted på din harddisk slik at du har full kontroll på hvor prosjektet befinner seg på din datamaskin?
-- [ ] Lagt prosjektet ditt til versjonskontroll på GitHub/GitLab ?
-- [ ] Implementert entitetsklassen for togavgang med alle felt, gode konstruktør(er), aksessor- og eventuelle mutatormetoder? Og med god dokumentasjon av både klasse- og samtlige public metoder iht. JavaDoc standarden? M.a.o. gir CheckStyle feilmeldinger?
-- [ ] Opprettet enhetstest-klasse for entitetsklassen, der du har laget gode positive- og negative tester? Husk at testdekning (test coverage) på 100% IKKE er et kvalitetsmål for testene dine overhodet. Det er kun en eventuell verifisering for å hjelpe deg til å avdekke hvor stor del av kodebasen din som blir testet av testene dine (hvilket også er viktig), men den sier ingenting om hvor gode testene er (kvalitet).
+- [X] Satt opp prosjektet riktig, på et egnet sted på din harddisk slik at du har full kontroll på hvor prosjektet befinner seg på din datamaskin?
+- [X] Lagt prosjektet ditt til versjonskontroll på GitHub/GitLab ?
+- [X] Implementert entitetsklassen for togavgang med alle felt, gode konstruktør(er), aksessor- og eventuelle mutatormetoder? Og med god dokumentasjon av både klasse- og samtlige public metoder iht. JavaDoc standarden? M.a.o. gir CheckStyle feilmeldinger?
+- [X] Opprettet enhetstest-klasse for entitetsklassen, der du har laget gode positive- og negative tester? Husk at testdekning (test coverage) på 100% IKKE er et kvalitetsmål for testene dine overhodet. Det er kun en eventuell verifisering for å hjelpe deg til å avdekke hvor stor del av kodebasen din som blir testet av testene dine (hvilket også er viktig), men den sier ingenting om hvor gode testene er (kvalitet).
 
 # Toggruppering
-- [ ] Velge navn på klassen som skal representere registeret.
-- [ ] Vurdere hvilken klasse fra Java SDK du tenker er passende å bruke for å lagre alle togavgangene i (ArrayList, HashSet, HashMap osv). Husk å begrunn i rapporten hvorfor du valgte nettopp denne klassen fra SDK'en.
+- [X] Velge navn på klassen som skal representere registeret.
+- [X] Vurdere hvilken klasse fra Java SDK du tenker er passende å bruke for å lagre alle togavgangene i (ArrayList, HashSet, HashMap osv). Husk å begrunn i rapporten hvorfor du valgte nettopp denne klassen fra SDK'en.
 
 # Minimumkrav til register-klassen
-- [ ] En metode for å legge til en togavgang i registeret. Dersom det allerede finnes en togavgang med samme tog-nummer som den avgangen som forsøkes lagt til, skal togavgangen ikke legges til registeret og metoden bør gi en eller annen form for tilbakemelding (NB! IKKE til brukeren) til koden som kaller metoden.
-- [ ] En metode for å søke opp en togavgang basert på det unike tog-nummeret.
-- [ ] En metode for å søke opp togavgang(er) med en gitt destinasjon.
+- [X] En metode for å legge til en togavgang i registeret. Dersom det allerede finnes en togavgang med samme tog-nummer som den avgangen som forsøkes lagt til, skal togavgangen ikke legges til registeret og metoden bør gi en eller annen form for tilbakemelding (NB! IKKE til brukeren) til koden som kaller metoden.
+- [X] En metode for å søke opp en togavgang basert på det unike tog-nummeret.
+- [X] En metode for å søke opp togavgang(er) med en gitt destinasjon.
 - [ ] En metode som fjerner togavgang(er) som har avreisetidspunkt tidligere enn et gitt klokkeslett. Husk å også ta med forsinkelse i vurderingen om avgangen skal fjernes.
 - [ ] En metode som returnerer alle togavganger som en sortert liste av togavganger sortert stigende på avreisetidspunkt. Her skal du ikke ta hensyn til eventuell forsinkelse. Merk at vi ikke ber om at registeret i seg selv nødvendigvis må være sortert til enhver tid, men at denne metoden skal returnere en sortert samling (eller en iterator til en sortert samling)basert på togavgangene i registeret ditt.
-- NB! Beskriv i rapporten løsningen du valgte å implementere her. Beskriv hvordan du kom frem til løsningen (søkte på nett, ChatGPT, GitHub CoPilot, spurte en venn osv), og forklar med egne ord koden du har implementert (dette for å vise at du forstår koden du har implementert).
+- [ ] NB! Beskriv i rapporten løsningen du valgte å implementere her. Beskriv hvordan du kom frem til løsningen (søkte på nett, ChatGPT, GitHub CoPilot, spurte en venn osv), og forklar med egne ord koden du har implementert (dette for å vise at du forstår koden du har implementert).
 
 # Dersom kode er inspirert av en løsning fra andre (f.eks, nettside) er det viktig at kilde skal henvises og begrunnes.
 
@@ -114,25 +114,25 @@
   - [ ] start(): Oppdater denne metoden til å ta i bruk den nye register klassen. Opprett 3-4 togavganger som du legger til i registeret. Test deretter noe av funksjonaliteten til registeret. Du kan f.eks. allerede nå tenke på å implementere en metode som skriver ut informasjonstavla til konsollet basert på registrerte togavganger. Det er lurt å lage en egen metode for å skrive ut denne oversikten. Vent med å implementere full meny med input fra brukeren. Dette kommer i del 3 ☺
 
 # Brukergrensesnitt
-- [ ] Det viktigere at du vektlegger brukervennlighet og et robust grensesnitt, enn et fancy (grafisk) brukergrensesnitt. Anbefales at du holder deg til pensum i emnet
-- [ ] Med utgangspunkt i opprinnelig kravspesifikasjon, hvilke endringer/forbedringer ville du ha gjort for at applikasjonen skal bli enda mer nyttig og brukervennlig for brukeren? Her har du lov til å avvike noe fra opprinnelig kravspesifikasjon og tilføre dine tanker og ideer. Løsningen din må selvsagt fortsatt oppfylle de grunnleggende funksjonelle brukerkrav, men du står fritt til å endre på designet av klasser, valg av datatyper om du mener forslagene oppgitt i oppgaveteksten ikke er gunstige, og legge til ny funksjonalitet.
+- [X] Det viktigere at du vektlegger brukervennlighet og et robust grensesnitt, enn et fancy (grafisk) brukergrensesnitt. Anbefales at du holder deg til pensum i emnet
+- [X] Med utgangspunkt i opprinnelig kravspesifikasjon, hvilke endringer/forbedringer ville du ha gjort for at applikasjonen skal bli enda mer nyttig og brukervennlig for brukeren? Her har du lov til å avvike noe fra opprinnelig kravspesifikasjon og tilføre dine tanker og ideer. Løsningen din må selvsagt fortsatt oppfylle de grunnleggende funksjonelle brukerkrav, men du står fritt til å endre på designet av klasser, valg av datatyper om du mener forslagene oppgitt i oppgaveteksten ikke er gunstige, og legge til ny funksjonalitet.
 - [ ] Med utgangspunkt i designprinsippene coupling og cohesion, hvilke eventuelle endringer vil du gjøre i ditt design? Kan det være aktuelt å introdusere flere klasser for å oppfylle cohesion-prinsippet bedre, eventuelt innføre flere metoder (delegere)?
 - [ ] Hvordan møter din løsning prinsippet om lagdelt arkitektur?
 - [ ] Beskriv i rapporten hva du har foreslått av endringer og hvordan du har valgt å implementere disse, og hvorfor disse endringene gir et bedre design i trå med designprinsippene vi har lært i emnet.
 
 # Læringsmål som blir testet
-- [ ] evnen til å levere et selvstendig arbeid
+- [X] evnen til å levere et selvstendig arbeid
 - [ ] evnen til å re-designe (refaktorere) egen løsning uten å tilføre nye feil
 - [ ] evnen til å skrive fail-safe/robust kode
-- [ ] evnen til å skrive kode som følger en etablert kodestil (Google), og som har god lesbarhet og er dokumentert i henhold til anbefalte industristandarder (JavaDoc)
+- [X] evnen til å skrive kode som følger en etablert kodestil (Google), og som har god lesbarhet og er dokumentert i henhold til anbefalte industristandarder (JavaDoc)
 - [ ] evnen til å implementere et robust design etter prinsipper som modularisering, coupling, cohesion, responsibility driven design
-- [ ] brukervennlighet/god brukerinteraksjon
+- [X] brukervennlighet/god brukerinteraksjon
 
 # Koden skal følge en bestemt kodestil
-- [ ] Kodestilen skal verifiseres med CheckStyle-plugin (for IntelliJ, VSCode osv) og vise ingen/minimalt med regelbrudd ved levering.
-- [ ] Klassene samt alle metoder og variabler (felt, parametere, lokale variabler) skal ha gode, beskrivende navn som tydelig gjenspeiler hvilken tjeneste en metode tilbyr, eller hvilken type verdi variablene representerer/holder på.
-- [ ] Alle navn på klasser, metoder og variabler skal være på engelsk.
-- [ ] Koden skal være dokumentert (på engelsk) iht standarden for JavaDoc (se hvordan JDK'en er dokumentert, for inspirasjon og som referanse)
+- [X] Kodestilen skal verifiseres med CheckStyle-plugin (for IntelliJ, VSCode osv) og vise ingen/minimalt med regelbrudd ved levering.
+- [X] Klassene samt alle metoder og variabler (felt, parametere, lokale variabler) skal ha gode, beskrivende navn som tydelig gjenspeiler hvilken tjeneste en metode tilbyr, eller hvilken type verdi variablene representerer/holder på.
+- [X] Alle navn på klasser, metoder og variabler skal være på engelsk.
+- [X] Koden skal være dokumentert (på engelsk) iht standarden for JavaDoc (se hvordan JDK'en er dokumentert, for inspirasjon og som referanse)
 
 # Ekstra informasjon som burde ha kommet på starten av oppgaven
 - [ ] Bruke tagger for å markere "release"-versjoner.
@@ -177,14 +177,14 @@ Til samtalen for tilbakemelding på del 3:
   - [ ] Der du har brukt AI-verktøy for hjelp til kode: dokumenter i rapporten de delene av koden som du har fått hjelp til av AI-verktøy, og beskriv hvorfor du mener foreslått kode løser problemet ditt, og hva koden gjør (du må forstå og kunne beskrive hva koden gjør).
 
 # Når du løser oppgaven, bør du dobbeltsjekke følgende:
-- [ ] Kompilering/bygging og prosjektstruktur:
-  - [ ] Er prosjektet et Maven-prosjekt med en ryddig og riktig katalogstruktur?
-  - [ ] Kan prosjektet kompilere uten feil (mvn compile)?
-  - [ ] Kan samtlige enhets-tester i prosjektet kjøres uten at de feiler?
-- [ ] Versjonskontroll med git:
-  - [ ] Er prosjektet underlagt versjonskontroll med sentralt repository i GitHub eller GitLab?
-  - [ ] Finnes det flere innsjekkinger (commits) ?
-  - [ ] Beskriver commit-meldingene endringene på en kort og konsis måte?
+- [X] Kompilering/bygging og prosjektstruktur:
+  - [X] Er prosjektet et Maven-prosjekt med en ryddig og riktig katalogstruktur?
+  - [X] Kan prosjektet kompilere uten feil (mvn compile)?
+  - [X] Kan samtlige enhets-tester i prosjektet kjøres uten at de feiler?
+- [X] Versjonskontroll med git:
+  - [X] Er prosjektet underlagt versjonskontroll med sentralt repository i GitHub eller GitLab?
+  - [X] Finnes det flere innsjekkinger (commits) ?
+  - [X] Beskriver commit-meldingene endringene på en kort og konsis måte?
 - [ ] Enhetstester:
   - [ ] Har enhetstestene beskrivende navn som dokumenterer hva testene gjør?
   - [ ] Følger de mønstret Arrange-Act-Assert?
@@ -193,7 +193,7 @@ Til samtalen for tilbakemelding på del 3:
   - [ ] Kjører samtlige tester uten feil?
 - [ ] Er klassene for togavgang, register og applikasjon implementert iht oppgavebeskrivelsen?
 - [ ] Kodekvalitet:
-  - [ ] Er koden godt dokumentert iht JavaDoc-standard, og skrevet i henhold til Google sin kodestil. Husk at også get- og set metoder skal dokumenteres ☺? (Tips: bruk CheckStyle)
-  - [ ] Er koden robust (validering mm)?
-  - [ ] Har variabler, metoder og klasser beskrivende navn?
-- [ ] Er klassene gruppert i en logisk pakkestruktur?
+  - [X] Er koden godt dokumentert iht JavaDoc-standard, og skrevet i henhold til Google sin kodestil. Husk at også get- og set metoder skal dokumenteres ☺? (Tips: bruk CheckStyle)
+  - [X] Er koden robust (validering mm)?
+  - [X] Har variabler, metoder og klasser beskrivende navn?
+- [X] Er klassene gruppert i en logisk pakkestruktur?

@@ -10,14 +10,13 @@ public class Utils {
   /**
    * Pattern for validating train line names.
    */
-  public static final Pattern trainLinePattern = Pattern.compile("^[A-Z0-9]{2,7}$");
+  public static final Pattern TRAIN_LINE_PATTERN = Pattern.compile("^[A-Z0-9]{2,7}$");
 
   /**
    * Pattern for validating destination names.
    */
-  public static final Pattern destinationPattern = Pattern.compile(
-      "^[a-zæøå -]{1,16}$",
-      Pattern.CASE_INSENSITIVE
+  public static final Pattern DESTINATION_PATTERN = Pattern.compile(
+      "(?i)^[a-zæøå -]{1,16}$"
   );
 
   /**

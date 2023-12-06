@@ -22,7 +22,7 @@ public class TrainInterface {
   /**
    * The minimum size of the display table.
    */
-  private static final int MIN_TABLE_DISPLAY_SIZE = 10;
+  private static final int MIN_DISPLAY_TABLE_SIZE = 10;
 
   /**
    * Creates a new train interface.
@@ -38,25 +38,13 @@ public class TrainInterface {
         TrainDeparture.createRandomDeparture(30, "Trondheim")
     );
     departures.addDeparture(
-        TrainDeparture.createRandomDeparture(63, "Oslo S")
-    );
-    departures.addDeparture(
-        TrainDeparture.createRandomDeparture(14, "Bergen")
-    );
-    departures.addDeparture(
-        TrainDeparture.createRandomDeparture(59, "Kristiansand")
-    );
-    departures.addDeparture(
-        TrainDeparture.createRandomDeparture(19, "Bodø")
-    );
-    departures.addDeparture(
-        TrainDeparture.createRandomDeparture(67, "Stavanger")
+        TrainDeparture.createRandomDeparture(63, "Bergen")
     );
     departures.addDeparture(
         TrainDeparture.createRandomDeparture(74, "Alta")
     );
     departures.addDeparture(
-        TrainDeparture.createRandomDeparture(78, "Alta")
+        TrainDeparture.createRandomDeparture(50, "Alta")
     );
   }
 
@@ -150,8 +138,9 @@ public class TrainInterface {
     System.out.println("What is the train's destination?");
     return InputParser.getString(
         "Destination",
-        Utils.destinationPattern,
-        "The destination must be between 1 and 16 characters."
+        Utils.DESTINATION_PATTERN,
+        "The destination must be between 1 and 16 characters, and can only contain "
+            + "letters, spaces and dashes."
     );
   }
 
@@ -167,7 +156,7 @@ public class TrainInterface {
     );
     return InputParser.getString(
         "Line",
-        Utils.trainLinePattern,
+        Utils.TRAIN_LINE_PATTERN,
         "The line can only contain capital letters and numbers, and must contain "
             + "between 2 and 7 letters."
     );
@@ -393,12 +382,12 @@ public class TrainInterface {
     System.out.println("                      ╔══════════════╦═══════╗");
     System.out.printf("                      ║  Departures  ║ %s ║\n", currentTime);
     System.out.println("╔═══════════╤═════════╩═╤═══════╤════╩══╤════╩═════════════╤═══════╗");
-    System.out.println("║  Arrives  │ Expected  │ Track │ Line  │ Destination      │ Train ║");
+    System.out.println("║  Planned  │  Arrives  │ Track │ Line  │ Destination      │ Train ║");
     System.out.println("╟───────────┼───────────┼───────┼───────┼──────────────────┼───────╢");
     for (TrainDeparture departure : sortedDepartures) {
       System.out.println(formatDeparture(departure));
     }
-    for (int i = 0; i < MIN_TABLE_DISPLAY_SIZE - sortedDepartures.length; i++) {
+    for (int i = 0; i < MIN_DISPLAY_TABLE_SIZE - sortedDepartures.length; i++) {
       System.out.println("║           │           │       │       │                  │       ║");
     }
     System.out.println("╚═══════════╧═══════════╧═══════╧═══════╧══════════════════╧═══════╝");

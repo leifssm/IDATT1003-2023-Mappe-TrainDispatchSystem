@@ -156,7 +156,7 @@ public class TrainDeparture {
     }
 
     // If the line doesn't match the pattern, it throws an exception.
-    if (!Utils.trainLinePattern.matcher(line).matches()) {
+    if (!Utils.TRAIN_LINE_PATTERN.matcher(line).matches()) {
       throw new IllegalArgumentException(
           "Line can only contain capital letters and numbers"
       );
