@@ -72,7 +72,6 @@ public class TrainInterface {
     );
     InputParser.waitForUser("                      Press enter to continue");
 
-    // TODO add method for all setters
     // Uses a Menu instance to create a menu with all possible options
     new Menu("Main Menu")
         .addOption("Add new departure", this::addDeparture)
@@ -244,9 +243,15 @@ public class TrainInterface {
       return;
     }
 
+    final int previousTrack = departure.getTrack();
+    if (previousTrack == -1) {
+      System.out.println("The train is currently not assigned to a track");
+    } else {
+      System.out.printf("The train is currently assigned to track %d.\n", previousTrack);
+    }
+
     final int track = getTrackNumberFromUser();
 
-    final int previousTrack = departure.getTrack();
 
     // Prints a relevant message to the user
     if (previousTrack != track) {
@@ -404,11 +409,26 @@ public class TrainInterface {
   }
 
   private void removeOldDepartures() {
-    int removed = departures.removeDeparturesBefore(currentTime);
+    if (departures.size() == 0) {
+      System.out.println("There are no departures to remove.");
+      return;
+    }
+
+    System.out.println("Do you want to remove departures before the current time?");
+    System.out.printf(" Y: Yes, remove all departures before %s\n", currentTime);
+    System.out.println(" N: No, I want to specify a time to remove departures before");
+    final boolean useCurrentTime = InputParser.getBoolean("Use current time", true);
+
+    LocalTime timeToRemoveBefore = currentTime;
+    if (!useCurrentTime) {
+      timeToRemoveBefore = InputParser.getTime("Enter a time to remove departures before");
+    }
+
+    int removed = departures.removeDeparturesBefore(timeToRemoveBefore);
     if (removed == 0) {
       System.out.printf(
-          "No departures were removed, as there are no departures before %s.\n",
-          currentTime
+          "\nNo departures were removed, as there are no departures before %s.\n",
+          timeToRemoveBefore
       );
     } else {
       System.out.printf("\nRemoved %s.\n", Utils.pluralize(removed, "departure"));
