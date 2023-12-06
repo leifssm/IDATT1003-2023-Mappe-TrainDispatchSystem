@@ -76,8 +76,9 @@ public class TrainInterface {
     // Uses a Menu instance to create a menu with all possible options
     new Menu("Main Menu")
         .addOption("Add new departure", this::addDeparture)
-        .addOption("Assign track to departure", this::changeDepartureTrack)
-        .addOption("Set departure delay", this::giveDepartureDelay)
+        .addOption("Assign track to departure", this::setDepartureTrack)
+        .addOption("Set departure delay", this::setDepartureDelay)
+        .addOption("Set departure destination", this::setDepartureDestination)
         .addOption("Find departure by number", this::findDepartureFromNumber)
         .addOption("Find departures by destination", this::findDepartureFromDestination)
         .addOption("Set the time", this::setClock)
@@ -224,7 +225,7 @@ public class TrainInterface {
    * Lets the user change the track of a departure. Asks for a train number, checks if a
    * corresponding train exists, then lets the user change the track
    */
-  private void changeDepartureTrack() {
+  private void setDepartureTrack() {
     // Gets the departure from the user, and returns if it doesn't find one since the user can't
     // change the track of a departure if none exists.
     final TrainDeparture departure = findDepartureFromNumber();
@@ -256,7 +257,7 @@ public class TrainInterface {
    * Lets the user change the delay of a departure. Asks for a train number, checks if a
    * corresponding train exists, then lets the user change the track.
    */
-  private void giveDepartureDelay() {
+  private void setDepartureDelay() {
     // Gets the departure from the user, and returns if it doesn't find one since the user can't
     // change the delay of a departure if none exists.
     final TrainDeparture departure = findDepartureFromNumber();
@@ -280,6 +281,37 @@ public class TrainInterface {
     } else {
       departure.setDelay(delay);
       System.out.printf("The delay was changed from %s to %s.\n", previousDelay, delay);
+    }
+  }
+
+  /**
+   * Lets the user change the delay of a departure. Asks for a train number, checks if a
+   * corresponding train exists, then lets the user change the track.
+   */
+  private void setDepartureDestination() {
+    // Gets the departure from the user, and returns if it doesn't find one since the user can't
+    // change the delay of a departure if none exists.
+    final TrainDeparture departure = findDepartureFromNumber();
+    if (departure == null) {
+      return;
+    }
+
+    // Gives the user the delay if one already exists
+    final String previousDestination = departure.getDestination();
+    System.out.printf("The train's current destination is %s.\n", previousDestination);
+
+    // Gets the new delay from the user
+    final String destination = getDestinationFromUser();
+
+    // Prints a relevant message to the user
+    if (previousDestination.equals(destination)) {
+      System.out.printf(
+          "The train's current destination is already %s, no change was made.\n",
+          destination
+      );
+    } else {
+      departure.setDestination(destination);
+      System.out.printf("The destination was changed from %s to %s.\n", previousDestination, destination);
     }
   }
 
