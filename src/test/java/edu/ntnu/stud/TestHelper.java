@@ -23,7 +23,7 @@ public class TestHelper {
   private static final PrintStream originalOut = System.out;
 
   /**
-   * Creates a input stream with the given input, and initializes the InputParser simpleton with it,
+   * Creates an input stream with the given input, and initializes the InputParser simpleton with it,
    * so that if a method is called from InputParser, it will read from the given input.
    *
    * @param inputs A list of strings, each representing one line of input
@@ -45,7 +45,7 @@ public class TestHelper {
   public static void expectOutput(
       @NotNull String... output
   ) throws NoSuchElementException, AssertionFailedError {
-    final String concatinated = String.join("\n", output);
+    final String concatenated = String.join("\n", output);
 
     // Creates a new ByteArrayOutputStream, with an overwritten close method that throws if the
     // given output doesn't match the expected output.
@@ -54,7 +54,7 @@ public class TestHelper {
       public synchronized void close() throws IOException {
         try {
           assertEquals(
-              concatinated,
+              concatenated,
               this.toString().trim().replaceAll("\r", ""),
               "Expected output does not match given output"
           );
@@ -71,7 +71,7 @@ public class TestHelper {
   /**
    * Tears down the test environment, and checks that all inputs from the mock input were consumed.
    * It also closes the mock output if one was set up, checking that the mock output matches the
-   * givem output at the same time. This method should be called in the {@code @AfterEach} method
+   * given output at the same time. This method should be called in the {@code @AfterEach} method
    *
    * @throws AssertionFailedError If not all inputs were consumed, or if the mock output didn't
    *                              match the given output.
@@ -82,14 +82,14 @@ public class TestHelper {
       if (InputParser.isInitialized()) {
         assertThrows(
             NoSuchElementException.class,
-            () -> InputParser.getString(),
+            InputParser::getString,
             "Not all inputs were consumed"
         );
       }
 
-      // If the output steam doesnt match the original, it must be because of a mock output stream,
+      // If the output steam doesn't match the original, it must be because of a mock output stream,
       // so we close it, making it run the comparing function in the expectOutput function.
-      if (!System.out.equals(originalOut) && System.out instanceof PrintStream) {
+      if (!System.out.equals(originalOut) && System.out != null) {
         System.out.close();
       }
     } finally {
@@ -102,7 +102,7 @@ public class TestHelper {
   }
 
   /**
-   * A helper function that is a shorthand of two assertions, that first checks if it the executable
+   * A helper function that is a shorthand of two assertions, that first checks if the executable
    * throws the expected error, and then checks if the error message matches the expected error
    * message.
    *
