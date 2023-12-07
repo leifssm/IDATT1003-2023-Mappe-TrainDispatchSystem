@@ -118,13 +118,9 @@ public class TestHelper {
       String messageIfNotThrown
   ) {
     Throwable error = assertThrows(expectedError, executable, messageIfNotThrown);
-    assertTrue(
-        error.getMessage().equals(expectedErrorMessage),
-        "Expected error message \""
-            + expectedErrorMessage
-            + "\" got \""
-            + error.getMessage()
-            + "\""
+    assertEquals(
+        error.getMessage(),
+        expectedErrorMessage
     );
   }
 }
