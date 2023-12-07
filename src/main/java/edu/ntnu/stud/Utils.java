@@ -16,7 +16,8 @@ public class Utils {
    * Pattern for validating destination names.
    */
   public static final Pattern DESTINATION_PATTERN = Pattern.compile(
-      "(?i)^[a-zæøå -]{1,16}$"
+      "^[a-zæøå -]{1,16}$",
+      Pattern.CASE_INSENSITIVE
   );
 
   /**
