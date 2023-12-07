@@ -75,6 +75,7 @@ class TrainDepartureTest {
 
       assertEquals(departure, departureWithSimilarId);
       assertNotEquals(departure, departureWithNonSimilarId);
+      assertNotEquals(departure, null);
     }
 
     @Test
@@ -389,7 +390,7 @@ class TrainDepartureTest {
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
           () -> departure.setDestination("A very long destination"),
-          "Destination must contain at least 1 character",
+          "Destination cannot be longer than 16 characters",
           "Expected to not be able to set destination to an empty string"
       );
     }

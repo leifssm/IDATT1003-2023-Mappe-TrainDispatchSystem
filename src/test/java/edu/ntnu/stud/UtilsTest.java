@@ -24,6 +24,16 @@ class UtilsTest {
       assertEquals("  abc   ", Utils.padCenter("abc", 8));
       assertEquals(" 23 ", Utils.padCenter(23, 4));
     }
+
+    @Test
+    @DisplayName("pluralize() returns the correct plural form of a word, even if it is negative")
+    void pluralizeReturnsCorrectSpelling() {
+      assertEquals("-1 trains", Utils.pluralize(-1, "train"));
+      assertEquals("0 trains", Utils.pluralize(0, "train"));
+      assertEquals("1 train", Utils.pluralize(1, "train"));
+      assertEquals("2 trains", Utils.pluralize(2, "train"));
+      assertEquals("3 trains", Utils.pluralize(3, "train"));
+    }
   }
 
   @Nested
