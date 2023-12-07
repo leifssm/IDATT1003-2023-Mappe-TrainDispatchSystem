@@ -43,10 +43,9 @@ class MenuItemTest {
   @Nested
   @DisplayName("Negative tests")
   class NegativeTests {
-
     @Test
     @DisplayName("Constructor throws when the name is set as null")
-    void throwsWhenNameIsNull() {
+    void constructorThrowsWhenNameIsNull() {
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
           () -> new MenuItem(null, () -> {
@@ -59,7 +58,7 @@ class MenuItemTest {
 
     @Test
     @DisplayName("Constructor throws when the action is set as null")
-    void throwsWhenActionIsNull() {
+    void constructorThrowsWhenActionIsNull() {
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
           () -> new MenuItem("Test", null),
