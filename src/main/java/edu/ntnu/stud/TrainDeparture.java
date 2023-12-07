@@ -229,15 +229,25 @@ public class TrainDeparture {
   }
 
   /**
-   * Sets the destination.
+   * Sets the destination if the destination is a string with length between 1 and 16 characters,
+   * and only contains capital letters, dashes, and spaces.
    *
-   * @param destination The destination, must be a string of length greater than 0
-   * @throws IllegalArgumentException If the destination is null or of length 0
+   * @param destination The destination, must be a string of length greater than 1 and shorter tha
+   * @throws IllegalArgumentException If the destination is null or not a string between 1 and 16
+   *                                  characters, or contains invalid characters
    */
   public void setDestination(@NotNull String destination) throws IllegalArgumentException {
     // If the destination is null, or a zero length string, it throws an exception.
-    if (destination.isEmpty()) {
-      throw new IllegalArgumentException("Destination cannot be an empty string");
+    if (destination.length() < 2) {
+      throw new IllegalArgumentException("Destination must contain at least 1 character");
+    }
+    if (destination.length() > 16) {
+      throw new IllegalArgumentException("Destination cannot be longer than 16 characters");
+    }
+    if (!Utils.DESTINATION_PATTERN.matcher(destination).matches()) {
+      throw new IllegalArgumentException(
+          "Destination can only contain capital letters, dashes, and spaces"
+      );
     }
     this.destination = destination;
   }
