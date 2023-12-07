@@ -110,17 +110,19 @@ public class TestHelper {
    * @param executable The executable that should throw the given error
    * @param expectedErrorMessage The expected error message when the executable throws
    * @param messageIfNotThrown The error message to show if the executable doesn't throw.
+   * @throws AssertionFailedError If the executable doesn't throw, or if the error message doesn't
+   *                              match the expected error message.
    */
   public static void assertThrowsWithMessage(
       Class<? extends Throwable> expectedError,
       Executable executable,
       String expectedErrorMessage,
       String messageIfNotThrown
-  ) {
+  ) throws AssertionFailedError {
     Throwable error = assertThrows(expectedError, executable, messageIfNotThrown);
     assertEquals(
-        error.getMessage(),
-        expectedErrorMessage
+        expectedErrorMessage,
+        error.getMessage()
     );
   }
 }
