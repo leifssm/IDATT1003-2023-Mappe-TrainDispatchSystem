@@ -2,6 +2,7 @@ package edu.ntnu.stud;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,6 +47,7 @@ class TrainGroupTest {
             + "different train numbers"
     )
     void constructorShouldNotThrowWhenAddingTrainsWithDifferentTrainNumbers() {
+      // Arrange
       ArrayList<TrainDeparture> departures = new ArrayList<>();
       departures.add(
           TrainDeparture.createRandomDeparture(1, "Oslo")
@@ -53,7 +55,8 @@ class TrainGroupTest {
       departures.add(
           TrainDeparture.createRandomDeparture(2, "Trondheim")
       );
-
+      // Act
+      // Assert
       assertDoesNotThrow(
           () -> new TrainGroup(departures),
           "Empty args should not throw"
@@ -62,6 +65,9 @@ class TrainGroupTest {
     @Test
     @DisplayName("Constructor doesn't throw when given no parameters")
     void constructorDoesntThrowWithNoParameters() {
+      // Arrange
+      // Act
+      // Assert
       assertDoesNotThrow(
           () -> new TrainGroup(),
           "Empty list should not throw"
@@ -74,39 +80,44 @@ class TrainGroupTest {
             + "number, or null if it doesnt find any"
     )
     void getDepartureFromNumberReturnsCorrespondingDepartureOrNull() {
+      // Arrange
+      // Act
       TrainDeparture departure1 = departures.getDepartureFromNumber(1);
+      TrainDeparture departure2 = departures.getDepartureFromNumber(3);
+      TrainDeparture departure3 = departures.getDepartureFromNumber(2);
+      TrainDeparture departure4 = departures.getDepartureFromNumber(4);
+      // Assert
       assertNotNull(
           departure1,
           "Expected departure to not be null"
       );
+      assertNotNull(
+          departure2,
+          "Expected departure to not be null"
+      );
+      assertNotNull(
+          departure3,
+          "Expected departure to not be null"
+      );
+      assertNull(
+          departure4,
+          "Expected null when train number is not in use"
+      );
+
       assertEquals(
           "Oslo",
           departure1.getDestination(),
           "Expected destination to be Oslo"
-      );
-      TrainDeparture departure2 = departures.getDepartureFromNumber(3);
-      assertNotNull(
-          departure2,
-          "Expected departure to not be null"
       );
       assertEquals(
           "C3",
           departure2.getLine(),
           "Expected line to be C3"
       );
-      TrainDeparture departure3 = departures.getDepartureFromNumber(2);
-      assertNotNull(
-          departure3,
-          "Expected departure to not be null"
-      );
       assertEquals(
           "Trondheim",
           departure3.getDestination(),
           "Expected destination to be Trondheim"
-      );
-      assertNull(
-          departures.getDepartureFromNumber(4),
-          "Expected null when train number is not in use"
       );
     }
 
@@ -115,16 +126,23 @@ class TrainGroupTest {
         "doesDepartureExists() should return true if a departure with the given train number exists"
     )
     void doesDepartureExistsReturnsIfADepartureWithAGivenTrainNumberExists() {
+      // Arrange
+      // Act
+      boolean departure1Exists = departures.doesDepartureExists(1);
+      boolean departure3Exists = departures.doesDepartureExists(3);
+      boolean departure4Exists = departures.doesDepartureExists(4);
+
+      // Assert
       assertTrue(
-          departures.doesDepartureExists(1),
+          departure1Exists,
           "Expected departure with train number 1 to exist"
       );
       assertTrue(
-          departures.doesDepartureExists(3),
+          departure3Exists,
           "Expected departure with train number 3 to exist"
       );
       assertFalse(
-          departures.doesDepartureExists(4),
+          departure4Exists,
           "Expected departure with train number 4 to not exist"
       );
     }
@@ -135,23 +153,24 @@ class TrainGroupTest {
             "departure exists"
     )
     void doesDepartureExistsReturnsIfADepartureSimilarToADepartureExists() {
+      // Arrange
       TrainDeparture existingDeparture = departures.getDepartureFromNumber(2);
-      assertNotNull(
-          existingDeparture,
-          "Expected departure to not be null"
-      );
-      assertTrue(
-          departures.doesDepartureExists(existingDeparture),
-          "Expected departure to exist"
-      );
       TrainDeparture nonExistingDeparture = new TrainDeparture(
           LocalTime.of(16, 0),
           "D4",
           4,
           "Bergen"
       );
+      // Act
+      boolean departure2Exists = departures.doesDepartureExists(existingDeparture);
+      boolean departure4Exists = departures.doesDepartureExists(nonExistingDeparture);
+      // Assert
+      assertTrue(
+          departure2Exists,
+          "Expected departure to exist"
+      );
       assertFalse(
-          departures.doesDepartureExists(nonExistingDeparture),
+          departure4Exists,
           "Didn't expect departure with train number 4 to exist"
       );
     }
@@ -161,15 +180,22 @@ class TrainGroupTest {
         "getDepartureFromDestination() should return an array with all matching departures"
     )
     void getDepartureFromDestinationReturnsAnArrayWithMatchingDepartures() {
+      // Arrange
+      // Act
       TrainDeparture[] osloDepartures = departures.getDepartureFromDestination("Oslo");
-      assertEquals(1, osloDepartures.length, "Expected only one departure to Oslo");
       TrainDeparture[] trondheimDepartures = departures.getDepartureFromDestination("Trondheim");
+      TrainDeparture[] bergenDepartures = departures.getDepartureFromDestination("Bergen");
+      // Assert
+      assertEquals(
+          1,
+          osloDepartures.length,
+          "Expected only one departure to Oslo"
+      );
       assertEquals(
           2,
           trondheimDepartures.length,
           "Expected two departure to Trondheim"
       );
-      TrainDeparture[] bergenDepartures = departures.getDepartureFromDestination("Bergen");
 
       assertEquals(
           0,
@@ -181,39 +207,70 @@ class TrainGroupTest {
     @Test
     @DisplayName("getDeparturesFromTime() gets all departures from and after a given time")
     void getDeparturesFromTimeGetsAllDeparturesOnAndAfterTime() {
+      // Arrange
+      // Act
       TrainDeparture[] allDepartures = departures.getDepartures();
-      assertEquals(3, allDepartures.length, "Expected three departures");
-
       TrainDeparture[] departuresFromNine = departures.getDeparturesFromTime(
           LocalTime.of(12, 0)
       );
-      assertEquals(2, departuresFromNine.length, "Expected two departures");
-
       TrainDeparture[] departuresFromTwelve = departures.getDeparturesFromTime(
           LocalTime.of(12, 1)
       );
+      // Assert
+      assertEquals(3, allDepartures.length, "Expected three departures");
+      assertEquals(2, departuresFromNine.length, "Expected two departures");
       assertEquals(1, departuresFromTwelve.length, "Expected one departures");
     }
 
     @Test
     @DisplayName("size() should return the size of the group")
     void sizeReturnAmountOfDepartures() {
-      assertEquals(3, departures.size(), "Expected three departures");
+      // Arrange
+      // Act
+      int size = departures.size();
+      // Assert
+      assertEquals(3, size, "Expected three departures");
     }
 
     @Test
     @DisplayName("removePassedDepartures() removes passed departures")
     void removePassedDeparturesRemovesCorrectDepartures() {
-      assertEquals(3, departures.size(), "Expected three departures");
+      // Arrange
+      // Act
+      int removedDeparturesBefore1159 = departures.removeDeparturesBefore(
+          LocalTime.of(11, 59)
+      );
+      int removedDeparturesBefore1200 = departures.removeDeparturesBefore(
+          LocalTime.of(12, 0)
+      );
+      int removedDeparturesBefore1201 = departures.removeDeparturesBefore(
+          LocalTime.of(12, 1)
+      );
+      int removedDeparturesBefore1201Try2 = departures.removeDeparturesBefore(
+          LocalTime.of(12, 1)
+      );
 
-      departures.removeDeparturesBefore(LocalTime.of(11, 59));
-      assertEquals(2, departures.size(), "Expected two departures");
-
-      departures.removeDeparturesBefore(LocalTime.of(12, 0));
-      assertEquals(2, departures.size(), "Expected two departure");
-
-      departures.removeDeparturesBefore(LocalTime.of(12, 1));
-      assertEquals(1, departures.size(), "Expected one departure");
+      // Assert
+      assertEquals(
+          1,
+          removedDeparturesBefore1159,
+          "Expected one removed departure"
+      );
+      assertEquals(
+          0,
+          removedDeparturesBefore1200,
+          "Expected zero removed departures"
+      );
+      assertEquals(
+          1,
+          removedDeparturesBefore1201,
+          "Expected one removed departure"
+      );
+      assertEquals(
+          0,
+          removedDeparturesBefore1201Try2,
+          "Expected zero removed departures"
+      );
     }
   }
 
@@ -223,9 +280,13 @@ class TrainGroupTest {
     @Test
     @DisplayName("Constructor should throw when given null")
     void constructorThrowsWhenDeparturesIsNull() {
+      // Arrange
+      List<TrainDeparture> departures = null;
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
-          () -> new TrainGroup(null),
+          () -> new TrainGroup(departures),
           "Argument for @NotNull parameter 'departures' of "
               + "edu/ntnu/stud/TrainGroup.<init> must not be null",
           "Trying to create a TrainGroup with null should throw"
@@ -237,6 +298,7 @@ class TrainGroupTest {
         "Constructor should throw when given a list with departures with similar train numbers"
     )
     void constructorThrowsWhenGivenListOfDeparturesWithSimilarTrainNumbers() {
+      // Arrange
       ArrayList<TrainDeparture> departures = new ArrayList<>();
       departures.add(new TrainDeparture(
           LocalTime.of(12, 0),
@@ -250,7 +312,8 @@ class TrainGroupTest {
           1,
           "Trondheim"
       ));
-
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
           () -> new TrainGroup(departures),
@@ -262,9 +325,11 @@ class TrainGroupTest {
     @Test
     @DisplayName("Using a list with null in the constructor should throw")
     void constructorThrowsWhenGivenListContainingNull() {
+      // Arrange
       ArrayList<TrainDeparture> departuresWithNull = new ArrayList<>();
       departuresWithNull.add(null);
-
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
           () -> new TrainGroup(departuresWithNull),
@@ -276,9 +341,13 @@ class TrainGroupTest {
     @Test
     @DisplayName("addDeparture() throws when trying to add null")
     void addDepartureThrowsWithNull() {
+      // Arrange
+      TrainDeparture departure = null;
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
-          () -> departures.addDeparture(null),
+          () -> departures.addDeparture(departure),
           "Argument for @NotNull parameter 'departure' of "
               + "edu/ntnu/stud/TrainGroup.addDeparture must not be null",
           "Trying to add null to the group should throw a IllegalArgumentException"
@@ -288,14 +357,18 @@ class TrainGroupTest {
     @Test
     @DisplayName("addDeparture() throws when trying to add a duplicate")
     void addDepartureThrowsWithADuplicateTrainNumber() {
+      // Arrange
+      TrainDeparture departure = new TrainDeparture(
+          LocalTime.of(16, 0),
+          "D4",
+          2,
+          "Bergen"
+      );
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
-          () -> departures.addDeparture(new TrainDeparture(
-              LocalTime.of(16, 0),
-              "D4",
-              2,
-              "Bergen"
-          )),
+          () -> departures.addDeparture(departure),
           "Train number already in use",
           "Trying to add a departure with a train number that is already in use should throw"
       );
@@ -304,9 +377,13 @@ class TrainGroupTest {
     @Test
     @DisplayName("getDepartureFromDestination() should throw when given null")
     void getDepartureFromDestination() {
+      // Arrange
+      String destination = null;
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
-          () -> departures.getDepartureFromDestination(null),
+          () -> departures.getDepartureFromDestination(destination),
           "Argument for @NotNull parameter 'destination' of "
               + "edu/ntnu/stud/TrainGroup.getDepartureFromDestination must not be null",
           "Trying to get departures with destination null should throw"
@@ -316,9 +393,13 @@ class TrainGroupTest {
     @Test
     @DisplayName("getDeparturesFromTime() throws when given null")
     void getDeparturesFromTime() {
+      // Arrange
+      LocalTime time = null;
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
-          () -> departures.getDeparturesFromTime(null),
+          () -> departures.getDeparturesFromTime(time),
           "Argument for @NotNull parameter 'time' of "
               + "edu/ntnu/stud/TrainGroup.getDeparturesFromTime must not be null",
           "Trying to get departures from time null should throw"

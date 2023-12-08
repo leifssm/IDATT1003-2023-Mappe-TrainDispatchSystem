@@ -97,7 +97,10 @@ public class TrainGroup {
    * @param departure The train departure to search with
    * @return True a similar departure exists.
    */
-  public boolean doesDepartureExists(@NotNull TrainDeparture departure) {
+  public boolean doesDepartureExists(TrainDeparture departure) {
+    if (departure == null) {
+      return false;
+    }
     return departures.contains(departure);
   }
 
