@@ -17,8 +17,13 @@ class MenuItemTest {
     @Test
     @DisplayName("Constructor doesn't throw when given valid parameters")
     void constructorDoesntThrowWithValidParams() {
+      // Arrange
+      String name = "Test";
+      Runnable action = () -> {};
+      // Act
+      // Assert
       assertDoesNotThrow(
-          () -> new MenuItem("Test", () -> {}),
+          () -> new MenuItem(name, action),
           "Expected no exception"
       );
     }
@@ -26,16 +31,28 @@ class MenuItemTest {
     @Test
     @DisplayName("toString() returns the name of the item")
     void toStringReturnsItemName() {
-      MenuItem item = new MenuItem("Test", () -> {});
-      assertEquals("Test", item.toString());
+      // Arrange
+      final String name = "Test";
+      Runnable action = () -> {};
+      // Act
+      MenuItem item = new MenuItem(name, action);
+      // Assert
+      assertEquals(name, item.toString());
     }
 
     @Test
     @DisplayName("run() runs the associated action")
     void runRunsAction() {
+      // Arrange
       AtomicBoolean ranFunction = new AtomicBoolean(false);
-      MenuItem item = new MenuItem("Test", () -> ranFunction.set(true));
+
+      String name = "Test";
+      Runnable action = () -> ranFunction.set(true);
+
+      MenuItem item = new MenuItem(name, action);
+      // Act
       item.run();
+      // Assert
       assertTrue(ranFunction.get());
     }
   }
@@ -46,10 +63,14 @@ class MenuItemTest {
     @Test
     @DisplayName("Constructor throws when the name is set as null")
     void constructorThrowsWhenNameIsNull() {
+      // Arrange
+      String name = null;
+      Runnable action = () -> {};
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
-          () -> new MenuItem(null, () -> {
-          }),
+          () -> new MenuItem(name, action),
           "Argument for @NotNull parameter 'name' of "
               + "edu/ntnu/stud/menu/MenuItem.<init> must not be null",
           "Expected thrown exception when name is null"
@@ -59,9 +80,14 @@ class MenuItemTest {
     @Test
     @DisplayName("Constructor throws when the action is set as null")
     void constructorThrowsWhenActionIsNull() {
+      // Arrange
+      String name = "Test";
+      Runnable action = null;
+      // Act
+      // Assert
       TestHelper.assertThrowsWithMessage(
           IllegalArgumentException.class,
-          () -> new MenuItem("Test", null),
+          () -> new MenuItem(name, action),
           "Argument for @NotNull parameter 'action' of "
               + "edu/ntnu/stud/menu/MenuItem.<init> must not be null",
           "Expected thrown exception when action is null"
