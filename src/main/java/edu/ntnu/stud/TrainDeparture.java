@@ -2,42 +2,74 @@ package edu.ntnu.stud;
 
 import java.time.LocalTime;
 import java.util.Objects;
+
 import org.jetbrains.annotations.NotNull;
+import org.junit.platform.commons.util.ToStringBuilder;
 
 /**
- * This class represents a train departure.
+ * <h1>TrainDeparture</h1>
+ * <p>
+ *   An entity class that represents a train departure with a departure time, a line, a train
+ *   number, a destination, a track, and a delay.
+ * </p>
+ * <br>
+ * <h2>Role and Responsibility:</h2>
+ * <p>
+ *   This class is responsible for containing the information related to a train departure, with
+ *   setters and getters, and a few helper methods. No other information is stored in this class,
+ *   and other functionality should be delegated to other classes.
+ * </p>
  */
 public class TrainDeparture {
   /**
-   * When the train is planned to depart.
+   * A non-null {@link LocalTime} object representing when the train is planned to depart without
+   * the added {@link #delay}. A {@link LocalTime} object is used because it is a time object with a
+   * lot of pre-existing utility methods.
    */
   private LocalTime plannedDeparture;
   /**
-   * Which line the train belongs to.
+   * An immutable non-null string representing which line the train belongs to. The line matches the
+   * pattern {@link Utils#TRAIN_LINE_PATTERN}, so it must be a string between 2 and 7 characters,
+   * containing only capital letters and numbers. The line is immutable because the line is directly
+   * connected to the departure and should never change.
+   *
+   * @see Utils#TRAIN_LINE_PATTERN
    */
-  private final String line;
+  private final @NotNull String line;
   /**
-   * The train id.
+   * An immutable integer representing the train id. As the id is used both as a hashing value and
+   * as a unique identifier, it is immutable and should never change.
    */
   private final int trainNumber;
   /**
-   * The end destination of the train. Must be a string of length greater than 0.
+   * A string representing the final destination of the train departure. The destination matches the
+   * pattern {@link Utils#DESTINATION_PATTERN}, so it must be a string between 1 and 16 characters,
+   * containing only the norwegian alphabet, spaces and dashes. The destination is mutable because
+   * the destination may change if the train is rerouted because of accidents or other unforeseen
+   * events.
+   *
+   * @see Utils#DESTINATION_PATTERN
    */
   private String destination;
   /**
-   * A number greater than 0 symbolizing which track the train is departing from. Is -1 if not set.
+   * An integer greater than 0 symbolizing which track the train is departing from. The track is set
+   * to -1 if not set yet. The track is mutable because the track may change at any time. The track
+   * cannot be set to 0 because no real life train station has a track 0.
    */
   private int track;
   /**
-   * How long the train is delayed. Equals {@link LocalTime#MIN} if not delayed.
+   * A non-null {@link LocalTime} object representing how long the train is delayed. Equals to
+   * {@link LocalTime#MIN} if not delayed. A {@link LocalTime} object is used because it is a time
+   * object with a lot of pre-existing utility methods.
    */
   private LocalTime delay;
 
   /**
-   * A function that checks if a given object is equal to {@code this} object.
+   * A function that checks if a given object is a {@link TrainDeparture} with a matching train
+   * numbers.
    *
    * @param o The object to compare to
-   * @return A boolean indicating if the functions match
+   * @return A boolean indicating if the object matches {@code this} object
    */
   @Override
   public boolean equals(Object o) {
@@ -53,10 +85,10 @@ public class TrainDeparture {
   }
 
   /**
-   * A function that returns a hashcode for {@code this} object. Uses the train number
-   * as the hashing value.
+   * A function that returns a hashcode for {@code this} object. Uses the
+   * {@link #trainNumber train number} as the hashing value.
    *
-   * @return A hashcode
+   * @return A generated hashcode
    */
   @Override
   public int hashCode() {
@@ -65,17 +97,21 @@ public class TrainDeparture {
   }
 
   /**
-   * Creates a train departure with a random departure time, line, track and delay, given a
+   * Creates a train departure with a random {@link #plannedDeparture departure time},
+   * {@link #line}, {@link #track} and {@link #delay}, given a
    * train number and a destination.
    *
-   * @param trainNumber The trains number
-   * @param destination The trains destination
+   * @param trainNumber The train's number, must be greater than 0
+   * @param destination The train's destination, must match the pattern
+   *                    {@link Utils#DESTINATION_PATTERN}
    * @return A randomized train departure
+   * @throws IllegalArgumentException If the train number is less than 1, or the destination doesn't
+   *                                  match the pattern {@link Utils#DESTINATION_PATTERN}
    */
   static @NotNull TrainDeparture createRandomDeparture(
       int trainNumber,
       @NotNull String destination
-  ) {
+  ) throws IllegalArgumentException {
     // Generate a random departure time, line, track and delay, and combines them with the given
     // parameters to create a randomized train departure.
     final LocalTime plannedDeparture = LocalTime.of(
@@ -97,6 +133,7 @@ public class TrainDeparture {
 
   /**
    * Shorthand for {@link TrainDeparture#TrainDeparture(LocalTime, String, int, String, int)}.
+   * Defaults the track to -1.
    *
    * @see TrainDeparture#TrainDeparture(LocalTime, String, int, String, int)
    */
@@ -111,9 +148,8 @@ public class TrainDeparture {
   }
 
   /**
-   * Shorthand for {@link TrainDeparture#TrainDeparture(
-   *   LocalTime, String, int, String, int, LocalTime
-   * )}.
+   * Shorthand for {@link TrainDeparture#TrainDeparture(LocalTime, String, int, String, int,
+   * LocalTime)}. Defaults the delay to {@link LocalTime#MIN}.
    *
    * @see TrainDeparture#TrainDeparture(LocalTime, String, int, String, int)
    */
@@ -131,7 +167,7 @@ public class TrainDeparture {
   /**
    * Creates a train departure with the given parameters.
    *
-   * @param plannedDeparture The planned departure time
+   * @param plannedDeparture The planned departure time, cannot be null
    * @param line The line name, can only contain capital letters and numbers, must be between 2 and
    *             7 characters, and cannot be null
    * @param trainNumber The train number, must be greater than 0
@@ -169,7 +205,7 @@ public class TrainDeparture {
     }
     this.trainNumber = trainNumber;
 
-    // Delegates the validating to the setter functions
+    // Delegates the rest of the validation to the setter functions
     setPlannedDeparture(plannedDeparture);
     setDestination(destination);
     setTrack(track);
@@ -177,19 +213,21 @@ public class TrainDeparture {
   }
 
   /**
-   * Returns the planned departure time.
+   * Returns the {@link #plannedDeparture planned departure time} as a non-null {@link LocalTime}.
    *
    * @return The planned departure time
+   * @see TrainDeparture#plannedDeparture
    */
   public @NotNull LocalTime getPlannedDeparture() {
     return plannedDeparture;
   }
 
   /**
-   * Sets the planned departure time.
+   * Sets the {@link #plannedDeparture planned departure time}. Cannot be set to null.
    *
    * @param plannedDeparture The planned departure time
    * @throws IllegalArgumentException If trying to set planned departure to null
+   * @see TrainDeparture#plannedDeparture
    */
   public void setPlannedDeparture(
       @NotNull LocalTime plannedDeparture
@@ -198,9 +236,12 @@ public class TrainDeparture {
   }
 
   /**
-   * Returns the delayed departure time.
+   * Returns a {@link LocalTime} object that is the {@link #delay delay} added to the
+   * {@link #plannedDeparture planned departure time} as a non-null {@link LocalTime}.
    *
    * @return The departure time with the added delay
+   * @see TrainDeparture#plannedDeparture
+   * @see TrainDeparture#delay
    */
   public @NotNull LocalTime getDelayedDeparture() {
     // Returns a copy of the planned departure time with the added delay
@@ -211,18 +252,22 @@ public class TrainDeparture {
   }
 
   /**
-   * Returns the line name.
+   * Returns the {@link #line line name} as a non-null {@link String} that matches the pattern
+   * {@link Utils#TRAIN_LINE_PATTERN}.
    *
    * @return The line name
+   * @see TrainDeparture#line
    */
   public @NotNull String getLine() {
     return line;
   }
 
   /**
-   * Returns the destination.
+   * Returns the {@link #destination} as a non-null {@link String} that matches the pattern
+   * {@link Utils#DESTINATION_PATTERN}.
    *
    * @return The destination
+   * @see TrainDeparture#destination
    */
   public @NotNull String getDestination() {
     return destination;
@@ -230,11 +275,14 @@ public class TrainDeparture {
 
   /**
    * Sets the destination if the destination is a string with length between 1 and 16 characters,
-   * and only contains capital letters, dashes, and spaces.
+   * and only contains capital letters, dashes, and spaces. If it doesn't match the criteria, or if
+   * the parameter is null, the method throws an exception.
    *
-   * @param destination The destination, must be a string of length greater than 1 and shorter tha
+   * @param destination The destination, must be a string of length greater than 1 and shorter than
+   *                    16, and only contain capital letters, dashes, and spaces
    * @throws IllegalArgumentException If the destination is null or not a string between 1 and 16
    *                                  characters, or contains invalid characters
+   * @see TrainDeparture#destination
    */
   public void setDestination(@NotNull String destination) throws IllegalArgumentException {
     // If the destination is null, or a zero length string, it throws an exception.
@@ -253,52 +301,62 @@ public class TrainDeparture {
   }
 
   /**
-   * Returns the train number.
+   * Returns the {@link #trainNumber train number} as an {@code int} greater than 0.
    *
    * @return The train number
+   * @see TrainDeparture#trainNumber
    */
   public int getTrainNumber() {
     return trainNumber;
   }
 
   /**
-   * Returns the track id.
+   * Returns the {@link #track track id} as an {@code int} greater than {@code 0} if the track is
+   * set. If the track is unassigned, it returns {@code -1}.
    *
    * @return The track id
+   * @see TrainDeparture#track
    */
   public int getTrack() {
     return track;
   }
 
   /**
-   * Sets the track id.
+   * Sets the {@link #track track id} to an {@code int}, if its greater than {@code 0}, or equal to
+   * {@code -1}. Set the track to a track greater than {@code 0} if the track is set, or to
+   * {@code -1} if it is unassigned.
    *
-   * @param track The track id, must be greater than 0 or -1 if undefined
+   * @param track The track id, must be greater than 0 or -1 if unassigned
    * @throws IllegalArgumentException If the track id is 0, or less than -1
+   * @see TrainDeparture#track
    */
   public void setTrack(int track) throws IllegalArgumentException {
     // If the track id is less than -1, or 0, it throws an exception.
     if (track < -1 || track == 0) {
       throw new IllegalArgumentException(
-          "Track id must be greater than 0, or -1 if it is undefined"
+          "Track id must be greater than 0, or equal to -1 if it is unassigned"
       );
     }
     this.track = track;
   }
 
   /**
-   * Returns the delay.
+   * Returns the {@link #delay train delay} as a non-null {@link LocalTime}. Returns
+   * {@link LocalTime#MIN} if the train is not delayed.
    *
-   * @return The delay
+   * @return The departure's delay
+   * @see TrainDeparture#delay
    */
   public @NotNull LocalTime getDelay() {
     return delay;
   }
 
   /**
-   * Returns a boolean representing if the train is delayed or not.
+   * Returns a {@code boolean} representing if the train is delayed or not. Returns {@code true} if
+   * the {@link #delay} isn't equal to {@link LocalTime#MIN}.
    *
    * @return If the train is delayed or not
+   * @see TrainDeparture#delay
    */
   public boolean isDelayed() {
     // If the delay isn't equal to 00:00, the train must be delayed
@@ -306,10 +364,12 @@ public class TrainDeparture {
   }
 
   /**
-   * Sets the delay.
+   * Sets the {@link #delay}. Set to {@link LocalTime#MIN} if the departure shouldn't be delayed.
+   * Cannot be set to null.
    *
-   * @param delay The delay, cannot be null
-   * @throws IllegalArgumentException If the delay is null
+   * @param delay The delay to give the departure
+   * @throws IllegalArgumentException If trying to set delay to null
+   * @see TrainDeparture#delay
    */
   public void setDelay(@NotNull LocalTime delay) throws IllegalArgumentException {
     this.delay = delay;
