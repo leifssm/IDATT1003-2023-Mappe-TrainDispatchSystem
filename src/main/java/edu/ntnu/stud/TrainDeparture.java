@@ -316,19 +316,18 @@ public class TrainDeparture {
   }
 
   /**
-   * Returns a string representation of the train departure.
+   * Returns a string representation of the object.
    *
-   * @return A string representation of the train departure
+   * @return A string representation of the object.
    */
   public @NotNull String toString() {
-    // Formats a string to contain all the information on the departure.
-    return String.format("%s (Train #%d) to %s: Expected %s%s %s",
-      line,
-      trainNumber,
-      destination,
-      plannedDeparture,
-      isDelayed() ? ", but delayed until " + getDelayedDeparture() : " with no delays",
-      track > 0 ? "from track " + trainNumber : "without an assigned track"
-    );
+    return new ToStringBuilder(this)
+        .append("plannedDeparture", plannedDeparture)
+        .append("line", line)
+        .append("trainNumber", trainNumber)
+        .append("destination", destination)
+        .append("track", track)
+        .append("delay", delay)
+        .toString();
   }
 }

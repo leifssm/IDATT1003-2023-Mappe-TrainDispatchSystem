@@ -235,17 +235,18 @@ class TrainDepartureTest {
     @DisplayName("toString() should return a string representation of the departure")
     void toStringReturnsStringRepresentationOfDeparture() {
       assertEquals(
-          "4BU2 (Train #19) to Trondheim: Expected 12:34, but delayed until 15:39 from track 19",
+          "TrainDeparture [plannedDeparture = 12:34, line = '4BU2', trainNumber = 19, "
+              + "destination = 'Trondheim', track = 9, delay = 03:05]",
           departure.toString()
       );
       departure.setDelay(LocalTime.MIN);
       assertEquals(
-          "4BU2 (Train #19) to Trondheim: Expected 12:34 with no delays from track 19",
+          "TrainDeparture [plannedDeparture = 12:34, line = '4BU2', trainNumber = 19, destination = 'Trondheim', track = 9, delay = 00:00]",
           departure.toString()
       );
       departure.setTrack(-1);
       assertEquals(
-          "4BU2 (Train #19) to Trondheim: Expected 12:34 with no delays without an assigned track",
+          "TrainDeparture [plannedDeparture = 12:34, line = '4BU2', trainNumber = 19, destination = 'Trondheim', track = -1, delay = 00:00]",
           departure.toString()
       );
     }

@@ -88,7 +88,7 @@ public class TrainInterface {
         })
         .setRunBefore(this::showDepartures)
         .setRunAfter(InputParser::waitForUser)
-        .run();
+        .start();
   }
 
   /**
@@ -228,7 +228,7 @@ public class TrainInterface {
     );
 
     departures.addDeparture(departure);
-    System.out.println("Added departure: " + departure);
+    System.out.println("Added departure: " + formatDepartureForUser(departure));
   }
 
   /**
@@ -359,7 +359,9 @@ public class TrainInterface {
 
     // Returns the departure with the given train number
     final TrainDeparture departure = departures.getDepartureFromNumber(trainNumber);
-    System.out.printf("Found the train %s.\n", departure);
+    // This will always be true since we check for it in the validation function
+    assert departure != null;
+    System.out.printf("Found the train %s.\n", formatDepartureForUser(departure));
     return departure;
   }
 
@@ -395,7 +397,7 @@ public class TrainInterface {
         Utils.pluralize(departures.length, "departure")
     );
     for (int i = 0; i < departures.length; i++) {
-      System.out.printf(" %d. %s\n", i + 1, departures[i]);
+      System.out.printf(" %d. %s\n", i + 1, formatDepartureForUser(departures[i]));
     }
     System.out.println();
   }
@@ -447,7 +449,7 @@ public class TrainInterface {
     System.out.println("║  Planned  │  Arrives  │ Track │ Line  │ Destination      │ Train ║");
     System.out.println("╟───────────┼───────────┼───────┼───────┼──────────────────┼───────╢");
     for (TrainDeparture departure : sortedDepartures) {
-      System.out.println(formatDeparture(departure));
+      System.out.println(formatDepartureForTable(departure));
     }
     for (int i = 0; i < MIN_DISPLAY_TABLE_SIZE - sortedDepartures.length; i++) {
       System.out.println("║           │           │       │       │                  │       ║");
@@ -462,7 +464,7 @@ public class TrainInterface {
    * @return A string representation of the train departure for the train table
    * @throws IllegalArgumentException If the departure is null
    */
-  private static @NotNull String formatDeparture(@NotNull TrainDeparture departure) {
+  private static @NotNull String formatDepartureForTable(@NotNull TrainDeparture departure) {
     final String track = departure.getTrack() != -1
         ? Utils.padCenter(departure.getTrack(), 7)
         : "       ";
@@ -480,6 +482,23 @@ public class TrainInterface {
         line,
         departure.getDestination(),
         trainNumber
+    );
+  }
+
+  /**
+   * Returns a string representation of the train departure.
+   *
+   * @return A string representation of the train departure
+   */
+  private @NotNull String formatDepartureForUser(@NotNull TrainDeparture departure) {
+    // Formats a string to contain all the information on the departure.
+    return String.format("%s (Train #%d) to %s: Expected %s%s %s",
+        departure.getLine(),
+        departure.getTrainNumber(),
+        departure.getDestination(),
+        departure.getPlannedDeparture(),
+        departure.isDelayed() ? ", but delayed until " + departure.getDelayedDeparture() : " with no delays",
+        departure.getTrack() > 0 ? "from track " + departure.getTrainNumber() : "without an assigned track"
     );
   }
 }
