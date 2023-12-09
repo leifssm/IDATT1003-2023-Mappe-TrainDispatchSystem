@@ -29,15 +29,30 @@ class MenuItemTest {
     }
 
     @Test
-    @DisplayName("toString() returns the name of the item")
-    void toStringReturnsItemName() {
+    @DisplayName("getName() returns the name of the item")
+    void getNameReturnsItemName() {
       // Arrange
       final String name = "Test";
       Runnable action = () -> {};
       // Act
       MenuItem item = new MenuItem(name, action);
       // Assert
-      assertEquals(name, item.toString());
+      assertEquals(name, item.getName());
+    }
+
+    @Test
+    @DisplayName("toString() returns a string representation of the item")
+    void toStringReturnsStringRepresentation() {
+      // Arrange
+      final String name = "Test";
+      Runnable action = () -> {};
+      // Act
+      MenuItem item = new MenuItem(name, action);
+      // Assert
+      assertEquals(
+          "MenuItem [name = 'Test']",
+          item.toString()
+      );
     }
 
     @Test
