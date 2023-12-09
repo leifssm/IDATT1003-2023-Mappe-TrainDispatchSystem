@@ -44,9 +44,10 @@ class MenuItem {
   }
 
   /**
-   * Returns the {@link MenuItem#name} of the menu item.
+   * Returns the {@link MenuItem#name} of the menu item as a non-null string.
    *
    * @return The name of the menu item.
+   * @see MenuItem#name
    */
   public @NotNull String getName() {
     return name;
