@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.junit.platform.commons.util.ToStringBuilder;
 
 /**
  * This class represents a group of train departures, manages train number overlap and the sorting,
@@ -186,5 +187,16 @@ public class TrainGroup {
     final int oldLength = departures.size();
     departures.removeIf(departure -> departure.getDelayedDeparture().isBefore(time));
     return oldLength - departures.size();
+  }
+
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return A string representation of the object.
+   */
+  public @NotNull String toString() {
+    return new ToStringBuilder(this)
+        .append("departures", departures)
+        .toString();
   }
 }
