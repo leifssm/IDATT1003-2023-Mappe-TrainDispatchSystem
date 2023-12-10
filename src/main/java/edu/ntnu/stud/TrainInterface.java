@@ -6,34 +6,64 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A user interface for the train system.
+ * <h1>TrainInterface.</h1>
+ * <p>
+ *   A class that which provides a menu where the user can interact with the train group and its
+ *   departures.
+ * </p>
+ * <br>
+ * <h2>Role and Responsibility:</h2>
+ * <p>
+ *   This class is responsible for being an interface between the user and the program, and only
+ *   provides an intractable menu, where the user can access the train group and its departures, and
+ *   their public methods. Through the interface the user can:
+ *   <ol>
+ *     <li>{@link #addDeparture() Add new departures}</li>
+ *     <li>{@link #setDepartureTrack() Assign tracks to departures}</li>
+ *     <li>{@link #setDepartureDelay() Set departure delays}</li>
+ *     <li>{@link #setDepartureDestination() Set departure destinations}</li>
+ *     <li>{@link #findDepartureFromNumber() Find departures by train number}</li>
+ *     <li>{@link #findDepartureFromDestination() Find departures by destination}</li>
+ *     <li>{@link #setClock() Set the time}</li>
+ *     <li>{@link #removeOldDepartures() Remove passed departures}</li>
+ *     <li>Quit the program</li>
+ *   </ol>
+ * </p>
+ *
+ * @see TrainDeparture
+ * @see TrainInterface
  */
 public class TrainInterface {
   /**
-   * The departures of the train system.
+   * The departures of the train system. It is immutable, because changing the group itself should
+   * not be possible, and only the departures should be able to be accessed and changed.
+   *
+   * @see TrainGroup
    */
   private final TrainGroup departures = new TrainGroup();
 
   /**
-   * The current time of the train system, starts as {@link LocalTime#MIN}.
+   * The current time of the train system used for filtering the shown departures, starts as
+   * {@link LocalTime#MIN}.
    */
   private LocalTime currentTime = LocalTime.MIN;
 
   /**
-   * The minimum size of the display table.
+   * The minimum size of the display table. Immutable because it should never be changed from the
+   * menu, but is rather stored as a constant to prevent the usage of magic numbers in the code.
    */
-  private static final int MIN_DISPLAY_TABLE_SIZE = 10;
+  private static final int MIN_DISPLAY_TABLE_SIZE = 8;
 
   /**
-   * Creates a new train interface.
+   * Creates a new train interface with the current time set to 00:00, and with an empty
+   * {@link TrainGroup train group}.
    */
   public TrainInterface() {}
 
   /**
-   * Initializes the train interface with random departures.
+   * Initializes the {@link #departures} with 4 randomly generated departures.
    */
   public void init() {
-    // Creates random departures
     departures.addDeparture(
         TrainDeparture.createRandomDeparture(30, "Trondheim")
     );
@@ -49,7 +79,7 @@ public class TrainInterface {
   }
 
   /**
-   * Starts the train interface's menu.
+   * Prints a splash screen, then creates and starts an instance of the {@link Menu} class.
    */
   public void start() {
     // ASCII art from https://patorjk.com/software/taag/
@@ -92,7 +122,8 @@ public class TrainInterface {
   }
 
   /**
-   * Gets a valid train number from the user that doesn't collide with an existing train number.
+   * Gets a valid train number from the user that doesn't collide with an existing train number, and
+   * is greater than 0.
    *
    * @return A valid train number that doesn't collide with another departure.
    */
@@ -113,7 +144,7 @@ public class TrainInterface {
   }
 
   /**
-   * Gets a valid track number from the user.
+   * Gets a track number from the user that is either equal to -1 or greater than 0.
    *
    * @return A valid track number.
    */
@@ -145,7 +176,7 @@ public class TrainInterface {
   }
 
   /**
-   * Gets a valid train line from the user.
+   * Gets a train line from the user that matches the pattern {@link Utils#TRAIN_LINE_PATTERN}.
    *
    * @return A valid train line.
    */
@@ -163,7 +194,8 @@ public class TrainInterface {
   }
 
   /**
-   * Gets a valid train delay from the user.
+   * Gets a valid {@link LocalTime} delay from the user. Default the delay to {@link LocalTime#MIN}
+   * if the user doesn't want to delay the train.
    *
    * @return A valid train delay.
    */
@@ -200,7 +232,7 @@ public class TrainInterface {
 
   /**
    * Lets the user add a new departure. It asks the user for inputs, validates it and creates a new
-   * departure.
+   * departure before adding it to the {@link #departures}.
    */
   private void addDeparture() {
     // Gets the planned departure from the user
@@ -233,7 +265,8 @@ public class TrainInterface {
 
   /**
    * Lets the user change the track of a departure. Asks for a train number, checks if a
-   * corresponding train exists, then lets the user change the track
+   * corresponding train exists, then lets the user change the track. If no departures exist, it
+   * returns.
    */
   private void setDepartureTrack() {
     // Gets the departure from the user, and returns if it doesn't find one since the user can't
@@ -271,7 +304,8 @@ public class TrainInterface {
 
   /**
    * Lets the user change the delay of a departure. Asks for a train number, checks if a
-   * corresponding train exists, then lets the user change the track.
+   * corresponding train exists, then lets the user change the track. Returns if no departures
+   * exist
    */
   private void setDepartureDelay() {
     // Gets the departure from the user, and returns if it doesn't find one since the user can't
@@ -302,7 +336,8 @@ public class TrainInterface {
 
   /**
    * Lets the user change the delay of a departure. Asks for a train number, checks if a
-   * corresponding train exists, then lets the user change the track.
+   * corresponding train exists, then lets the user change the track. Returns if no departures
+   * exist.
    */
   private void setDepartureDestination() {
     // Gets the departure from the user, and returns if it doesn't find one since the user can't
@@ -338,7 +373,8 @@ public class TrainInterface {
   /**
    * Helper method to find a departure from a train number.
    *
-   * @return A train departure with the corresponding train number
+   * @return A train departure with the corresponding train number, or null if there are no
+   *         departures in the {@link #departures}.
    */
   private @Nullable TrainDeparture findDepartureFromNumber() {
     // Returns null if there are no departures to select from
@@ -374,7 +410,7 @@ public class TrainInterface {
   }
 
   /**
-   * Lets the user query the departures, and gets all departures for a destination.
+   * Lets the user query the departures, and prints all departures for a destination.
    */
   private void findDepartureFromDestination() {
     // Returns if there are no departures to select from
@@ -418,6 +454,10 @@ public class TrainInterface {
     System.out.printf("\nThe time got changed to %s.\n", currentTime);
   }
 
+  /**
+   * Lets the user pick a time, that is defaulted to the current time, and removes all departures
+   * before that time.
+   */
   private void removeOldDepartures() {
     if (departures.size() == 0) {
       System.out.println("There are no departures to remove.");
@@ -497,8 +537,11 @@ public class TrainInterface {
    * Returns a string representation of the train departure.
    *
    * @return A string representation of the train departure
+   * @throws IllegalArgumentException If the given departure is null
    */
-  private @NotNull String formatDepartureForUser(@NotNull TrainDeparture departure) {
+  private @NotNull String formatDepartureForUser(
+      @NotNull TrainDeparture departure
+  ) throws IllegalArgumentException {
     // Formats a string to contain all the information on the departure.
     return String.format("%s (Train #%d) to %s: Expected %s%s %s",
         departure.getLine(),
