@@ -99,12 +99,12 @@ public class TrainInterface {
   private int getNonCollidingTrainNumberFromUser() {
     System.out.println("What is the train number? The number has to be bigger than or equal to 1.");
 
-    return InputParser.getInt("Train number", n -> {
-      if (n < 1) {
+    return InputParser.getInt("Train number", integer -> {
+      if (integer < 1) {
         System.out.println("The train number cannot be smaller than 1.");
         return false;
       }
-      if (departures.doesDepartureExists(n)) {
+      if (departures.doesDepartureExists(integer)) {
         System.out.println("The train number is already in use.");
         return false;
       }
@@ -124,7 +124,7 @@ public class TrainInterface {
 
     return InputParser.getInt(
         "Track",
-        n -> n >= -1 && n != 0,
+        integer -> integer >= -1 && integer != 0,
         "Track cannot be 0 or smaller than -1."
     );
   }
@@ -347,10 +347,10 @@ public class TrainInterface {
     System.out.println("Write the train number of the train you want to find.");
     final int trainNumber = InputParser.getInt(
         "Train number",
-        n -> {
-          final boolean departureExists = departures.doesDepartureExists(n);
+        integer -> {
+          final boolean departureExists = departures.doesDepartureExists(integer);
           if (!departureExists) {
-            System.out.printf("Couldn't find a departure with the number %d. Try again.\n", n);
+            System.out.printf("Couldn't find a departure with the number %d. Try again.\n", integer);
           }
           return departureExists;
         },
@@ -359,7 +359,8 @@ public class TrainInterface {
 
     // Returns the departure with the given train number
     final TrainDeparture departure = departures.getDepartureFromNumber(trainNumber);
-    // This will always be true since we check for it in the validation function
+    // This assertion is only for type checking as it will always be true since we check for it in the validation
+    // function
     assert departure != null;
     System.out.printf("Found the train %s.\n", formatDepartureForUser(departure));
     return departure;

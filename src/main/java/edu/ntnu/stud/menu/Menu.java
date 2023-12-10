@@ -151,7 +151,7 @@ public class Menu {
     // Gets a valid validates the user input.
     final int choice = InputParser.getInt(
         "Option",
-        n -> 1 <= n && n <= entries.size(),
+        integer -> 1 <= integer && integer <= entries.size(),
         error
     ) - 1;
 

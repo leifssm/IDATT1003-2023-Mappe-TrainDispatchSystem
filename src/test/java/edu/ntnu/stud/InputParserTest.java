@@ -104,7 +104,7 @@ class InputParserTest {
       String prompt = "Test";
       // Act
       // Assert
-      assertEquals(1, InputParser.getInt(prompt, n -> n > 0));
+      assertEquals(1, InputParser.getInt(prompt, integer -> integer > 0));
     }
 
     @Test
@@ -129,7 +129,7 @@ class InputParserTest {
       String prompt = "Test";
       // Act
       // Assert
-      assertEquals(8, InputParser.getFloat(prompt, n -> n > 7));
+      assertEquals(8, InputParser.getFloat(prompt, floating -> floating > 7));
     }
 
     @Test
@@ -155,7 +155,7 @@ class InputParserTest {
       String prompt = "Test";
       // Act
       // Assert
-      assertEquals('G', InputParser.getChar(prompt, n -> n > 'E'));
+      assertEquals('G', InputParser.getChar(prompt, character -> character > 'E'));
     }
 
     @Test
@@ -181,7 +181,7 @@ class InputParserTest {
       // Assert
       assertEquals(
           LocalTime.of(14, 0),
-          InputParser.getTime(prompt, t -> t.getHour() > 12 && t.getHour() < 20)
+          InputParser.getTime(prompt, time -> time.getHour() > 12 && time.getHour() < 20)
       );
     }
 
