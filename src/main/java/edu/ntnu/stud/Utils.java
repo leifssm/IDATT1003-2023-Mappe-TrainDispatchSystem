@@ -4,7 +4,18 @@ import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * This class contains utility methods that are used in multiple places in the application.
+ * <h1>Utils.</h1>
+ * <p>
+ *   This class contains utility methods that are used in multiple places in the application.
+ * </p>
+ * <br>
+ * <h2>Role and Responsibility:</h2>
+ * <p>
+ *   This class is not responsible for any major functionality, but rather for providing utility
+ *   methods that are used in multiple places in the application. All methods are static because
+ *   the class should never be instantiated, and all the properties are final because they should
+ *   never be changed.
+ * </p>
  */
 public class Utils {
   /**
