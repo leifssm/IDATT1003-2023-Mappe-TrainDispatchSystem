@@ -1,24 +1,34 @@
 package edu.ntnu.stud;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.function.Executable;
 import org.opentest4j.AssertionFailedError;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * A helper class that makes it easier to test the program
+ * <h1>TestHelper.</h1>
+ * <p>A helper class that makes it easier to test the program</p>
+ * <br>
+ * <h2>Role and Responsibility:</h2>
+ * <p>
+ *   This class is responsible for providing helper methods that makes it easier to test the
+ *   application. The class provides methods for {@link #setupMockInput(String...) mocking inputs},
+ *   for {@link #expectOutput(String...) testing the output}, for {@link #tearDown() tearing down
+ *   the mock inputs and outputs}, and a shorthand for {@link #assertThrowsWithMessage testing
+ *   thrown errors}.
+ * </p>
  */
 public class TestHelper {
   /**
-   * The original input stream. It is stored so that it can be restored later.
+   * The original input stream. It is immutably stored so that it can be restored on teardown.
    */
   private static final InputStream originalIn = System.in;
 
   /**
-   * The original print stream. It is stored so that it can be restored later.
+   * The original print stream. It is immutably stored so that it can be restored on teardown.
    */
   private static final PrintStream originalOut = System.out;
 
@@ -28,7 +38,8 @@ public class TestHelper {
    *
    * @param inputs A list of strings, each representing one line of input
    */
-  public static void setupMockInput(@NotNull String... inputs) {
+  public static void setupMockInput(String... inputs) {
+    System.out.println(Arrays.toString(inputs));
     String joinedString = String.join("\n", inputs) + "\n";
     ByteArrayInputStream stream = new ByteArrayInputStream(joinedString.getBytes());
     InputParser.close();
@@ -43,8 +54,8 @@ public class TestHelper {
    * @throws AssertionFailedError If the given output doesn't match the given output
    */
   public static void expectOutput(
-      @NotNull String... output
-  ) throws NoSuchElementException, AssertionFailedError {
+      String... output
+  ) throws AssertionFailedError {
     final String concatenated = String.join("\n", output);
 
     // Creates a new ByteArrayOutputStream, with an overwritten close method that throws if the
