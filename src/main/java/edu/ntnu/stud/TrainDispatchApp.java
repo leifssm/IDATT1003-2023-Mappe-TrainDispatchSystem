@@ -1,7 +1,7 @@
 package edu.ntnu.stud;
 
 /**
- * <h1>Train Dispatch App.</h1>
+ * <h1>TrainDispatchApp.</h1>
  * <p>The access point for the application, creates and runs a train interface instance.</p>
  * <br>
  * <h2>Role and Responsibility:</h2>

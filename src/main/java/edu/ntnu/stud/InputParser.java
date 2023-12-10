@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * <h1>Input Parser.</h1>
+ * <h1>InputParser.</h1>
  * <p>A singleton class with lazy instantiation that manages and parses user input.</p>
  * <br>
  * <h2>Role and Responsibility:</h2>

@@ -10,6 +10,7 @@ import org.junit.platform.commons.util.ToStringBuilder;
 /**
  * <h1>Menu.</h1>
  * <p>A helper class that makes creating a user interface easier.</p>
+ * <br>
  * <h2>Role and Responsibility:</h2>
  * <p>
  *   This class is responsible for creating a collection of {@link MenuItem}s using an

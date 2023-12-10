@@ -9,6 +9,7 @@ import org.junit.platform.commons.util.ToStringBuilder;
  *   An immutable package-private class that's used from {@link edu.ntnu.stud.menu.Menu}. Represents
  *   a labeled runnable function.
  * </p>
+ * <br>
  * <h2>Role and Responsibility:</h2>
  * <p>
  *   This class is responsible for creating being a container for a labeled {@link Runnable} action,
