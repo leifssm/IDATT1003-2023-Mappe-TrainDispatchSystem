@@ -1,68 +1,58 @@
 package edu.ntnu.stud;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.platform.commons.util.ToStringBuilder;
 
 /**
- * This class represents a group of train departures, manages train number overlap and the sorting,
- * querying, and deleting of train departures.
+ * <h1>TrainGroup.</h1>
+ * <p>
+ *   A class that represents a group of {@link TrainDeparture train departures}, manages train
+ *   number overlap and the sorting, querying, and deleting of
+ *   {@link TrainDeparture train departures}.
+ * </p>
+ * <br>
+ * <h2>Role and Responsibility:</h2>
+ * <p>
+ *   This class is responsible for being a group of {@link TrainDeparture train departures}, with
+ *   the options to add, remove and querying departures. This class is not responsible for creating
+ *   or validating {@link TrainDeparture train departures}, or for outputting the contents. That is
+ *   the responsibility of the {@link TrainInterface} class.
+ * </p>
+ *
+ * @see TrainDeparture
+ * @see TrainInterface
  */
 public class TrainGroup {
   /**
-   * A list of all the train departures.
+   * A hashset of all the train departures. The data type hashset was chosen because it does
+   * inherently not allow duplicates, which is perfect since the train numbers of the departures are
+   * unique. It is final because it should never be replaces, and it is private with no getters
+   * because it should never be accessed directly.
    */
-  private final @NotNull List<TrainDeparture> departures = new ArrayList<>();
+  private final @NotNull Set<TrainDeparture> departures = new HashSet<>();
 
   /**
-   * Create a new empty train group.
+   * Creates a new empty train group.
    */
   public TrainGroup() {}
 
   /**
-   * Create a new train group with the given departures.
-   *
-   * @param departures The departures to add to the group.
-   * @throws IllegalArgumentException If the list of departures contains null or duplicate train
-   *                                  numbers.
-   */
-  public TrainGroup(@NotNull List<@NotNull TrainDeparture> departures) throws IllegalArgumentException {
-    // Tries adding all the departures to the group for all elements in the list or until it throws
-    try {
-      for (TrainDeparture departure : departures) {
-        addDeparture(departure);
-      }
-    } catch (IllegalArgumentException e) {
-      // The only two errors that can be thrown is a null error and duplicate train number error,
-      // so the program chooses the error based on the thrown message
-      if (Objects.equals(e.getMessage(), "Train number already in use")) {
-        throw new IllegalArgumentException(
-            "List of departures cannot contain duplicate train numbers",
-            e
-        );
-      }
-      throw new IllegalArgumentException("List of departures cannot contain null", e);
-    }
-  }
-
-  /**
-   * Adds a departure to the group.
+   * Adds a departure to the group if one with the same train number doesn't already exist.
    *
    * @param departure The departure to add. Cannot be null
    * @throws IllegalArgumentException If the train number of the departure is already present.
    */
   public void addDeparture(@NotNull TrainDeparture departure) throws IllegalArgumentException {
-    // Throws if the train number is already in use
-    if (doesDepartureExists(departure)) {
+    final boolean addedDeparture = departures.add(departure);
+    if (!addedDeparture) {
       throw new IllegalArgumentException("Train number already in use");
     }
-    departures.add(departure);
   }
 
   /**
@@ -117,7 +107,7 @@ public class TrainGroup {
   ) throws IllegalArgumentException {
     // Creates a stream, and filters it by matching the destination, and then returns an array of
     // all matches. Here I have decided to use an array instead of a list, since I only use the
-    // value to iterate over, and an array is faster for that purpose.
+    // array to iterate over, and an array is faster for that purpose.
     return departures
         .stream()
         .filter(departure -> departure.getDestination().equals(destination))

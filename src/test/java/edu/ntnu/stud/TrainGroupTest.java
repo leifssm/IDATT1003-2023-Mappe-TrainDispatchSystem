@@ -1,8 +1,6 @@
 package edu.ntnu.stud;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,34 +40,13 @@ class TrainGroupTest {
   @DisplayName("Positive tests")
   class PositiveTests {
     @Test
-    @DisplayName(
-        "Adding a list of departures with the constructor should not throw if they have "
-            + "different train numbers"
-    )
-    void constructorShouldNotThrowWhenAddingTrainsWithDifferentTrainNumbers() {
-      // Arrange
-      ArrayList<TrainDeparture> departures = new ArrayList<>();
-      departures.add(
-          TrainDeparture.createRandomDeparture(1, "Oslo")
-      );
-      departures.add(
-          TrainDeparture.createRandomDeparture(2, "Trondheim")
-      );
-      // Act
-      // Assert
-      assertDoesNotThrow(
-          () -> new TrainGroup(departures),
-          "Empty args should not throw"
-      );
-    }
-    @Test
     @DisplayName("Constructor doesn't throw when given no parameters")
     void constructorDoesntThrowWithNoParameters() {
       // Arrange
       // Act
       // Assert
       assertDoesNotThrow(
-          () -> new TrainGroup(),
+          TrainGroup::new,
           "Empty list should not throw"
       );
     }
@@ -277,67 +254,6 @@ class TrainGroupTest {
   @Nested
   @DisplayName("Negative tests")
   class NegativeTests {
-    @Test
-    @DisplayName("Constructor should throw when given null")
-    void constructorThrowsWhenDeparturesIsNull() {
-      // Arrange
-      List<TrainDeparture> departures = null;
-      // Act
-      // Assert
-      TestHelper.assertThrowsWithMessage(
-          IllegalArgumentException.class,
-          () -> new TrainGroup(departures),
-          "Argument for @NotNull parameter 'departures' of "
-              + "edu/ntnu/stud/TrainGroup.<init> must not be null",
-          "Trying to create a TrainGroup with null should throw"
-      );
-    }
-
-    @Test
-    @DisplayName(
-        "Constructor should throw when given a list with departures with similar train numbers"
-    )
-    void constructorThrowsWhenGivenListOfDeparturesWithSimilarTrainNumbers() {
-      // Arrange
-      ArrayList<TrainDeparture> departures = new ArrayList<>();
-      departures.add(new TrainDeparture(
-          LocalTime.of(12, 0),
-          "A1",
-          1,
-          "Oslo"
-      ));
-      departures.add(new TrainDeparture(
-          LocalTime.of(12, 30),
-          "B2",
-          1,
-          "Trondheim"
-      ));
-      // Act
-      // Assert
-      TestHelper.assertThrowsWithMessage(
-          IllegalArgumentException.class,
-          () -> new TrainGroup(departures),
-          "List of departures cannot contain duplicate train numbers",
-          "Trying to create a TrainGroup with duplicates should throw"
-      );
-    }
-
-    @Test
-    @DisplayName("Using a list with null in the constructor should throw")
-    void constructorThrowsWhenGivenListContainingNull() {
-      // Arrange
-      ArrayList<TrainDeparture> departuresWithNull = new ArrayList<>();
-      departuresWithNull.add(null);
-      // Act
-      // Assert
-      TestHelper.assertThrowsWithMessage(
-          IllegalArgumentException.class,
-          () -> new TrainGroup(departuresWithNull),
-          "List of departures cannot contain null",
-          "Trying to create a TrainGroup with null should throw"
-      );
-    }
-
     @Test
     @DisplayName("addDeparture() throws when trying to add null")
     void addDepartureThrowsWithNull() {
