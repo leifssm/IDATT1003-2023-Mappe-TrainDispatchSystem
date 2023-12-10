@@ -27,7 +27,7 @@ public class TrainInterface {
   /**
    * Creates a new train interface.
    */
-  TrainInterface() {}
+  public TrainInterface() {}
 
   /**
    * Initializes the train interface with random departures.

@@ -23,7 +23,7 @@ public class TrainGroup {
   /**
    * Create a new empty train group.
    */
-  TrainGroup() {}
+  public TrainGroup() {}
 
   /**
    * Create a new train group with the given departures.
@@ -32,7 +32,7 @@ public class TrainGroup {
    * @throws IllegalArgumentException If the list of departures contains null or duplicate train
    *                                  numbers.
    */
-  TrainGroup(@NotNull List<@NotNull TrainDeparture> departures) throws IllegalArgumentException {
+  public TrainGroup(@NotNull List<@NotNull TrainDeparture> departures) throws IllegalArgumentException {
     // Tries adding all the departures to the group for all elements in the list or until it throws
     try {
       for (TrainDeparture departure : departures) {

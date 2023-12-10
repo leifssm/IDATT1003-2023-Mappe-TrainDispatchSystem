@@ -107,7 +107,7 @@ public class TrainDeparture {
    * @throws IllegalArgumentException If the train number is less than 1, or the destination doesn't
    *                                  match the pattern {@link Utils#DESTINATION_PATTERN}
    */
-  static @NotNull TrainDeparture createRandomDeparture(
+  public static @NotNull TrainDeparture createRandomDeparture(
       int trainNumber,
       @NotNull String destination
   ) throws IllegalArgumentException {
@@ -136,7 +136,7 @@ public class TrainDeparture {
    *
    * @see TrainDeparture#TrainDeparture(LocalTime, String, int, String, int)
    */
-  TrainDeparture(
+  public TrainDeparture(
       @NotNull LocalTime plannedDeparture,
       @NotNull String line,
       int trainNumber,
@@ -152,7 +152,7 @@ public class TrainDeparture {
    *
    * @see TrainDeparture#TrainDeparture(LocalTime, String, int, String, int)
    */
-  TrainDeparture(
+  public TrainDeparture(
       @NotNull LocalTime plannedDeparture,
       @NotNull String line,
       int trainNumber,
@@ -175,7 +175,7 @@ public class TrainDeparture {
    * @param delay The delay, cannot be null
    * @throws IllegalArgumentException If any of the parameters are invalid
    */
-  TrainDeparture(
+  public TrainDeparture(
       @NotNull LocalTime plannedDeparture,
       @NotNull String line,
       int trainNumber,

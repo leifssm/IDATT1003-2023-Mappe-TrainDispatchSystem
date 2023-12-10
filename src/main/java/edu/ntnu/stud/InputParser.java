@@ -13,29 +13,42 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A singleton class with lazy instantiation that manages and parses all user input.
+ * <h1>Input Parser.</h1>
+ * <p>A singleton class with lazy instantiation that manages and parses user input.</p>
+ * <br>
+ * <h2>Role and Responsibility:</h2>
+ * <p>
+ *   This class is responsible for parsing and validating user input. It is a singleton class with
+ *   the option to {@link #initialize} the scanner with a given input stream for testing purposes.
+ *   It has methods for getting integers, floats, characters, strings, booleans and LocalTimes from
+ *   the user. It has the option for extra validation through either regexes, patterns or functions,
+ *   and has the option of giving specialized error messages.
+ * </p>
  */
 public class InputParser {
   /**
-   * A functional interface for validating user input.
+   * A functional interface for validating user input, so that a specialized function interface has
+   * to be implemented for all types.
    *
    * @param <T> The expected type of input to validate.
    */
   public interface InputValidator<T> { boolean test(@NotNull T input); }
 
   /**
-   * The scanner object that is used to read inputs from.
+   * The scanner object that is used to read inputs from. If the singleton isn't yet initialized,
+   * the scanner is null. If a get method is called before the class is initialized, it will
+   * automatically initialize the scanner with the current {@link System#in}.
    */
   private static Scanner scanner;
 
   /**
-   * Initialize the scanner with the given input stream. Does not override an already initialized
-   * scanner.
+   * Initializes the scanner with a given non-null {@link InputStream input stream}. Does not
+   * override the scanner if it is already initialized.
    *
-   * @param stream The input stream to read from.
+   * @param stream The input stream to read data from.
    * @throws IllegalArgumentException If the stream is null
    */
-  static void initialize(@NotNull InputStream stream) throws IllegalArgumentException {
+  public static void initialize(@NotNull InputStream stream) throws IllegalArgumentException {
     if (isInitialized()) {
       return;
     }
@@ -45,22 +58,25 @@ public class InputParser {
   /**
    * Initializes the scanner with {@link System#in}. Does not override an already initialized
    * scanner.
+   *
+   * @see System#in
    */
-  static void initialize() {
+  public static void initialize() {
     initialize(System.in);
   }
 
   /**
-   * Returns if the scanner is initialized.
+   * Returns if the scanner has yet been initialized with {@link #initialize}.
    *
    * @return If the scanner is initialized.
    */
-  static boolean isInitialized() {
+  public static boolean isInitialized() {
     return scanner != null;
   }
 
   /**
-   * Closes the scanner if it is initialized.
+   * If initialized, it closes the {@link InputStream} the singleton is initialized with, and clears
+   * the connected scanner from the class.
    */
   public static void close() {
     if (InputParser.scanner == null) {
@@ -71,7 +87,7 @@ public class InputParser {
   }
 
   /**
-   * Gets the input from the user without a prompt, and returns the given string.
+   * Gets a string from the user without a prompt, and returns the given string.
    *
    * @return The string the user entered.
    */
@@ -521,8 +537,10 @@ public class InputParser {
    * Prompts the user to press enter, and stalls the program until the user does so.
    *
    * @param prompt The prompt to show the user.
+   * @throws IllegalArgumentException If the prompt is null.
+   * @see #waitForUser()
    */
-  public static void waitForUser(@NotNull String prompt) {
+  public static void waitForUser(@NotNull String prompt) throws IllegalArgumentException {
     // Waits for the user to enter any string.
     System.out.println("\n" + prompt);
     getString();
@@ -532,7 +550,7 @@ public class InputParser {
    * Shorthand for {@link InputParser#waitForUser(String)}. Defaults the prompt
    * message to "Press enter to continue".
    *
-   * @see InputParser#getInt(String, InputValidator, String)
+   * @see #waitForUser()
    */
   public static void waitForUser() {
     // Waits for the user to enter any string.
