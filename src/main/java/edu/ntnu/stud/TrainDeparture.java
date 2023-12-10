@@ -2,12 +2,11 @@ package edu.ntnu.stud;
 
 import java.time.LocalTime;
 import java.util.Objects;
-
 import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.util.ToStringBuilder;
 
 /**
- * <h1>TrainDeparture</h1>
+ * <h1>TrainDeparture.</h1>
  * <p>
  *   An entity class that represents a train departure with a departure time, a line, a train
  *   number, a destination, a track, and a delay.

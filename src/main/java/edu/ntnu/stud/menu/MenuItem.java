@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.platform.commons.util.ToStringBuilder;
 
 /**
- * <h1>MenuItem</h1>
+ * <h1>MenuItem.</h1>
  * <p>
  *   An immutable package-private class that's used from {@link edu.ntnu.stud.menu.Menu}. Represents
  *   a labeled runnable function.
@@ -14,6 +14,7 @@ import org.junit.platform.commons.util.ToStringBuilder;
  *   This class is responsible for creating being a container for a labeled {@link Runnable} action,
  *   and nothing else. The class {@link edu.ntnu.stud.menu.Menu} contains all of the functionality.
  * </p>
+ *
  * @see edu.ntnu.stud.menu.Menu
  */
 class MenuItem {

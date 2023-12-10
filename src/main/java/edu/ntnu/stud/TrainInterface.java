@@ -327,7 +327,11 @@ public class TrainInterface {
       );
     } else {
       departure.setDestination(destination);
-      System.out.printf("The destination was changed from %s to %s.\n", previousDestination, destination);
+      System.out.printf(
+          "The destination was changed from %s to %s.\n",
+          previousDestination,
+          destination
+      );
     }
   }
 
@@ -350,7 +354,10 @@ public class TrainInterface {
         integer -> {
           final boolean departureExists = departures.doesDepartureExists(integer);
           if (!departureExists) {
-            System.out.printf("Couldn't find a departure with the number %d. Try again.\n", integer);
+            System.out.printf(
+                "Couldn't find a departure with the number %d. Try again.\n",
+                integer
+            );
           }
           return departureExists;
         },
@@ -359,8 +366,8 @@ public class TrainInterface {
 
     // Returns the departure with the given train number
     final TrainDeparture departure = departures.getDepartureFromNumber(trainNumber);
-    // This assertion is only for type checking as it will always be true since we check for it in the validation
-    // function
+    // This assertion is only for type checking as it will always be true since we check for it in
+    // the validation function
     assert departure != null;
     System.out.printf("Found the train %s.\n", formatDepartureForUser(departure));
     return departure;
@@ -498,8 +505,12 @@ public class TrainInterface {
         departure.getTrainNumber(),
         departure.getDestination(),
         departure.getPlannedDeparture(),
-        departure.isDelayed() ? ", but delayed until " + departure.getDelayedDeparture() : " with no delays",
-        departure.getTrack() > 0 ? "from track " + departure.getTrainNumber() : "without an assigned track"
+        departure.isDelayed()
+            ? ", but delayed until " + departure.getDelayedDeparture()
+            : " with no delays",
+        departure.getTrack() > 0
+            ? "from track " + departure.getTrainNumber()
+            : "without an assigned track"
     );
   }
 }

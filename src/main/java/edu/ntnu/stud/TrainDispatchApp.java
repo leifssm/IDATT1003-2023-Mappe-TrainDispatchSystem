@@ -1,11 +1,21 @@
 package edu.ntnu.stud;
 
 /**
- * The access point for the application, creates and runs a train interface instance.
+ * <h1>Train Dispatch App.</h1>
+ * <p>The access point for the application, creates and runs a train interface instance.</p>
+ * <br>
+ * <h2>Role and Responsibility:</h2>
+ * <p>
+ *   This class is only responsible for creating and starting a train interface instance. It does
+ *   not use any arguments, and does not have any properties.
+ * </p>
+ *
+ * @see TrainInterface
  */
 public class TrainDispatchApp {
   /**
-   * The main method of the application. Initializes and starts the application.
+   * The main method for the application. Initializes and starts a
+   * {@link TrainInterface} instance.
    *
    * @param args The command line arguments, not used
    */

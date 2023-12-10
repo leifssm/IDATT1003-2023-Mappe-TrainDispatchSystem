@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.platform.commons.util.ToStringBuilder;
 
 /**
- * <h1>Menu</h1>
+ * <h1>Menu.</h1>
  * <p>A helper class that makes creating a user interface easier.</p>
  * <h2>Role and Responsibility:</h2>
  * <p>
@@ -18,6 +18,7 @@ import org.junit.platform.commons.util.ToStringBuilder;
  *   After building the menu, with options using the {@link Menu#addOption(String, Runnable)}
  *   method, the {@link Menu#start} method can be called to start the menu.
  * </p>
+ *
  * @see MenuItem
  */
 public class Menu {
@@ -48,6 +49,7 @@ public class Menu {
    * run. Can be set to null if no action should be run after the action is run. The
    * {@link Runnable} class was chosen for the same reason as in the {@link Menu#beforeAction}
    * method.
+   *
    * @see Menu#beforeAction
    */
   private Runnable afterAction;
@@ -173,7 +175,7 @@ public class Menu {
    * @throws IllegalStateException If the menu has no options.
    * @see Menu#runOnce
    */
-  public void start() throws IllegalStateException{
+  public void start() throws IllegalStateException {
     // Loops the menu until the program is terminated.
     while (true) {
       runOnce();
