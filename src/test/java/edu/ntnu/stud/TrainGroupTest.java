@@ -210,6 +210,23 @@ class TrainGroupTest {
     }
 
     @Test
+    @DisplayName("toString() should return a string representation of the group")
+    void toStringReturnsCorrectString() {
+      // Arrange
+      // Act
+      departures.removeDeparturesBefore(LocalTime.of(12, 30));
+      String size = departures.toString();
+      // Assert
+      assertEquals(
+          "TrainGroup [departures = [TrainDeparture [plannedDeparture = 12:30, "
+              + "line = 'B2', trainNumber = 2, destination = 'Trondheim', track = -1, "
+              + "delay = 00:00]]]",
+          size,
+          "Expected strings to match"
+      );
+    }
+
+    @Test
     @DisplayName("removePassedDepartures() removes passed departures")
     void removePassedDeparturesRemovesCorrectDepartures() {
       // Arrange

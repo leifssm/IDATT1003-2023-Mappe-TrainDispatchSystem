@@ -120,6 +120,7 @@ class TrainDepartureTest {
           departure2Destination
       );
       // Assert
+      assertEquals(departure, departure);
       assertEquals(departure, departureWithSimilarId);
       assertNotEquals(departure, departureWithNonSimilarId);
       assertNotEquals(departure, null);
