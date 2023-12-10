@@ -122,6 +122,10 @@ class TrainGroupTest {
           departure4Exists,
           "Expected departure with train number 4 to not exist"
       );
+      assertFalse(
+          departures.doesDepartureExists(null),
+          "Expected null to not exist in the group"
+      );
     }
 
     @Test
